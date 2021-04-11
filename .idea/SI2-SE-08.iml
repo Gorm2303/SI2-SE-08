@@ -11,5 +11,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gorms lib" level="project" />
+    <orderEntry type="library" name="Sebs lib" level="project" />
   </component>
 </module>
