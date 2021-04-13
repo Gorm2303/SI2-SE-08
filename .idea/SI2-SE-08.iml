@@ -13,5 +13,7 @@
     <orderEntry type="library" name="Gorms lib" level="project" />
     <orderEntry type="library" name="Sebs lib" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="Mikkels lib" level="project" />
   </component>
 </module>
