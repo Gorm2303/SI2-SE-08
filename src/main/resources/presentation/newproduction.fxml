@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fillHeight="false" prefHeight="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fillHeight="false" prefHeight="765.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.Controller">
    <children>
       <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
          <content>
@@ -82,10 +82,11 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox spacing="200.0">
+                  <HBox spacing="110.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Gem Produktion" />
-                        <Button mnemonicParsing="false" text="Slet Produktion" />
+                        <Button fx:id="saveProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem Produktion" />
+                        <Button fx:id="productionCancelChanges" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller ændringer" />
+                        <Button fx:id="deleteProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Slet Produktion" />
                      </children>
                   </HBox>
                </children>
@@ -102,9 +103,9 @@
                </font>
             </Label>
             <Button mnemonicParsing="false" text="Tilføj endnu en organisation" />
-            <Button mnemonicParsing="false" text="Opret ny organisation" />
+            <Button fx:id="newOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
             <Button mnemonicParsing="false" text="Tilføj endnu en rolle" />
-            <Button mnemonicParsing="false" text="Opret ny medvirkende" />
+            <Button fx:id="newContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
          </children>
       </VBox>
    </children>

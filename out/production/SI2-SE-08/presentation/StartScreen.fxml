@@ -18,17 +18,17 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <Button fx:id="btnSeKrediteringer" layoutX="115.0" layoutY="200.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="58.0" prefWidth="118.0" text="Se krediteringer" />
+      <Button fx:id="btnShowCredits" layoutX="115.0" layoutY="200.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="58.0" prefWidth="118.0" text="Se krediteringer" />
       <Pane layoutX="374.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
             <VBox layoutX="41.0" layoutY="35.0" prefHeight="130.0" prefWidth="118.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="69.0" text="Brugernavn:" />
-                  <TextField fx:id="lblBrugernavn" prefHeight="25.0" prefWidth="149.0" />
+                  <TextField fx:id="lblUsername" prefHeight="25.0" prefWidth="149.0" />
                   <Label text="Adgangskode:" />
                   <PasswordField />
-                  <Button fx:id="btnLogInd" mnemonicParsing="false" text="Log ind" />
+                  <Button fx:id="btnLogIn" mnemonicParsing="false" text="Log ind" />
                </children>
             </VBox>
          </children>
