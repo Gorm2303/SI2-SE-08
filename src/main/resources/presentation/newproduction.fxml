@@ -36,7 +36,7 @@
                                 <TextField promptText="Organisation" />
                             </children>
                         </VBox>
-                        <VBox fx:id="roleVBox" spacing="30.0">
+                        <VBox fx:id="roleVBox" spacing="10.0">
                             <children>
                                 <Label text="Medvirkende" />
                                 <HBox spacing="10.0">

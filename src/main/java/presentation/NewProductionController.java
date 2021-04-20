@@ -2,6 +2,7 @@ package presentation;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -9,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -39,7 +42,7 @@ public class NewProductionController {
                 e.printStackTrace();
             }
 
-        } else if (button == productionCancelChanges) {
+        } else if (button == productionCancelChanges || button == saveProduction) {
             try {
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
@@ -47,6 +50,9 @@ public class NewProductionController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (button == deleteProduction) {
+            productionDeletion();
         }
 
         // new production buttons
@@ -98,7 +104,6 @@ public class NewProductionController {
         }
     }
 
-
     private void handleAddContributor(ActionEvent actionEvent, VBox vBox) {
         HBox hBox = new HBox();
 
@@ -114,4 +119,43 @@ public class NewProductionController {
         hBox.getChildren().addAll(textFieldContributor, removeButton);
         vBox.getChildren().add(hBox);
     }
+
+    private void productionDeletion() {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Sletning af produktion");
+
+        VBox vBox = new VBox();
+        Label label = new Label("Er du sikker på du vil slette denne produktion?");
+        HBox hBox = new HBox();
+        Button yesButton = new Button("Ja");
+        Button noButton = new Button("Nej");
+
+        yesButton.setOnAction((actionEvent -> {
+            try {
+                Scene scene = new Scene(Main.loadFXML("showcredit"));
+                Main.getPrimaryStage().setScene(scene);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.close();
+        }));
+
+        noButton.setOnAction(actionEvent -> {
+            stage.close();
+        });
+
+        vBox.setStyle("-fx-background-color: orange; " + "-fx-border-color: black; " + "-fx-padding: 5");
+        vBox.setSpacing(10);
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+
+        hBox.getChildren().addAll(yesButton, noButton);
+        vBox.getChildren().addAll(label, hBox);
+
+        stage.setScene(new Scene(vBox));
+        stage.show();
+    }
+
 }
