@@ -10,12 +10,12 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-public class Controller {
+public class ShowCreditController {
     public ListView productionListview;
     public TextArea displayArea;
     public TextField searchField;
     @FXML
-    private Button btnShowCredits, editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
+    private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
 
 
     public void onButtonClicked(ActionEvent actionEvent) {
@@ -26,15 +26,6 @@ public class Controller {
             try {
                 Scene scene = new Scene(Main.loadFXML("newproduction"), 810, 500);
                 Main.getPrimaryStage().setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else if (button == btnShowCredits) {
-            try {
-                Scene scene = new Scene(Main.loadFXML("showcredit"), 600, 500);
-                Main.getPrimaryStage().setScene(scene);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.Controller">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.ShowCreditController">
    <children>
       <ListView fx:id="productionListview" layoutX="10.0" layoutY="50.0" prefHeight="296.0" prefWidth="130.0" />
       <Button fx:id="previousButton" layoutX="10.0" layoutY="353.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="60.0" text="Forrige" />
