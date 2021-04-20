@@ -91,12 +91,18 @@ public class DataFacade implements IDataFacade{
 
     @Override
     public ArrayList<IProduction> getNext10Productions(int pageNumber) {
+        ArrayList<IProduction> returnList = new ArrayList<>();
         if (data.getProductions().size() < pageNumber * 10) {
-            return (ArrayList<IProduction>) data.getProductions().subList((pageNumber - 1) * 10, data.getProductions().size());
+            for (int i = (pageNumber - 1) * 10; i < data.getProductions().size(); i++) {
+                returnList.add(data.getProductions().get(i));
+            }
         }
         else {
-            return (ArrayList<IProduction>) data.getProductions().subList((pageNumber - 1) * 10, pageNumber * 10 + 10);
+            for (int i = (pageNumber - 1) * 10; i < pageNumber * 10; i++) {
+                returnList.add(data.getProductions().get(i));
+            }
         }
+        return returnList;
 
     }
 
