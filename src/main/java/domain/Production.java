@@ -114,4 +114,27 @@ public class Production implements IProduction {
     public IOrganization getIProducer() {
         return producer;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String detailedString() {
+        StringBuilder returnString = new StringBuilder(name + "\n\n" +
+                "Produced by: " + producer.getName() + "\n\n" +
+                "In collaboration with:\n");
+        for (Organization organization : orgContributors) {
+            returnString.append(organization.getName()).append("\n");
+        }
+        returnString.append("\n\n");
+        for (Credit credit : credits) {
+            StringBuilder playedBy = new StringBuilder(credit.getContributors().get(0).getName());
+            for (int i = 1; i < credit.getContributors().size(); i++) {
+                playedBy.append(", ").append(credit.getContributors().get(i).getName());
+            }
+            returnString.append(credit.getRole()).append("\t\t\t").append(playedBy);
+        }
+        return returnString.toString();
+    }
 }

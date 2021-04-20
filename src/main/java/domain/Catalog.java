@@ -13,21 +13,30 @@ public class Catalog implements ICatalog{
     //private List<Contributor> contributorList = new ArrayList<>();
     //private List<Organization> organizationList = new ArrayList<>();
     private IDataFacade dataFacade;
+    private static Catalog instance;
 
-    public Catalog() {
+    private Catalog() {
         dataFacade = new DataFacade();
         next10productions = new ArrayList<>();
+    }
+
+    public static Catalog getInstance(){
+        if (instance == null) {
+            instance = new Catalog();
+        }
+        return instance;
     }
 
     public Production showProduction(int productionId){
         return null;
     }
 
-    public void addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
+    public Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
                               ArrayList<Organization> orgContributors, ArrayList<Credit> credits){
         Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
                 programCategory, length, orgContributors, credits);
         dataFacade.addProduction(productionToAdd);
+        return productionToAdd;
     }
 
     public void removeProduction(int productionId){
@@ -38,8 +47,10 @@ public class Catalog implements ICatalog{
         return null;
     }
 
-    public void addContributor(String name, int id, Date birthDate){
-
+    public Contributor addContributor(String name, Date birthDate){
+        Contributor contributorToAdd = new Contributor(name, dataFacade.getContributorId(), birthDate);
+        dataFacade.addContributor(contributorToAdd);
+        return contributorToAdd;
     }
 
     public void removeContributor(int contributorId){
@@ -50,8 +61,10 @@ public class Catalog implements ICatalog{
         return null;
     }
 
-    public void addOrganization(String name, int id){
-
+    public Organization addOrganization(String name){
+        Organization organizationToAdd = new Organization(name, dataFacade.getOrganizationId());
+        dataFacade.addOrganization(organizationToAdd);
+        return organizationToAdd;
     }
 
     public void removeOrganization(int organizationId){
