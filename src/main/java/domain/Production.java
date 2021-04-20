@@ -1,10 +1,15 @@
 package domain;
 
+import Acquaintance.IContributor;
+import Acquaintance.ICredit;
+import Acquaintance.IOrganization;
+import Acquaintance.IProduction;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Production {
+public class Production implements IProduction {
     private String name;
     private int id;
     private Organization producer;
@@ -93,5 +98,20 @@ public class Production {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public ArrayList<IOrganization> getIOrganizations() {
+        return new ArrayList<>(orgContributors);
+    }
+
+    @Override
+    public ArrayList<ICredit> getICredits() {
+        return new ArrayList<>(credits);
+    }
+
+    @Override
+    public IOrganization getIProducer() {
+        return producer;
     }
 }
