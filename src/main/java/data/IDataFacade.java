@@ -19,4 +19,5 @@ public interface IDataFacade {
     int getProductionId();
     int getOrganizationId();
     int getContributorId();
+    ArrayList<IProduction> getNext10Productions(int pageNumber);
 }

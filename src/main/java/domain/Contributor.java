@@ -24,11 +24,6 @@ public class Contributor implements IContributor {
         return productionsIsIn;
     }
 
-    @Override
-    public ArrayList<IProduction> getIProductions(){
-        return new ArrayList<>(productionsIsIn);
-    }
-
     public String getName() {
         return name;
     }

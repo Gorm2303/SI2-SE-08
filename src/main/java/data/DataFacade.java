@@ -89,5 +89,16 @@ public class DataFacade implements IDataFacade{
         return IDManager.getContributorId();
     }
 
+    @Override
+    public ArrayList<IProduction> getNext10Productions(int pageNumber) {
+        if (data.getProductions().size() < pageNumber * 10) {
+            return (ArrayList<IProduction>) data.getProductions().subList((pageNumber - 1) * 10, data.getProductions().size());
+        }
+        else {
+            return (ArrayList<IProduction>) data.getProductions().subList((pageNumber - 1) * 10, pageNumber * 10 + 10);
+        }
+
+    }
+
 
 }
