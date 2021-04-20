@@ -29,16 +29,11 @@ public class NewProductionController {
 
         // Buttons for browsing the program
         if (button == newOrganizationCancel) {
-            try {
-                Scene scene = new Scene(Main.loadFXML("newproduction"), 810, 500);
-                Main.getPrimaryStage().setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Main.getPrimaryStage().setScene(ShowCreditController.getNewProduction());
 
         } else if (button == newOrganization || button == newContributor) {
             try {
-                Scene scene = new Scene(Main.loadFXML("makecharacter"), 600, 500);
+                Scene scene = new Scene(Main.loadFXML("makecharacter"));
                 Main.getPrimaryStage().setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -46,14 +41,13 @@ public class NewProductionController {
 
         } else if (button == productionCancelChanges) {
             try {
-                Scene scene = new Scene(Main.loadFXML("showcredit"), 600, 500);
+                Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
 
         // new production buttons
         if (button == addContributor) {

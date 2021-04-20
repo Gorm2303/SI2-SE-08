@@ -17,7 +17,7 @@ public class StartScreenController {
         // Buttons for browsing the program
         if (button == btnShowCredits) {
             try {
-                Scene scene = new Scene(Main.loadFXML("showcredit"), 600, 500);
+                Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
 
             } catch (IOException e) {

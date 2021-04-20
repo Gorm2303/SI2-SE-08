@@ -16,6 +16,7 @@ public class ShowCreditController {
     public TextField searchField;
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
+    private static Scene newProduction;
 
 
     public void onButtonClicked(ActionEvent actionEvent) {
@@ -24,11 +25,15 @@ public class ShowCreditController {
         // Buttons for browsing the program
         if (button == addProductionButton) {
             try {
-                Scene scene = new Scene(Main.loadFXML("newproduction"), 810, 500);
-                Main.getPrimaryStage().setScene(scene);
+                newProduction = new Scene(Main.loadFXML("newproduction"), 800, 600);
+                Main.getPrimaryStage().setScene(newProduction);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Scene getNewProduction() {
+        return newProduction;
     }
 }
