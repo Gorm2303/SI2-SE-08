@@ -11,12 +11,12 @@
    <children>
       <TextField layoutX="133.0" layoutY="100.0" prefHeight="47.0" prefWidth="334.0" />
       <Label layoutX="133.0" layoutY="76.0" text="Organisation/medvirkende navn" />
-      <Label layoutX="133.0" layoutY="192.0" text="Fødselsdag" />
-      <DatePicker layoutX="131.0" layoutY="221.0" prefHeight="25.0" prefWidth="334.0" />
+      <Label fx:id="birthdayLabel" layoutX="133.0" layoutY="192.0" text="Fødselsdag" />
+      <DatePicker fx:id="birthdaySelect" layoutX="131.0" layoutY="221.0" prefHeight="25.0" prefWidth="334.0" />
       <AnchorPane layoutX="123.0" layoutY="282.0" prefHeight="104.0" prefWidth="350.0">
          <children>
-            <Button fx:id="winButton1" layoutX="61.0" layoutY="52.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller" />
-            <Button fx:id="winButton" layoutX="245.0" layoutY="52.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem" />
+            <Button fx:id="newOrganizationCancel" layoutX="61.0" layoutY="52.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller" />
+            <Button fx:id="newOrganizationSave" layoutX="245.0" layoutY="52.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem" />
          </children>
       </AnchorPane>
    </children>
