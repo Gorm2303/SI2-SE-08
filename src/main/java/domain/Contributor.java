@@ -1,10 +1,13 @@
 package domain;
 
+import Acquaintance.IContributor;
+import Acquaintance.IProduction;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Contributor {
+public class Contributor implements IContributor {
     private String name;
     private int id;
     private Date birthDate;
@@ -19,6 +22,11 @@ public class Contributor {
 
     public ArrayList<Production> getIsIn(){
         return productionsIsIn;
+    }
+
+    @Override
+    public ArrayList<IProduction> getIProductions(){
+        return new ArrayList<>(productionsIsIn);
     }
 
     public String getName() {

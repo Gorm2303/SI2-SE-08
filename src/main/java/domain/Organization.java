@@ -1,8 +1,11 @@
 package domain;
 
+import Acquaintance.IOrganization;
+import Acquaintance.IProduction;
+
 import java.util.ArrayList;
 
-public class Organization {
+public class Organization implements IOrganization {
     private String name;
     private int id;
     private ArrayList<Production> productions;
@@ -35,5 +38,10 @@ public class Organization {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public ArrayList<IProduction> getIProductions() {
+        return new ArrayList<>(productions);
     }
 }
