@@ -1,8 +1,11 @@
 package domain;
 
+import java.util.ArrayList;
+
 public class Organization {
     private String name;
     private int id;
+    private ArrayList<Production> productions;
 
     public Organization(String name, int id) {
         this.name = name;
@@ -10,7 +13,13 @@ public class Organization {
     }
 
 
+    public ArrayList<Production> getProductions() {
+        return productions;
+    }
 
+    public void setProductions(ArrayList<Production> productions) {
+        this.productions = productions;
+    }
 
     public String getName() {
         return name;

@@ -11,23 +11,41 @@ public class Production {
     private Date releaseDate;
     private String programCategory;
     private int length;
-    private List<Organization> orgContributors = new ArrayList<>();
-    //credits and contributors?
+    private ArrayList<Organization> orgContributors;
+    private ArrayList<Credit> credits;
 
     public Production() {
     }
 
-    public Production(String name, int id, Organization producer, Date releaseDate, String programCategory, int length) {
+    public Production(String name, int id, Organization producer, Date releaseDate, String programCategory, int length,
+                      ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
         this.name = name;
         this.id = id;
         this.producer = producer;
         this.releaseDate = releaseDate;
         this.programCategory = programCategory;
         this.length = length;
+        this.orgContributors = orgContributors;
+        this.credits = credits;
+
     }
 
 
+    public ArrayList<Organization> getOrgContributors() {
+        return orgContributors;
+    }
 
+    public void setOrgContributors(ArrayList<Organization> orgContributors) {
+        this.orgContributors = orgContributors;
+    }
+
+    public ArrayList<Credit> getCredits() {
+        return credits;
+    }
+
+    public void setCredits(ArrayList<Credit> credits) {
+        this.credits = credits;
+    }
 
     public String getName() {
         return name;

@@ -8,7 +8,7 @@ public class Contributor {
     private String name;
     private int id;
     private Date birthDate;
-    private List<Production> productionsIsIn;
+    private ArrayList<Production> productionsIsIn;
 
     public Contributor(String name, int id, Date birthDate) {
         this.name = name;
@@ -17,10 +17,8 @@ public class Contributor {
     }
 
 
-    public List<Production> getIsIn(){
-        productionsIsIn = new ArrayList<>();
-        //fill list
-        return null;
+    public ArrayList<Production> getIsIn(){
+        return productionsIsIn;
     }
 
     public String getName() {
