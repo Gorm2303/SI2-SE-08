@@ -39,9 +39,4 @@ public class Organization implements IOrganization {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    public ArrayList<IProduction> getIProductions() {
-        return new ArrayList<>(productions);
-    }
 }

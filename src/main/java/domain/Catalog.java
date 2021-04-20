@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Catalog {
-    private List<Production> productionList = new ArrayList<>();
-    private List<Contributor> contributorList = new ArrayList<>();
-    private List<Organization> organizationList = new ArrayList<>();
+public class Catalog implements ICatalog{
+    private ArrayList<Production> next10productions;
+    //private List<Contributor> contributorList = new ArrayList<>();
+    //private List<Organization> organizationList = new ArrayList<>();
     private IDataFacade dataFacade;
 
     public Catalog() {
         dataFacade = new DataFacade();
+        next10productions = new ArrayList<>();
     }
-
 
     public Production showProduction(int productionId){
         return null;
@@ -27,7 +27,6 @@ public class Catalog {
                               ArrayList<Organization> orgContributors, ArrayList<Credit> credits){
         Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
                 programCategory, length, orgContributors, credits);
-        productionList.add(productionToAdd);
         dataFacade.addProduction(productionToAdd);
     }
 
@@ -57,5 +56,15 @@ public class Catalog {
 
     public void removeOrganization(int organizationId){
 
+    }
+
+    @Override
+    public ArrayList<Production> getNext10Productions(int pageNumber) {
+        ArrayList<IProduction> temp10 = dataFacade.getNext10Productions(pageNumber);
+        ArrayList<Production> returnList = new ArrayList<>();
+        for (IProduction production : temp10) {
+            returnList.add((Production) production);
+        }
+        return returnList;
     }
 }
