@@ -21,8 +21,6 @@ public class Controller {
 
     public void onButtonClicked(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
-        String s = button.getText();
-        button.setText(s + "!");
-        System.out.println("You win!");
+
     }
 }

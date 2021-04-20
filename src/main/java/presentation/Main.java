@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Scene scene = new Scene(loadFXML("gui"), 600, 500);
+        Scene scene = new Scene(loadFXML("startscreen"), 600, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
