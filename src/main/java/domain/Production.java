@@ -1,6 +1,8 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Production {
     private String name;
@@ -9,7 +11,8 @@ public class Production {
     private Date releaseDate;
     private String programCategory;
     private int length;
-
+    private List<Organization> orgContributors = new ArrayList<>();
+    //credits and contributors?
 
     public Production() {
     }

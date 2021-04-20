@@ -1,8 +1,14 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Catalog {
+    private List<Production> productionList = new ArrayList<>();
+    private List<Contributor> contributorList = new ArrayList<>();
+    private List<Organization> organizationList = new ArrayList<>();
+
 
     public Production showProduction(int productionId){
         return null;
