@@ -10,18 +10,24 @@ import java.io.IOException;
 
 public class Main extends Application {
 
+    private static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Main.primaryStage = primaryStage;
         Scene scene = new Scene(loadFXML("startscreen"), 600, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     public static void main(String[] args) {
         launch(args);
