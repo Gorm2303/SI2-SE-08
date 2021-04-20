@@ -9,104 +9,75 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fillHeight="false" prefHeight="765.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.Controller">
-   <children>
-      <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
-         <content>
-            <VBox spacing="50.0">
-               <children>
-                  <Label text="Ny produktion">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <VBox spacing="10.0">
-                     <children>
-                        <Label text="Produktion information" />
-                        <TextField promptText="Navn" />
-                        <TextField promptText="Dato" />
-                        <TextField promptText="Længde" />
-                        <TextField promptText="Programkategori" />
-                        <TextField promptText="Producent (organisation)" />
-                     </children>
-                  </VBox>
-                  <VBox spacing="10.0">
-                     <children>
-                        <Label text="Medvirkende Organisationer" />
-                        <TextField promptText="Organisation" />
-                        <HBox>
-                           <children>
-                              <TextField promptText="Organisation" />
-                              <Button mnemonicParsing="false" text="Fjern" />
-                           </children>
+<HBox fillHeight="false" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
+    <children>
+        <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
+            <content>
+                <VBox spacing="50.0">
+                    <children>
+                        <Label text="Ny produktion">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label text="Produktion information" />
+                                <TextField promptText="Navn" />
+                                <TextField promptText="Dato" />
+                                <TextField promptText="Længde" />
+                                <TextField promptText="Programkategori" />
+                                <TextField promptText="Producent (organisation)" />
+                            </children>
+                        </VBox>
+                        <VBox fx:id="organizationVBox" spacing="10.0">
+                            <children>
+                                <Label text="Medvirkende Organisationer" />
+                                <TextField promptText="Organisation" />
+                            </children>
+                        </VBox>
+                        <VBox fx:id="roleVBox" spacing="30.0">
+                            <children>
+                                <Label text="Medvirkende" />
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <TextField promptText="Rolle" />
+                                        <VBox fx:id="contributorVBox" spacing="5.0">
+                                            <children>
+                                                <TextField promptText="Eksisterende medvirkende" />
+                                            </children>
+                                        </VBox>
+                              <Button fx:id="addContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en medvirkende" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <HBox spacing="110.0">
+                            <children>
+                                <Button fx:id="saveProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem Produktion" />
+                                <Button fx:id="productionCancelChanges" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller ændringer" />
+                                <Button fx:id="deleteProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Slet Produktion" />
+                            </children>
                         </HBox>
-                     </children>
-                  </VBox>
-                  <VBox spacing="30.0">
-                     <children>
-                        <Label text="Medvirkende" />
-                        <HBox spacing="10.0">
-                           <children>
-                              <TextField promptText="Rolle" />
-                              <VBox>
-                                 <children>
-                                    <TextField promptText="Eksisterende medvirkende" />
-                                    <HBox>
-                                       <children>
-                                          <TextField promptText="Eksisterende medvirkende" />
-                                          <Button mnemonicParsing="false" text="Fjern" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <Button mnemonicParsing="false" text="Tilføj endnu en medvirkende" />
-                           </children>
-                        </HBox>
-                        <HBox spacing="10.0">
-                           <children>
-                              <TextField promptText="Rolle" />
-                              <Button mnemonicParsing="false" text="Fjern" />
-                              <VBox>
-                                 <children>
-                                    <TextField promptText="Eksisterende medvirkende" />
-                                    <HBox>
-                                       <children>
-                                          <TextField promptText="Eksisterende medvirkende" />
-                                          <Button mnemonicParsing="false" text="Fjern" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <Button mnemonicParsing="false" text="Tilføj endnu en medvirkende" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <HBox spacing="110.0">
-                     <children>
-                        <Button fx:id="saveProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem Produktion" />
-                        <Button fx:id="productionCancelChanges" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller ændringer" />
-                        <Button fx:id="deleteProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Slet Produktion" />
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-         </content></ScrollPane>
-      <VBox spacing="5.0">
-         <children>
-            <Label text="Menu">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button mnemonicParsing="false" text="Tilføj endnu en organisation" />
-            <Button fx:id="newOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
-            <Button mnemonicParsing="false" text="Tilføj endnu en rolle" />
-            <Button fx:id="newContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
-         </children>
-      </VBox>
-   </children>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+        <VBox spacing="10.0">
+            <children>
+                <Label text="Menu">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <Button fx:id="addOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en organisation" />
+                <Button fx:id="newOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
+                <Button fx:id="addRole" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en rolle" />
+                <Button fx:id="newContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
+            </children>
+        </VBox>
+    </children>
 </HBox>
