@@ -2,6 +2,7 @@ package presentation;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 public class NewProductionController {
     @FXML
-    private Label birthdayLabel;
+    private Label birthdayLabel, organizationNameLabel;
     @FXML
     private DatePicker birthdaySelect;
     @FXML
@@ -31,16 +32,42 @@ public class NewProductionController {
         Button button = (Button) actionEvent.getSource();
 
         // Buttons for browsing the program
-        if (button == newOrganizationCancel) {
-            Main.getPrimaryStage().setScene(ShowCreditController.getNewProduction());
-
-        } else if (button == newOrganization || button == newContributor) {
-            try {
-                Scene scene = new Scene(Main.loadFXML("makecharacter"));
-                Main.getPrimaryStage().setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (button == newOrganization || button == newContributor) {
+            Stage stage = new Stage();
+            VBox vBox = new VBox();
+            if (button == newOrganization) {
+                Label label = new Label("Organisationens navn");
+                vBox.getChildren().add(label);
+            } else {
+                Label label = new Label("Medvirkendes navn");
+                Label date = new Label("Fødselsdag");
+                DatePicker datePicker = new DatePicker();
+                vBox.getChildren().addAll(label, date, datePicker);
             }
+
+            TextField textField = new TextField();
+            Button cancel = new Button("Annuller");
+            Button save = new Button("Gem");
+
+            cancel.setOnAction(actionEvent1 -> {
+                stage.close();
+            });
+            save.setOnAction(actionEvent1 -> {
+                stage.close();
+            });
+
+            vBox.setSpacing(10);
+            vBox.setPadding(new Insets(10));
+            vBox.getChildren().add(1, textField);
+
+            HBox hBox = new HBox();
+            hBox.setSpacing(40);
+            hBox.getChildren().addAll(save, cancel);
+            vBox.getChildren().add(hBox);
+
+            Scene scene = new Scene(vBox);
+            stage.setScene(scene);
+            stage.show();
 
         } else if (button == productionCancelChanges || button == saveProduction) {
             try {
