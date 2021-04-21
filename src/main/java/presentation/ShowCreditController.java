@@ -51,14 +51,15 @@ public class ShowCreditController {
             }
         }
         else if (button == nextButton) {
+            previousButton.setDisable(false);
             pageNumber++;
             System.out.println(pageNumber);
             productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
             productionListview.setItems(productionObservableList);
         }
         else if (button == previousButton) {
-            if (pageNumber <= 1) {
-                return;
+            if (pageNumber <= 2) {
+                previousButton.setDisable(true);
             }
             pageNumber--;
             System.out.println(pageNumber);
