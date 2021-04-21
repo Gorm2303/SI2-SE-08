@@ -1,7 +1,6 @@
 package domain;
 
 import Acquaintance.IOrganization;
-import Acquaintance.IProduction;
 
 import java.util.ArrayList;
 
@@ -9,6 +8,8 @@ public class Organization implements IOrganization {
     private String name;
     private int id;
     private ArrayList<Production> productions;
+
+    public Organization() {}
 
     public Organization(String name, int id) {
         this.name = name;

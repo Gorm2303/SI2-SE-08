@@ -2,13 +2,14 @@ package domain;
 
 import Acquaintance.IContributor;
 import Acquaintance.ICredit;
-import Acquaintance.IOrganization;
 
 import java.util.ArrayList;
 
 public class Credit implements ICredit {
     private String role;
     private ArrayList<Contributor> contributors;
+
+    public Credit() {}
 
     public Credit(String role, ArrayList<Contributor> contributors) {
         this.role = role;

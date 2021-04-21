@@ -17,22 +17,25 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ShowCreditController {
-    public ListView<Production> productionListview;
-    public TextArea displayArea;
-    public TextField searchField;
+    @FXML
+    private ListView<Production> productionListview;
+    @FXML
+    private TextArea displayArea;
+    @FXML
+    private TextField searchField;
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
     private static Scene newProduction;
 
     private int pageNumber;
-    private ICatalog catalog;
+    private static ICatalog catalog;
     private ObservableList<Production> productionObservableList;
 
     @FXML
     public void initialize() {
         pageNumber = 1;
         catalog = Catalog.getInstance();
-        dummyProductions();
+        //dummyProductions();
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
     }
@@ -112,6 +115,13 @@ public class ShowCreditController {
 
     public void handleMouseClick(MouseEvent mouseEvent) {
         Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+        if (selectedProduction == null) {
+            return;
+        }
         displayArea.setText(selectedProduction.detailedString());
+    }
+
+    public static ICatalog getCatalog() {
+        return catalog;
     }
 }

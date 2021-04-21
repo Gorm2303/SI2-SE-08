@@ -6,7 +6,6 @@ import data.IDataFacade;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Catalog implements ICatalog{
     private ArrayList<Production> next10productions;
@@ -29,6 +28,10 @@ public class Catalog implements ICatalog{
 
     public Production showProduction(int productionId){
         return null;
+    }
+
+    public void addProduction(Production production) {
+        dataFacade.addProduction(production);
     }
 
     public Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,

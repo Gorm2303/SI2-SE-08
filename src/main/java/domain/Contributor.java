@@ -1,17 +1,17 @@
 package domain;
 
 import Acquaintance.IContributor;
-import Acquaintance.IProduction;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Contributor implements IContributor {
     private String name;
     private int id;
     private Date birthDate;
     private ArrayList<Production> productionsIsIn;
+
+    public Contributor() {}
 
     public Contributor(String name, int id, Date birthDate) {
         this.name = name;

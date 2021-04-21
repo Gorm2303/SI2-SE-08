@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -23,17 +24,17 @@
                         <VBox spacing="10.0">
                             <children>
                                 <Label text="Produktion information" />
-                                <TextField promptText="Navn" />
-                                <TextField promptText="Dato" />
-                                <TextField promptText="Længde" />
-                                <TextField promptText="Programkategori" />
-                                <TextField promptText="Producent (organisation)" />
+                                <TextField fx:id="productionName" promptText="Navn" />
+                        <DatePicker fx:id="productionDate" />
+                                <TextField fx:id="productionLength" promptText="Længde" />
+                                <TextField fx:id="productionCategory" promptText="Programkategori" />
+                                <TextField fx:id="productionProducer" promptText="Producent (organisation)" />
                             </children>
                         </VBox>
                         <VBox fx:id="organizationVBox" spacing="10.0">
                             <children>
                                 <Label text="Medvirkende Organisationer" />
-                                <TextField promptText="Organisation" />
+                                <TextField fx:id="organizationName" promptText="Organisation" />
                             </children>
                         </VBox>
                         <VBox fx:id="roleVBox" spacing="10.0">
@@ -41,10 +42,10 @@
                                 <Label text="Medvirkende" />
                                 <HBox spacing="10.0">
                                     <children>
-                                        <TextField promptText="Rolle" />
+                                        <TextField fx:id="roleName" promptText="Rolle" />
                                         <VBox fx:id="contributorVBox" spacing="5.0">
                                             <children>
-                                                <TextField promptText="Eksisterende medvirkende" />
+                                                <TextField fx:id="contributorToRole" promptText="Eksisterende medvirkende" />
                                             </children>
                                         </VBox>
                               <Button fx:id="addContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en medvirkende" />
