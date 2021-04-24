@@ -52,15 +52,28 @@ public class ShowCreditController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if (button == nextButton) {
+        } else if (button == editProductionButton) {
+            Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+            if (selectedProduction == null) {
+                return;
+            }
+
+            try {
+                newProduction = new Scene(Main.loadFXML("newproduction"), 800, 600);
+                Main.getPrimaryStage().setScene(newProduction);
+                NewProductionController.getLatestProductionController().loadProduction(selectedProduction);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (button == nextButton) {
             previousButton.setDisable(false);
             pageNumber++;
             System.out.println(pageNumber);
             productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
             productionListview.setItems(productionObservableList);
-        }
-        else if (button == previousButton) {
+        } else if (button == previousButton) {
             if (pageNumber <= 2) {
                 previousButton.setDisable(true);
             }

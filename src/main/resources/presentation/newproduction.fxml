@@ -25,8 +25,8 @@
                             <children>
                                 <Label text="Produktion information" />
                                 <TextField fx:id="productionName" promptText="Navn" />
-                        <DatePicker fx:id="productionDate" />
-                                <TextField fx:id="productionLength" promptText="Længde" />
+                        <DatePicker fx:id="productionDate" promptText="Dato" />
+                                <TextField fx:id="productionLength" promptText="Længde (i minutter)" />
                                 <TextField fx:id="productionCategory" promptText="Programkategori" />
                                 <TextField fx:id="productionProducer" promptText="Producent (organisation)" />
                             </children>

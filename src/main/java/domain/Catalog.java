@@ -42,8 +42,9 @@ public class Catalog implements ICatalog{
         return productionToAdd;
     }
 
-    public void removeProduction(int productionId){
-
+    @Override
+    public void removeProduction(Production production){
+        dataFacade.removeProduction(production);
     }
 
     public Contributor showContributor(int contributorId){
