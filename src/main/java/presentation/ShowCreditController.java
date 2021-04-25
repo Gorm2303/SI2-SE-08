@@ -17,22 +17,25 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ShowCreditController {
-    public ListView<Production> productionListview;
-    public TextArea displayArea;
-    public TextField searchField;
+    @FXML
+    private ListView<Production> productionListview;
+    @FXML
+    private TextArea displayArea;
+    @FXML
+    private TextField searchField;
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
     private static Scene newProduction;
 
     private int pageNumber;
-    private ICatalog catalog;
+    private static ICatalog catalog;
     private ObservableList<Production> productionObservableList;
 
     @FXML
     public void initialize() {
         pageNumber = 1;
         catalog = Catalog.getInstance();
-        dummyProductions();
+        //dummyProductions();
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
     }
@@ -49,16 +52,30 @@ public class ShowCreditController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if (button == nextButton) {
+        } else if (button == editProductionButton) {
+            Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+            if (selectedProduction == null) {
+                return;
+            }
+
+            try {
+                newProduction = new Scene(Main.loadFXML("newproduction"), 800, 600);
+                Main.getPrimaryStage().setScene(newProduction);
+                NewProductionController.getLatestProductionController().loadProduction(selectedProduction);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (button == nextButton) {
+            previousButton.setDisable(false);
             pageNumber++;
             System.out.println(pageNumber);
             productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
             productionListview.setItems(productionObservableList);
-        }
-        else if (button == previousButton) {
-            if (pageNumber <= 1) {
-                return;
+        } else if (button == previousButton) {
+            if (pageNumber <= 2) {
+                previousButton.setDisable(true);
             }
             pageNumber--;
             System.out.println(pageNumber);
@@ -111,6 +128,13 @@ public class ShowCreditController {
 
     public void handleMouseClick(MouseEvent mouseEvent) {
         Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+        if (selectedProduction == null) {
+            return;
+        }
         displayArea.setText(selectedProduction.detailedString());
+    }
+
+    public static ICatalog getCatalog() {
+        return catalog;
     }
 }

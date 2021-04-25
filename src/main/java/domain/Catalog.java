@@ -6,7 +6,6 @@ import data.IDataFacade;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Catalog implements ICatalog{
     private ArrayList<Production> next10productions;
@@ -31,6 +30,10 @@ public class Catalog implements ICatalog{
         return null;
     }
 
+    public void addProduction(Production production) {
+        dataFacade.addProduction(production);
+    }
+
     public Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
                               ArrayList<Organization> orgContributors, ArrayList<Credit> credits){
         Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
@@ -39,8 +42,9 @@ public class Catalog implements ICatalog{
         return productionToAdd;
     }
 
-    public void removeProduction(int productionId){
-
+    @Override
+    public void removeProduction(Production production){
+        dataFacade.removeProduction(production);
     }
 
     public Contributor showContributor(int contributorId){
