@@ -12,14 +12,14 @@ public class Catalog implements ICatalog{
     //private List<Contributor> contributorList = new ArrayList<>();
     //private List<Organization> organizationList = new ArrayList<>();
     private IDataFacade dataFacade;
-    private static Catalog instance;
+    private static ICatalog instance;
 
     private Catalog() {
         dataFacade = new DataFacade();
         next10productions = new ArrayList<>();
     }
 
-    public static Catalog getInstance(){
+    public static ICatalog getInstance(){
         if (instance == null) {
             instance = new Catalog();
         }

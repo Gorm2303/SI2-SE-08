@@ -34,7 +34,7 @@ public class ShowCreditController {
     @FXML
     public void initialize() {
         pageNumber = 1;
-        catalog = Catalog.getInstance();
+        catalog = ICatalog.getInstance();
         //dummyProductions();
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
@@ -132,9 +132,5 @@ public class ShowCreditController {
             return;
         }
         displayArea.setText(selectedProduction.detailedString());
-    }
-
-    public static ICatalog getCatalog() {
-        return catalog;
     }
 }

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public interface ICatalog {
+    static ICatalog getInstance() {
+        return Catalog.getInstance();
+    }
+
     Production showProduction(int productionId);
     public void addProduction(Production production);
     Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
@@ -15,6 +19,7 @@ public interface ICatalog {
     Organization showOrganization(int organizationId);
     Organization addOrganization(String name);
     void removeOrganization(int organizationId);
+
 
     ArrayList<Production> getNext10Productions(int pageNumber);
 }

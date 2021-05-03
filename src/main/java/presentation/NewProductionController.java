@@ -1,9 +1,6 @@
 package presentation;
 
-import domain.Contributor;
-import domain.Credit;
-import domain.Organization;
-import domain.Production;
+import domain.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -253,7 +250,7 @@ public class NewProductionController {
     }
 
     public void deleteProduction(Production production) {
-        ShowCreditController.getCatalog().removeProduction(production);
+        ICatalog.getInstance().removeProduction(production);
     }
 
     public void saveProduction() {
@@ -320,7 +317,7 @@ public class NewProductionController {
 
         production.setCredits(credits);
 
-        ShowCreditController.getCatalog().addProduction(production);
+        ICatalog.getInstance().addProduction(production);
     }
 
     public void loadProduction(Production production) {
