@@ -6,10 +6,17 @@ public class DataFacade implements IDataFacade{
     public DataFacade () {
         orgData = new OrganizationData();
     }
-
-    public boolean storeOrganization(String name) {
+    @Override
+    public int storeOrganization(String name) {
         return orgData.store(name);
     }
+
+    @Override
+    public String materializeOrganizationName(int contributorID) {
+        return orgData.materializeName(contributorID);
+    }
+
+
 
     /*
     @Override

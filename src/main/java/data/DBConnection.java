@@ -39,4 +39,5 @@ public class DBConnection {
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
     }
+
 }

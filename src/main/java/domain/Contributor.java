@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Contributor implements Savable {
+public class Contributor implements Storable {
     private String name;
     private int id;
     private Date birthDate;
@@ -48,12 +48,8 @@ public class Contributor implements Savable {
 
 
     @Override
-    public boolean save() {
-        return false;
+    public int store() {
+        return 0;
     }
 
-    @Override
-    public Object load() {
-        return null;
-    }
 }

@@ -2,7 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 
-public class Credit implements Savable {
+public class Credit implements Storable {
     private String role;
     private ArrayList<Contributor> contributors;
 
@@ -30,12 +30,8 @@ public class Credit implements Savable {
     }
 
     @Override
-    public boolean save() {
-        return false;
+    public int store() {
+        return 0;
     }
 
-    @Override
-    public Object load() {
-        return null;
-    }
 }

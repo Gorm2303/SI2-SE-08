@@ -5,12 +5,21 @@ import data.IDataFacade;
 
 import java.util.ArrayList;
 
-public class Organization implements Savable {
+public class Organization implements Storable {
     private String name;
     private int id;
     private ArrayList<Production> productions;
 
     public Organization() {}
+
+    public Organization(int id) {
+        if (id <= 0) {
+            return;
+        }
+        IDataFacade iDataFacade = new DataFacade();
+        this.name = iDataFacade.materializeOrganizationName(id);
+        this.id = id;
+    }
 
     public Organization(String name, int id) {
         this.name = name;
@@ -43,13 +52,9 @@ public class Organization implements Savable {
     }
 
     @Override
-    public boolean save() {
+    public int store() {
         IDataFacade iDataFacade = new DataFacade();
         return iDataFacade.storeOrganization(name);
     }
 
-    @Override
-    public Object load() {
-        return null;
-    }
 }

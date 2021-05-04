@@ -2,7 +2,8 @@ package data;
 
 public interface IDataFacade {
 
-    boolean storeOrganization(String name);
+    int storeOrganization(String name);
+    String materializeOrganizationName(int contributorID);
 
     //ArrayList<Integer> getNext10Productions(int pageNumber);
 }

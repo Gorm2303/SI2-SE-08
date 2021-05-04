@@ -169,7 +169,7 @@ public class NewProductionController {
         save.setOnAction(actionEvent1 -> {
             Organization org = new Organization();
             org.setName(textField.getText());
-            System.out.println(org.save());
+            System.out.println(org.store());
             stage.close();
         });
 

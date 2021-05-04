@@ -3,7 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Production implements Savable {
+public class Production implements Storable {
     private String name;
     private int id;
     private Organization producer;
@@ -118,12 +118,8 @@ public class Production implements Savable {
     }
 
     @Override
-    public boolean save() {
-        return false;
+    public int store() {
+        return 0;
     }
 
-    @Override
-    public Object load() {
-        return null;
-    }
 }
