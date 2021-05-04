@@ -46,7 +46,6 @@ public class Contributor implements Storable {
         this.birthDate = birthDate;
     }
 
-
     @Override
     public int store() {
         return 0;

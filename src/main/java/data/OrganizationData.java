@@ -17,6 +17,7 @@ public class OrganizationData {
                     "INSERT INTO organizations(name) VALUES (?) RETURNING id");
             insertStatement.setString(1, name);
             insertStatement.execute();
+            insertStatement.getResultSet().next();
             return insertStatement.getResultSet().getInt(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

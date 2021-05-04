@@ -170,6 +170,9 @@ public class NewProductionController {
             Organization org = new Organization();
             org.setName(textField.getText());
             System.out.println(org.store());
+            System.out.println(Organization.get(org.getId()));
+            System.out.println(Organization.get(org.getId()));
+            System.out.println(Organization.get(55));
             stage.close();
         });
 
