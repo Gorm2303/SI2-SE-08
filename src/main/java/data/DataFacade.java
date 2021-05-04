@@ -1,10 +1,14 @@
 package data;
 
 public class DataFacade implements IDataFacade{
-
+    private OrganizationData orgData;
 
     public DataFacade () {
+        orgData = new OrganizationData();
+    }
 
+    public boolean storeOrganization(String name) {
+        return orgData.store(name);
     }
 
     /*

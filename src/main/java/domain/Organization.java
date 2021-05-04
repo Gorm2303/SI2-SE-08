@@ -1,5 +1,8 @@
 package domain;
 
+import data.DataFacade;
+import data.IDataFacade;
+
 import java.util.ArrayList;
 
 public class Organization implements Savable {
@@ -41,7 +44,8 @@ public class Organization implements Savable {
 
     @Override
     public boolean save() {
-        return false;
+        IDataFacade iDataFacade = new DataFacade();
+        return iDataFacade.storeOrganization(name);
     }
 
     @Override
