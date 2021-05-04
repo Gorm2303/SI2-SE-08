@@ -21,12 +21,10 @@ public class Organization implements Storable {
         }
         IDataFacade iDataFacade = new DataFacade();
         this.name = iDataFacade.materializeOrganizationName(id);
-        if (this.name != null) {
         this.id = id;
         organizationsInMemory.add(this);
     }
 
-}
 
     public Organization(String name, int id) {
         this.name = name;
@@ -35,6 +33,7 @@ public class Organization implements Storable {
     }
 
     public static Organization get(int id) {
+        // Maybe find a better way to shuffle through memory, maybe another collection than ArrayList.
         for (Organization org : organizationsInMemory) {
             if (org.getId() == id) {
                 return org;
