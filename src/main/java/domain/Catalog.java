@@ -1,6 +1,5 @@
 package domain;
 
-import Acquaintance.IProduction;
 import data.DataFacade;
 import data.IDataFacade;
 
@@ -9,8 +8,6 @@ import java.util.Date;
 
 public class Catalog implements ICatalog{
     private ArrayList<Production> next10productions;
-    //private List<Contributor> contributorList = new ArrayList<>();
-    //private List<Organization> organizationList = new ArrayList<>();
     private IDataFacade dataFacade;
     private static ICatalog instance;
 
@@ -31,20 +28,20 @@ public class Catalog implements ICatalog{
     }
 
     public void addProduction(Production production) {
-        dataFacade.addProduction(production);
+        //dataFacade.addProduction(production);
     }
 
     public Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
                               ArrayList<Organization> orgContributors, ArrayList<Credit> credits){
-        Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
-                programCategory, length, orgContributors, credits);
-        dataFacade.addProduction(productionToAdd);
-        return productionToAdd;
+        //Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
+                //programCategory, length, orgContributors, credits);
+        //dataFacade.addProduction(productionToAdd);
+        return null; //productionToAdd;
     }
 
     @Override
     public void removeProduction(Production production){
-        dataFacade.removeProduction(production);
+        //dataFacade.removeProduction(production);
     }
 
     public Contributor showContributor(int contributorId){
@@ -52,9 +49,9 @@ public class Catalog implements ICatalog{
     }
 
     public Contributor addContributor(String name, Date birthDate){
-        Contributor contributorToAdd = new Contributor(name, dataFacade.getContributorId(), birthDate);
-        dataFacade.addContributor(contributorToAdd);
-        return contributorToAdd;
+        //Contributor contributorToAdd = new Contributor(name, dataFacade.getContributorId(), birthDate);
+        //dataFacade.addContributor(contributorToAdd);
+        return null;//contributorToAdd;
     }
 
     public void removeContributor(int contributorId){
@@ -66,9 +63,9 @@ public class Catalog implements ICatalog{
     }
 
     public Organization addOrganization(String name){
-        Organization organizationToAdd = new Organization(name, dataFacade.getOrganizationId());
-        dataFacade.addOrganization(organizationToAdd);
-        return organizationToAdd;
+        //Organization organizationToAdd = new Organization(name, dataFacade.getOrganizationId());
+        //dataFacade.addOrganization(organizationToAdd);
+        return null; //organizationToAdd;
     }
 
     public void removeOrganization(int organizationId){
@@ -77,11 +74,14 @@ public class Catalog implements ICatalog{
 
     @Override
     public ArrayList<Production> getNext10Productions(int pageNumber) {
+        /*
         ArrayList<IProduction> temp10 = dataFacade.getNext10Productions(pageNumber);
         ArrayList<Production> returnList = new ArrayList<>();
         for (IProduction production : temp10) {
             returnList.add((Production) production);
         }
         return returnList;
+         */
+        return new ArrayList<>();
     }
 }

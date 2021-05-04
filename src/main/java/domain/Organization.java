@@ -1,10 +1,8 @@
 package domain;
 
-import Acquaintance.IOrganization;
-
 import java.util.ArrayList;
 
-public class Organization implements IOrganization {
+public class Organization implements Savable {
     private String name;
     private int id;
     private ArrayList<Production> productions;
@@ -39,5 +37,15 @@ public class Organization implements IOrganization {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean save() {
+        return false;
+    }
+
+    @Override
+    public Object load() {
+        return null;
     }
 }

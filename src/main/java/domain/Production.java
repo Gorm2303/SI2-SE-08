@@ -1,15 +1,9 @@
 package domain;
 
-import Acquaintance.IContributor;
-import Acquaintance.ICredit;
-import Acquaintance.IOrganization;
-import Acquaintance.IProduction;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class Production implements IProduction {
+public class Production implements Savable {
     private String name;
     private int id;
     private Organization producer;
@@ -101,21 +95,6 @@ public class Production implements IProduction {
     }
 
     @Override
-    public ArrayList<IOrganization> getIOrganizations() {
-        return new ArrayList<>(orgContributors);
-    }
-
-    @Override
-    public ArrayList<ICredit> getICredits() {
-        return new ArrayList<>(credits);
-    }
-
-    @Override
-    public IOrganization getIProducer() {
-        return producer;
-    }
-
-    @Override
     public String toString() {
         return name;
     }
@@ -136,5 +115,15 @@ public class Production implements IProduction {
             returnString.append(credit.getRole()).append("\t\t\t").append(playedBy);
         }
         return returnString.toString();
+    }
+
+    @Override
+    public boolean save() {
+        return false;
+    }
+
+    @Override
+    public Object load() {
+        return null;
     }
 }

@@ -1,11 +1,9 @@
 package domain;
 
-import Acquaintance.IContributor;
-
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Contributor implements IContributor {
+public class Contributor implements Savable {
     private String name;
     private int id;
     private Date birthDate;
@@ -49,4 +47,13 @@ public class Contributor implements IContributor {
     }
 
 
+    @Override
+    public boolean save() {
+        return false;
+    }
+
+    @Override
+    public Object load() {
+        return null;
+    }
 }
