@@ -2,6 +2,9 @@ package data;
 
 public class DataFacade implements IDataFacade{
     private OrganizationData orgData;
+    private ContributorData contributorData;
+    private CreditData creditData;
+    private ProductionData productionData;
 
     public DataFacade () {
         orgData = new OrganizationData();
@@ -16,7 +19,20 @@ public class DataFacade implements IDataFacade{
         return orgData.materializeName(contributorID);
     }
 
+    @Override
+    public int storeContributor(String name, String birthDate) {
+        return contributorData.store(name, birthDate);
+    }
 
+    @Override
+    public int storeCredit(String role, int productionID) {
+        return creditData.store(role, productionID);
+    }
+
+    @Override
+    public int storeProductionData(String name, String releaseDate, int length, int producerID) {
+        return productionData.store(name, releaseDate, length, producerID);
+    }
 
     /*
     @Override
