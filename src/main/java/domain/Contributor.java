@@ -1,11 +1,9 @@
 package domain;
 
-import Acquaintance.IContributor;
-
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Contributor implements IContributor {
+public class Contributor implements Storable {
     private String name;
     private int id;
     private Date birthDate;
@@ -48,5 +46,9 @@ public class Contributor implements IContributor {
         this.birthDate = birthDate;
     }
 
+    @Override
+    public int store() {
+        return 0;
+    }
 
 }

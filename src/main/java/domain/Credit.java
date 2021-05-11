@@ -1,11 +1,8 @@
 package domain;
 
-import Acquaintance.IContributor;
-import Acquaintance.ICredit;
-
 import java.util.ArrayList;
 
-public class Credit implements ICredit {
+public class Credit implements Storable {
     private String role;
     private ArrayList<Contributor> contributors;
 
@@ -33,7 +30,8 @@ public class Credit implements ICredit {
     }
 
     @Override
-    public ArrayList<IContributor> getIContributors() {
-        return new ArrayList<>(contributors);
+    public int store() {
+        return 0;
     }
+
 }
