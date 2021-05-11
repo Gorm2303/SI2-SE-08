@@ -11,7 +11,7 @@ public class DBConnection {
     private int port = 5432;
     private String databaseName = "CreditsSystem";
     private String username = "postgres";
-    private String password = "admin";
+    private String password = "sunsifi123";
     private Connection connection = null;
 
     private DBConnection() {
