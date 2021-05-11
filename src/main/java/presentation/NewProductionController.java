@@ -1,35 +1,39 @@
 package presentation;
 
 import domain.*;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class NewProductionController {
+
     @FXML
-    private Label birthdayLabel, organizationNameLabel;
+    private DatePicker productionDate;
     @FXML
-    private DatePicker birthdaySelect, productionDate;
+    private VBox organizationVBox, roleVBox;
     @FXML
-    private VBox organizationVBox, roleVBox, contributorVBox;
+    private HBox outerHBox;
     @FXML
-    private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction, addOrganization,
-            addContributor, addRole;
+    private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction,
+            addOrganization, addRole, searchButtonOrganization, searchButtonContributor;
     @FXML
-    private TextField productionName, productionLength, productionCategory, productionProducer, organizationName, roleName, contributorToRole;
+    private TextField productionName, productionLength, productionCategory, productionProducer,
+            searchFieldOrganization, searchFieldContributor;
 
     private ArrayList<TextField> contributingOrganizations;
     private HashMap<TextField, ArrayList<TextField>> roleContributors;
@@ -41,20 +45,17 @@ public class NewProductionController {
         this.productionLength = new TextField();
         this.productionCategory = new TextField();
         this.productionProducer = new TextField();
-        this.organizationName = new TextField();
-        this.roleName = new TextField();
-        this.contributorToRole = new TextField();
+        //this.contributingOrganization = new ChoiceBox(FXCollections.observableArrayList());
+        //this.contributorToRole = new ChoiceBox(FXCollections.observableArrayList());
         this.productionDate = new DatePicker();
         this.organizationVBox = new VBox();
         this.roleVBox = new VBox();
-        this.contributorVBox = new VBox();
         initialize();
         latestProductionController = this;
     }
 
     public void initialize() {
         roleContributors = new HashMap<>();
-        roleContributors.put(roleName, new ArrayList<>());
         contributingOrganizations = new ArrayList<>();
     }
 
@@ -85,33 +86,54 @@ public class NewProductionController {
         }
 
         // new production buttons
-        if (button == addContributor) {
-            addContributor(contributorVBox, roleName);
-
-        } else if (button == addRole) {
+        if (button == addRole) {
+            searchingSetup();
             addRole();
+            searchButtonContributor.setDisable(false);
+            searchFieldContributor.setDisable(false);
 
         } else if (button == addOrganization) {
+            searchingSetup();
             addOrganization();
+            searchButtonOrganization.setDisable(false);
+            searchFieldOrganization.setDisable(false);
+
+        } else if (button == searchButtonOrganization || button == searchButtonContributor) {
+
         }
     }
 
-    public TextField addOrganization() {
+    public ChoiceBox<Organization> addOrganization() {
         HBox hBox = new HBox();
-        TextField textField = new TextField();
-        textField.setPromptText("Organisation");
-        contributingOrganizations.add(textField);
+
+        ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().add(new Organization("This Organization", 69));
+        choiceBox.getItems().add(new Organization("This Organization 222", 222));
+        choiceBox.setPrefWidth(150);
+        choiceBox.setFocusTraversable(false);
+        choiceBox.setOnAction((this::onContextMenuRequested));
 
         Button button1 = new Button();
+        button1.setFocusTraversable(false);
         button1.setText("Fjern");
         button1.setOnAction((event) -> {
+            if (getLastChild(organizationVBox) == hBox) {
+                handleDisableOfAddButtons(outerHBox, false, true);
+            }
             organizationVBox.getChildren().remove(hBox);
-            contributingOrganizations.remove(textField);
         });
 
-        hBox.getChildren().addAll(textField, button1);
+        hBox.getChildren().addAll(choiceBox, button1);
         organizationVBox.getChildren().add(hBox);
-        return textField;
+        return choiceBox;
+    }
+
+    private Node getLastChild(Pane pane) {
+        Node returnNode = null;
+        for (Node n : pane.getChildren()) {
+            returnNode = n;
+        }
+        return returnNode;
     }
 
     public TextField addRole() {
@@ -119,30 +141,41 @@ public class NewProductionController {
         hBox.setSpacing(10);
 
         TextField textFieldRole = new TextField();
+        textFieldRole.setFocusTraversable(false);
         textFieldRole.setPromptText("Rolle");
         roleContributors.put(textFieldRole, new ArrayList<>());
 
         VBox newContributorVBox = new VBox();
         newContributorVBox.setSpacing(5);
 
-        TextField textFieldContributor = new TextField();
-        textFieldContributor.setPromptText("Eksisterende medvirkende");
-        combineRoleContributors(textFieldRole, textFieldContributor);
+        ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().add(new Contributor("This Contributor", 69, new Date()));
+        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, new Date()));
+        choiceBox.setPrefWidth(150);
+        choiceBox.setFocusTraversable(false);
+        choiceBox.setOnAction((this::onContextMenuRequested));
 
         Button removeButton = new Button();
+        removeButton.setFocusTraversable(false);
         removeButton.setText("Fjern");
         removeButton.setOnAction((event) -> {
+            if (getLastChild(roleVBox) == hBox) {
+                handleDisableOfAddButtons(outerHBox, false, true);
+            }
             roleVBox.getChildren().remove(hBox);
             removeCombination(textFieldRole);
         });
 
         Button addContributorButton = new Button();
+        addContributorButton.setDisable(true);
+        addContributorButton.setFocusTraversable(false);
         addContributorButton.setText("Tilføj endnu en medvirkende");
         addContributorButton.setOnAction((event -> {
+            handleDisableOfAddButtons(outerHBox, true, true);
             addContributor(newContributorVBox, textFieldRole);
         }));
 
-        newContributorVBox.getChildren().add(textFieldContributor);
+        newContributorVBox.getChildren().add(choiceBox);
         hBox.getChildren().addAll(textFieldRole, removeButton, newContributorVBox, addContributorButton);
         roleVBox.getChildren().add(hBox);
         return textFieldRole;
@@ -150,6 +183,7 @@ public class NewProductionController {
 
     public void makeNewOrganization(boolean contributorInstead) {
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         VBox vBox = new VBox();
 
         if (contributorInstead) {
@@ -200,20 +234,31 @@ public class NewProductionController {
     private void addContributor(VBox vBox, TextField key) {
         HBox hBox = new HBox();
 
-        TextField textFieldContributor = new TextField();
-        textFieldContributor.setPromptText("Eksisterende medvirkende");
-
-        combineRoleContributors(key, textFieldContributor);
+        ChoiceBox<Contributor> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList());
+        choiceBox.getItems().add(new Contributor("This Contributor", 69, new Date()));
+        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, new Date()));
+        choiceBox.setPrefWidth(150);
+        choiceBox.setFocusTraversable(false);
+        choiceBox.setOnAction((this::onContextMenuRequested));
 
         Button removeButton = new Button();
+        removeButton.setFocusTraversable(false);
         removeButton.setText("Fjern");
         removeButton.setOnAction((event) -> {
+            if (getLastChild(vBox) == hBox) {
+                handleDisableOfAddButtons(outerHBox, false, true);
+            }
             vBox.getChildren().remove(hBox);
-            roleContributors.get(key).remove(textFieldContributor);
         });
 
-        hBox.getChildren().addAll(textFieldContributor, removeButton);
+        hBox.getChildren().addAll(choiceBox, removeButton);
         vBox.getChildren().add(hBox);
+    }
+
+    public void onContextMenuRequested(ActionEvent actionEvent) {
+        ChoiceBox<Object> choiceBox = (ChoiceBox<Object>) actionEvent.getSource();
+        handleDisableOfAddButtons(outerHBox, false, false);
+
     }
 
     private void productionDeletion() {
@@ -263,8 +308,6 @@ public class NewProductionController {
         String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText(),
                 category = productionCategory.getText(), producer = productionProducer.getText();
 
-        combineRoleContributors(roleName, contributorToRole);
-
         Production production = new Production();
 
         production.setName(name);
@@ -292,7 +335,6 @@ public class NewProductionController {
 
         // The contributing organizations
         ArrayList<Organization> organizations = new ArrayList<>();
-        contributingOrganizations.add(0, organizationName);
         for (TextField textField : contributingOrganizations) {
             String org = textField.getText();
             Organization organiz = new Organization();
@@ -337,8 +379,8 @@ public class NewProductionController {
         // The contributing organizations
         ArrayList<Organization> organizations = production.getOrgContributors();
         for (Organization organization : organizations) {
-            TextField textField = addOrganization();
-            textField.setText(organization.getName());
+            ChoiceBox<Organization> choiceBox = addOrganization();
+            choiceBox.setValue(organization);
         }
 
         // The credits for all roles and contributors
@@ -358,6 +400,41 @@ public class NewProductionController {
         //ShowCreditController.getCatalog().addProduction(production);
     }
 
+    private void searchInDB() {
+
+    }
+
+    private void searchingSetup() {
+        //addOrganization.setDisable(!addOrganization.isDisabled());
+        //addRole.setDisable(!addRole.isDisabled());
+        handleDisableOfAddButtons(outerHBox, true, true);
+
+    }
+
+    // Recursive method for getting all children of the nodes, and doing something if the leafNodes are Buttons
+    private void handleDisableOfAddButtons(Node node, boolean disableButtons, boolean disableChoiceBoxes) {
+        if (node instanceof Pane) {
+            for (Node n : ((Pane) node).getChildren()) {
+                handleDisableOfAddButtons(n, disableButtons, disableChoiceBoxes);
+            }
+        } else if (node instanceof ScrollPane) {
+            for (Node n : ((ScrollPane) node).getChildrenUnmodifiable()) {
+                handleDisableOfAddButtons(n, disableButtons, disableChoiceBoxes);
+            }
+        } else if (node instanceof Button) {
+            String[] buttonTextArray = ((Button) node).getText().split(" ");
+            for (String s : buttonTextArray) {
+                if (s.equalsIgnoreCase("tilføj")) {
+                    node.setDisable(disableButtons);
+
+                }
+            }
+        } else if (disableChoiceBoxes && node instanceof ChoiceBox) {
+            node.setDisable(true);
+        }
+    }
+
+    // Old code for getting textFields
     private void combineRoleContributors(TextField key, TextField value) {
         roleContributors.get(key).add(value);
     }
@@ -373,4 +450,6 @@ public class NewProductionController {
     public static NewProductionController getLatestProductionController() {
         return latestProductionController;
     }
+
+
 }
