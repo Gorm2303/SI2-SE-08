@@ -35,7 +35,7 @@ public class ShowCreditController {
     public void initialize() {
         pageNumber = 1;
         catalog = ICatalog.getInstance();
-        dummyProductions();
+        //dummyProductions();
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
     }
