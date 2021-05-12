@@ -21,6 +21,7 @@ public interface ICatalog {
     Organization addOrganization(String name);
     void removeOrganization(int organizationId);
     LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
+    LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);
 
 
     ArrayList<Production> getNext10Productions(int pageNumber);

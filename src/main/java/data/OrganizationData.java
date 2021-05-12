@@ -50,16 +50,12 @@ public class OrganizationData {
         LinkedList<Integer> resultList = new LinkedList<>();
 
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM organizations WHERE name ILIKE ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM organizations WHERE name ILIKE (?)");
             stmt.setString(1, '%' + searchString + '%');
             ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return resultList;
-            }
-            int i = 1;
+
             while (sqlReturnValues.next()) {
-                int id = sqlReturnValues.getInt(i);
-                i++;
+                int id = sqlReturnValues.getInt(1);
                 resultList.add(id);
             }
         } catch (SQLException e) {

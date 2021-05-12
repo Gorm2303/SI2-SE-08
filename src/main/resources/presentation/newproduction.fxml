@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="outerHBox" fillHeight="false" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
+<HBox fx:id="outerHBox" fillHeight="false" onMouseClicked="#onMouseClicked" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
     <children>
         <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
             <content>

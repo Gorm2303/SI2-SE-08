@@ -43,6 +43,11 @@ public class DataFacade implements IDataFacade{
     }
 
     @Override
+    public LinkedList<Integer> searchThroughContributors(String searchString) {
+        return contributorData.searchFor(searchString);
+    }
+
+    @Override
     public int storeContributor(String name, String birthDate) {
         return contributorData.store(name, birthDate);
     }

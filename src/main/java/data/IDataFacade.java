@@ -17,6 +17,7 @@ public interface IDataFacade {
     String materializeContributorName(int contributorID);
     String materialiseContributorBirthDate(int contributorID);
     LinkedList<Integer> searchThroughOrganizations(String searchString);
+    LinkedList<Integer> searchThroughContributors(String searchString);
 
     //ArrayList<Integer> getNext10Productions(int pageNumber);
 }

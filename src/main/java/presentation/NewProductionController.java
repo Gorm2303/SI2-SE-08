@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,7 @@ public class NewProductionController {
     private TextField productionName, productionLength, productionCategory, productionProducer,
             searchFieldOrganization, searchFieldContributor;
     private ChoiceBox<Organization> currentOrganization;
+    private ChoiceBox<Contributor> currentContributor;
 
     private ArrayList<TextField> contributingOrganizations;
     private HashMap<TextField, ArrayList<TextField>> roleContributors;
@@ -84,6 +86,8 @@ public class NewProductionController {
         } else if (button == deleteProduction) {
             productionDeletion();
         }
+        // Fixing when you click the menu it will show no results and be buggy when you search for something.
+        hideChoiceBoxMenu();
 
         // new production buttons
         if (button == addRole) {
@@ -93,6 +97,7 @@ public class NewProductionController {
             searchFieldContributor.setDisable(false);
             searchButtonOrganization.setDisable(true);
             searchFieldOrganization.setDisable(true);
+            resetSearchArea();
 
         } else if (button == addOrganization) {
             searchingSetup();
@@ -101,13 +106,31 @@ public class NewProductionController {
             searchFieldOrganization.setDisable(false);
             searchButtonContributor.setDisable(true);
             searchFieldContributor.setDisable(true);
+            resetSearchArea();
 
         } else if (button == searchButtonOrganization) {
             String searchString = searchFieldOrganization.getText();
-            currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
+
+            if (!searchString.equals("")) {
+                Organization organization = currentOrganization.getValue();
+                currentOrganization.setItems(FXCollections.observableArrayList());
+                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
+                System.out.println(currentOrganization.getItems());
+                currentOrganization.setValue(organization);
+                currentOrganization.show();
+            }
 
         } else if (button == searchButtonContributor) {
             String searchString = searchFieldContributor.getText();
+
+            if (!searchString.equals("")) {
+                Contributor contributor = currentContributor.getValue();
+                currentContributor.setItems(FXCollections.observableArrayList());
+                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString,1));
+                System.out.println(currentContributor.getItems());
+                currentContributor.setValue(contributor);
+                currentContributor.show();
+            }
         }
     }
 
@@ -117,8 +140,8 @@ public class NewProductionController {
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
         currentOrganization = choiceBox;
-        choiceBox.getItems().add(new Organization("This Organization", 69));
-        choiceBox.getItems().add(new Organization("This Organization 222", 222));
+        //choiceBox.getItems().add(new Organization("This Organization", 69));
+        //choiceBox.getItems().add(new Organization("This Organization 222", 222));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
@@ -160,8 +183,9 @@ public class NewProductionController {
         newContributorVBox.setSpacing(5);
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
-        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
+        currentContributor = choiceBox;
+        //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
+        //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
@@ -186,6 +210,7 @@ public class NewProductionController {
         addContributorButton.setOnAction((event -> {
             handleDisableOfAddButtons(outerHBox, true, true);
             addContributor(newContributorVBox, textFieldRole);
+            resetSearchArea();
         }));
 
         newContributorVBox.getChildren().add(choiceBox);
@@ -247,13 +272,19 @@ public class NewProductionController {
     private void addContributor(VBox vBox, TextField key) {
         HBox hBox = new HBox();
 
-        ChoiceBox<Contributor> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList());
-        choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
-        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
+        ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        currentContributor = choiceBox;
+        //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
+        //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
         choiceBox.setStyle("-fx-border-color: red");
+
+        searchButtonContributor.setDisable(false);
+        searchFieldContributor.setDisable(false);
+        searchButtonOrganization.setDisable(true);
+        searchFieldOrganization.setDisable(true);
 
         Button removeButton = new Button();
         removeButton.setFocusTraversable(false);
@@ -459,4 +490,21 @@ public class NewProductionController {
     }
 
 
+    public void onMouseClicked(MouseEvent mouseEvent) {
+        hideChoiceBoxMenu();
+    }
+
+    private void hideChoiceBoxMenu() {
+        if (currentContributor != null) {
+            currentContributor.hide();
+        }
+        if (currentOrganization != null) {
+            currentOrganization.hide();
+        }
+    }
+
+    private void resetSearchArea() {
+        searchFieldContributor.setText("");
+        searchFieldOrganization.setText("");
+    }
 }
