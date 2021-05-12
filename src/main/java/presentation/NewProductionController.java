@@ -91,19 +91,25 @@ public class NewProductionController {
             addRole();
             searchButtonContributor.setDisable(false);
             searchFieldContributor.setDisable(false);
+            searchButtonOrganization.setDisable(true);
+            searchFieldOrganization.setDisable(true);
 
         } else if (button == addOrganization) {
             searchingSetup();
             addOrganization();
             searchButtonOrganization.setDisable(false);
             searchFieldOrganization.setDisable(false);
+            searchButtonContributor.setDisable(true);
+            searchFieldContributor.setDisable(true);
 
         } else if (button == searchButtonOrganization || button == searchButtonContributor) {
+
 
         }
     }
 
     public ChoiceBox<Organization> addOrganization() {
+        // Make this a beautiful method
         HBox hBox = new HBox();
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
@@ -112,6 +118,7 @@ public class NewProductionController {
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
+        choiceBox.setStyle("-fx-border-color: red");
 
         Button button1 = new Button();
         button1.setFocusTraversable(false);
@@ -154,6 +161,8 @@ public class NewProductionController {
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
+        choiceBox.setStyle("-fx-border-color: red");
+
 
         Button removeButton = new Button();
         removeButton.setFocusTraversable(false);
@@ -240,6 +249,7 @@ public class NewProductionController {
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
+        choiceBox.setStyle("-fx-border-color: red");
 
         Button removeButton = new Button();
         removeButton.setFocusTraversable(false);
@@ -431,6 +441,7 @@ public class NewProductionController {
             }
         } else if (disableChoiceBoxes && node instanceof ChoiceBox) {
             node.setDisable(true);
+            node.setStyle("-fx-border-width: 0");
         }
     }
 

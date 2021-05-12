@@ -29,7 +29,6 @@ public class Production implements Storable {
 
     }
 
-
     public ArrayList<Organization> getOrgContributors() {
         return orgContributors;
     }
@@ -121,6 +120,5 @@ public class Production implements Storable {
     public int store() {
         return 0;
     }
-
 
 }
