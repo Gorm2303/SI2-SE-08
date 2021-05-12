@@ -14,17 +14,9 @@ public class Contributor implements Storable {
 
     public Contributor() {
         contributorsInMemory.add(this);
-    }
-
-    private Contributor(int id) {
-        if (id <= 0) {
-            return;
+        if (contributorsInMemory.size() > 10) {
+            contributorsInMemory.remove(0);
         }
-        IDataFacade iDataFacade = new DataFacade();
-        this.name = iDataFacade.materializeContributorName(id);
-        this.birthDate = iDataFacade.materialiseContributorBirthDate(id);
-        this.id = id;
-        contributorsInMemory.add(this);
     }
 
     public Contributor(String name, int id, String birthDate) {
@@ -32,12 +24,31 @@ public class Contributor implements Storable {
         this.id = id;
         this.birthDate = birthDate;
         contributorsInMemory.add(this);
+        if (contributorsInMemory.size() > 10) {
+            contributorsInMemory.remove(0);
+        }
     }
 
     public Contributor(String name, String birthDate) {
         this.name = name;
         this.birthDate = birthDate;
         contributorsInMemory.add(this);
+        if (contributorsInMemory.size() > 10) {
+            contributorsInMemory.remove(0);
+        }
+    }
+    private Contributor(int id) {
+        if (id <= 0) {
+            return;
+        }
+        IDataFacade iDataFacade = new DataFacade();
+        this.name = iDataFacade.materializeContributorName(id);
+        this.birthDate = iDataFacade.materializeContributorBirthDate(id);
+        this.id = id;
+        contributorsInMemory.add(this);
+        if (contributorsInMemory.size() > 10) {
+            contributorsInMemory.remove(0);
+        }
     }
 
     public static Contributor get(int id) {
@@ -47,17 +58,7 @@ public class Contributor implements Storable {
                 return contributor;
             }
         }
-        IDataFacade iDataFacade = new DataFacade();
-        if (iDataFacade.materializeOrganizationName(id) == null) {
-            return null;
-        }
         return new Contributor(id);
-    }
-
-    public Contributor(int id) {
-        IDataFacade iDataFacade = new DataFacade();
-        this.name = iDataFacade.materializeContributorName(id);
-        this.birthDate = iDataFacade.materializeContributorBirthDate(id);
     }
 
     public ArrayList<Production> getIsIn(){

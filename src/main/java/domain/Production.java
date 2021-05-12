@@ -13,8 +13,13 @@ public class Production implements Storable {
     private int length;
     private ArrayList<Organization> orgContributors;
     private ArrayList<Credit> credits;
+    private static ArrayList<Production> productionsInMemory = new ArrayList<>();
 
     public Production() {
+        productionsInMemory.add(this);
+        if (productionsInMemory.size() > 5) {
+            productionsInMemory.remove(0);
+        }
     }
 
     public Production(String name, int id, Organization producer, String releaseDate, int length,
@@ -26,6 +31,10 @@ public class Production implements Storable {
         this.length = length;
         this.orgContributors = orgContributors;
         this.credits = credits;
+        productionsInMemory.add(this);
+        if (productionsInMemory.size() > 5) {
+            productionsInMemory.remove(0);
+        }
     }
 
     public Production(String name, Organization producer, String releaseDate, int length,
@@ -36,9 +45,16 @@ public class Production implements Storable {
         this.length = length;
         this.orgContributors = orgContributors;
         this.credits = credits;
+        productionsInMemory.add(this);
+        if (productionsInMemory.size() > 5) {
+            productionsInMemory.remove(0);
+        }
     }
 
-    public Production(int id) {
+    private Production(int id) {
+        if (id <= 0) {
+            return;
+        }
         IDataFacade iDataFacade = new DataFacade();
         this.name = iDataFacade.materializeProductionName(id);
         this.producer = Organization.get(iDataFacade.materializeProductionProducerID(id));
@@ -53,8 +69,21 @@ public class Production implements Storable {
         Set<Integer> creditIDs = iDataFacade.materializeProductionCreditIDs(id);
         this.credits = new ArrayList<>();
         for(Integer creditID : creditIDs) {
-            this.credits.add(new Credit(creditID));
+            this.credits.add(Credit.get(creditID));
         }
+        productionsInMemory.add(this);
+        if (productionsInMemory.size() > 5) {
+            productionsInMemory.remove(0);
+        }
+    }
+
+    public static Production get(int id) {
+        for (Production production : productionsInMemory) {
+            if (production.getId() == id) {
+                return production;
+            }
+        }
+        return new Production(id);
     }
 
     public ArrayList<Organization> getOrgContributors() {

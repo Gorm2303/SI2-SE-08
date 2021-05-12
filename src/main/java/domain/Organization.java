@@ -18,6 +18,23 @@ public class Organization implements Storable {
         }
     }
 
+    public Organization(String name, int id) {
+        this.name = name;
+        this.id = id;
+        organizationsInMemory.add(this);
+        if (organizationsInMemory.size() > 10) {
+            organizationsInMemory.remove(0);
+        }
+    }
+
+    public Organization(String name) {
+        this.name = name;
+        organizationsInMemory.add(this);
+        if (organizationsInMemory.size() > 10) {
+            organizationsInMemory.remove(0);
+        }
+    }
+
     private Organization(int id) {
         if (id <= 0) {
             return;
@@ -31,26 +48,12 @@ public class Organization implements Storable {
         }
     }
 
-
-    public Organization(String name, int id) {
-        this.name = name;
-        this.id = id;
-        organizationsInMemory.add(this);
-        if (organizationsInMemory.size() > 10) {
-            organizationsInMemory.remove(0);
-        }
-    }
-
     public static Organization get(int id) {
         // Maybe find a better way to shuffle through memory, maybe another collection than ArrayList.
         for (Organization org : organizationsInMemory) {
             if (org.getId() == id) {
                 return org;
             }
-        }
-        IDataFacade iDataFacade = new DataFacade();
-        if (iDataFacade.materializeOrganizationName(id) == null) {
-            return null;
         }
         return new Organization(id);
     }

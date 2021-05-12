@@ -11,22 +11,55 @@ public class Credit implements Storable {
     private String role;
     private ArrayList<Contributor> contributors;
     private int id;
+    private static ArrayList<Credit> creditsInMemory = new ArrayList<>();
 
-    public Credit() {}
+    public Credit() {
+        creditsInMemory.add(this);
+    }
+
+    public Credit(String role, int id, ArrayList<Contributor> contributors) {
+        this.role = role;
+        this.contributors = contributors;
+        this.id = id;
+        creditsInMemory.add(this);
+        if (creditsInMemory.size() > 30) {
+            creditsInMemory.remove(0);
+        }
+    }
 
     public Credit(String role, ArrayList<Contributor> contributors) {
         this.role = role;
         this.contributors = contributors;
+        creditsInMemory.add(this);
+        if (creditsInMemory.size() > 30) {
+            creditsInMemory.remove(0);
+        }
     }
 
-    public Credit(int id) {
+    private Credit(int id) {
+        if (id <= 0) {
+            return;
+        }
         IDataFacade iDataFacade = new DataFacade();
         this.role = iDataFacade.materializeCreditRole(id);
         Set<Integer> contributorIDs = iDataFacade.materializeContributorIDs(id);
         contributors = new ArrayList<>();
         for(Integer contributorID : contributorIDs) {
-            contributors.add(new Contributor(contributorID));
+            contributors.add(Contributor.get(contributorID));
         }
+        creditsInMemory.add(this);
+        if (creditsInMemory.size() > 30) {
+            creditsInMemory.remove(0);
+        }
+    }
+
+    public static Credit get(int id) {
+        for (Credit credit : creditsInMemory) {
+            if (credit.getId() == id) {
+                return credit;
+            }
+        }
+        return new Credit(id);
     }
 
     public ArrayList<Contributor> getContributors() {

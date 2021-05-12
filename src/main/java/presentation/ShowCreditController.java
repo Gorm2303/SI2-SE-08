@@ -38,9 +38,9 @@ public class ShowCreditController {
 
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
-        //dummyProductions();
-        //displayArea.setText(new Production(7).detailedString());
 
+        //dummyProductions();
+        //displayArea.setText(Production.get(7).detailedString());
     }
 
 
@@ -97,11 +97,9 @@ public class ShowCreditController {
         Organization tv2 = new Organization();
         tv2.setName("TV2");
         tv2.store();
-        Organization fakeCompany = new Organization();
-        fakeCompany.setName("Fake Company");
+        Organization fakeCompany = new Organization("Fake Company");
         fakeCompany.store();
-        Organization producer = new Organization();
-        producer.setName("Producing Company");
+        Organization producer = new Organization("Producing Company");
         producer.store();
 
         orgList.add(tv2);

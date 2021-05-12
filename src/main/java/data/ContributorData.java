@@ -79,8 +79,4 @@ public class ContributorData {
         }
         return resultList;
     }
-
-    public boolean update() {
-        return false;
-    }
 }
