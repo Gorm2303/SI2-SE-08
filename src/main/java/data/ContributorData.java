@@ -26,35 +26,38 @@ public class ContributorData {
 
         return 0;
     }
-    public String materializeName(int contributorID) {
-        try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM contributors WHERE id = ?");
-            stmt.setInt(1, contributorID);
-            ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return null;
-            }
-            return sqlReturnValues.getString(2);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
-    public String materializeBirthDate(int contributorID) {
-        try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM contributors WHERE id = ?");
-            stmt.setInt(1, contributorID);
-            ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return null;
-            }
-            return sqlReturnValues.getString(3);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
+
     public boolean update() {
         return false;
+    }
+
+    public String materializeName(int contributorID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT name FROM contributors WHERE id = ?");
+            stmt.setInt(1, contributorID);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            if (!sqlReturnValues.next()) {
+                return null;
+            }
+            return sqlReturnValues.getString(1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    public String materializeBirthDate(int contributorID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT birthDate FROM contributors WHERE id = ?");
+            stmt.setInt(1, contributorID);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            if (!sqlReturnValues.next()) {
+                return null;
+            }
+            return sqlReturnValues.getString(1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 }

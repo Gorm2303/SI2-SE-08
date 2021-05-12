@@ -31,8 +31,7 @@ public class ProductionData {
         return 0;
     }
 
-    public void storeCreditOrganizations(ArrayList<Integer> organizationIDs, Map<Integer,
-            Set<Integer>> creditContributorIDs, int productionID) {
+    public void storeCreditOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
         try {
             for (Integer id : organizationIDs) {
                 PreparedStatement organizationsStatement = dbConnection.prepareStatement(
@@ -43,22 +42,10 @@ public class ProductionData {
                 organizationsStatement.execute();
             }
 
-            for (Map.Entry<Integer, Set<Integer>> entry : creditContributorIDs.entrySet()) {
-                for (Integer contributorID : entry.getValue()) {
-                    PreparedStatement organizationsStatement = dbConnection.prepareStatement(
-                            "INSERT INTO ContributorsInCredits(creditId, contributorId) VALUES (?,?)"
-                    );
-                    organizationsStatement.setInt(1, entry.getKey());
-                    organizationsStatement.setInt(2, contributorID);
-                    organizationsStatement.execute();
-                }
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-
-
 
     public boolean update() {
         return false;
@@ -66,13 +53,13 @@ public class ProductionData {
 
     public String materializeName(int productionID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM productions WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT name FROM productions WHERE id = ?");
             stmt.setInt(1, productionID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return null;
             }
-            return sqlReturnValues.getString(2);
+            return sqlReturnValues.getString(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -80,13 +67,13 @@ public class ProductionData {
     }
     public String materializeReleaseDate(int productionID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM productions WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT releaseDate FROM productions WHERE id = ?");
             stmt.setInt(1, productionID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return null;
             }
-            return sqlReturnValues.getString(3);
+            return sqlReturnValues.getString(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -94,13 +81,13 @@ public class ProductionData {
     }
     public int materializeLength(int productionID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM productions WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT length FROM productions WHERE id = ?");
             stmt.setInt(1, productionID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return 0;
             }
-            return sqlReturnValues.getInt(4);
+            return sqlReturnValues.getInt(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -108,13 +95,13 @@ public class ProductionData {
     }
     public int materializeProducerID(int productionID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM productions WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT producerId FROM productions WHERE id = ?");
             stmt.setInt(1, productionID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return 0;
             }
-            return sqlReturnValues.getInt(5);
+            return sqlReturnValues.getInt(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -138,26 +125,18 @@ public class ProductionData {
         return null;
     }
 
-    public Map<Integer, Set<Integer>> materializeCredits(int productionID) {
+    public Set<Integer> materializeCreditIDs(int productionID) {
         try {
             PreparedStatement creditStatement = dbConnection.prepareStatement(
                     "SELECT id FROM Credits WHERE productionId = ?");
             creditStatement.setInt(1, productionID);
-            ResultSet creditIds = creditStatement.executeQuery();
-            Map<Integer, Set<Integer>> creditsContributorsIDs = new HashMap<>();
-            while(creditIds.next()) {
-                PreparedStatement contributorStatement = dbConnection.prepareStatement(
-                        "SELECT contributorId FROM ContributorsInCredits WHERE creditId = ?");
-                contributorStatement.setInt(1, creditIds.getInt(1));
-                ResultSet contributorIds = contributorStatement.executeQuery();
-                Set<Integer> contributorSet = new HashSet<>();
-                while(contributorIds.next()) {
-                    contributorSet.add(contributorIds.getInt(1));
-                }
-                creditsContributorsIDs.put(creditIds.getInt(1), contributorSet);
-            }
+            ResultSet result = creditStatement.executeQuery();
 
-            return creditsContributorsIDs;
+            Set<Integer> creditIDs = new HashSet<>();
+            while(result.next()) {
+                creditIDs.add(result.getInt(1));
+            }
+            return creditIDs;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

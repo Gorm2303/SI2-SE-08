@@ -1,5 +1,7 @@
 package presentation;
 
+import data.DBConnection;
+import domain.ICatalog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +32,13 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        ICatalog catalog = ICatalog.getInstance();
+        catalog.setDBurl(args[0]);
+        catalog.setDBPort(Integer.parseInt(args[1]));
+        catalog.setDBName(args[2]);
+        catalog.setDBUsername(args[3]);
+        catalog.setDBPassword(args[4]);
+        catalog.initializeDatalayer();
         launch(args);
     }
 }

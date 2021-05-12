@@ -3,6 +3,8 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CreditData {
     private DBConnection dbConnection;
@@ -11,7 +13,7 @@ public class CreditData {
         dbConnection = DBConnection.getInstance();
     }
 
-    public int store(String role, int productionID) {
+    public int store(String role, int productionID, Set<Integer> contributorIDs) {
         try {
             PreparedStatement insertStatement = dbConnection.prepareStatement(
                     "INSERT INTO credits(role, productionID) VALUES (?,?) RETURNING id");
@@ -19,42 +21,76 @@ public class CreditData {
             insertStatement.setInt(2, productionID);
             insertStatement.execute();
             insertStatement.getResultSet().next();
-            return insertStatement.getResultSet().getInt(1);
+            int creditID = insertStatement.getResultSet().getInt(1);
+
+            for (Integer contributorID : contributorIDs) {
+                PreparedStatement organizationsStatement = dbConnection.prepareStatement(
+                        "INSERT INTO ContributorsInCredits(creditId, contributorId) VALUES (?,?)"
+                );
+                organizationsStatement.setInt(1, creditID);
+                organizationsStatement.setInt(2, contributorID);
+                organizationsStatement.execute();
+            }
+            return creditID;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
         return 0;
     }
+
+    public boolean update() {
+        return false;
+    }
+
     public String materializeRole(int creditID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM credits WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT role FROM credits WHERE id = ?");
             stmt.setInt(1, creditID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return null;
             }
-            return sqlReturnValues.getString(2);
+            return sqlReturnValues.getString(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
     }
+
+    public Set<Integer> materializeContributorIDs(int creditID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement(
+                    "SELECT contributorId FROM ContributorsInCredits WHERE creditId = ?");
+            stmt.setInt(1, creditID);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            if (!sqlReturnValues.next()) {
+                return null;
+            }
+            Set<Integer> contributorIDs = new HashSet<>();
+            while(sqlReturnValues.next()) {
+                contributorIDs.add(sqlReturnValues.getInt(1));
+            }
+            return contributorIDs;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    //Not actually necessary, should only be used in the database, but it is here for now.
     public int materializeProductionID(int creditID) {
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT * FROM credits WHERE id = ?");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionId FROM credits WHERE id = ?");
             stmt.setInt(1, creditID);
             ResultSet sqlReturnValues = stmt.executeQuery();
             if (!sqlReturnValues.next()) {
                 return 0;
             }
-            return sqlReturnValues.getInt(3);
+            return sqlReturnValues.getInt(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return 0;
-    }
-    public boolean update() {
-        return false;
     }
 }
