@@ -86,6 +86,11 @@ public class Organization implements Storable {
         return this.getId();
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public boolean equals(Organization org) {
         return (this.id == org.getId());
     }

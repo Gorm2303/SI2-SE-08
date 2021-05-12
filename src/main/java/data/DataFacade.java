@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,6 +50,18 @@ public class DataFacade implements IDataFacade{
     @Override
     public void initializeDatabase() {
         dbConnection.initializePostgresqlDatabase();
+    }
+  
+  
+  
+    @Override
+    public LinkedList<Integer> searchThroughOrganizations(String searchString) {
+        return orgData.searchFor(searchString);
+    }
+
+    @Override
+    public LinkedList<Integer> searchThroughContributors(String searchString) {
+        return contributorData.searchFor(searchString);
     }
 
 

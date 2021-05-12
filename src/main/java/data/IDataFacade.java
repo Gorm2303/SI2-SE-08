@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +37,10 @@ public interface IDataFacade {
     void setDBUsername(String username);
     void setDBPassword(String password);
     void initializeDatabase();
+
+    LinkedList<Integer> searchThroughOrganizations(String searchString);
+    LinkedList<Integer> searchThroughContributors(String searchString);
+
 
     //ArrayList<Integer> getNext10Productions(int pageNumber);
 }

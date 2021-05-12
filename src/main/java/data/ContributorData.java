@@ -3,6 +3,7 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class ContributorData {
     private DBConnection dbConnection;
@@ -59,5 +60,27 @@ public class ContributorData {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    public LinkedList<Integer> searchFor(String searchString) {
+        LinkedList<Integer> resultList = new LinkedList<>();
+
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM contributors WHERE name ILIKE (?)");
+            stmt.setString(1, '%' + searchString + '%');
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            while (sqlReturnValues.next()) {
+                int id = sqlReturnValues.getInt(1);
+                resultList.add(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
+    public boolean update() {
+        return false;
     }
 }

@@ -57,7 +57,6 @@ public class Production implements Storable {
         }
     }
 
-
     public ArrayList<Organization> getOrgContributors() {
         return orgContributors;
     }
@@ -150,6 +149,5 @@ public class Production implements Storable {
         iDataFacade.storeProductionCreditsOrganizations(organizationIDs, this.getId());
         return this.getId();
     }
-
 
 }
