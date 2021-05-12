@@ -109,7 +109,7 @@ public class Catalog implements ICatalog{
     @Override
     public LinkedList<Contributor> searchForContributors(String searchString, int pageNumber) {
         LinkedList<Contributor> contributors = new LinkedList<>();
-        for (int i : dataFacade.searchThroughOrganizations(searchString)) {
+        for (int i : dataFacade.searchThroughContributors(searchString)) {
             contributors.add(Contributor.get(i));
         }
         return contributors;
