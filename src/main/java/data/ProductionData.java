@@ -33,7 +33,6 @@ public class ProductionData {
 
     public void storeCreditOrganizations(ArrayList<Integer> organizationIDs, Map<Integer,
             Set<Integer>> creditContributorIDs, int productionID) {
-        System.out.println("IT IS HERE");
         try {
             for (Integer id : organizationIDs) {
                 PreparedStatement organizationsStatement = dbConnection.prepareStatement(
