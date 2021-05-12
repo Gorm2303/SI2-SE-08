@@ -14,7 +14,7 @@ public class ContributorData {
     public int store(String name, String birthDate) {
         try {
             PreparedStatement insertStatement = dbConnection.prepareStatement(
-                    "INSERT INTO contributors(name, birthDay) VALUES (?,?) RETURNING id");
+                    "INSERT INTO contributors(name, birthDate) VALUES (?,?) RETURNING id");
             insertStatement.setString(1, name);
             insertStatement.setString(2, birthDate);
             insertStatement.execute();

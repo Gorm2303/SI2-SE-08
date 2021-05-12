@@ -73,7 +73,8 @@ public class Organization implements Storable {
     @Override
     public int store() {
         IDataFacade iDataFacade = new DataFacade();
-        return iDataFacade.storeOrganization(name);
+        this.setId(iDataFacade.storeOrganization(name));
+        return this.getId();
     }
 
     public boolean equals(Organization org) {

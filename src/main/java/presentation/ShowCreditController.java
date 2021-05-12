@@ -91,39 +91,36 @@ public class ShowCreditController {
     //TEMPORARY METHOD
     public void dummyProductions() {
         ArrayList<Organization> orgList = new ArrayList<>();
-        orgList.add(catalog.addOrganization("Other company"));
+        Organization tv2 = new Organization();
+        tv2.setName("TV2");
+        tv2.store();
+        Organization fakeCompany = new Organization();
+        fakeCompany.setName("Fake Company");
+        fakeCompany.store();
+        Organization producer = new Organization();
+        producer.setName("Producing Company");
+        producer.store();
+
+        orgList.add(tv2);
+        orgList.add(fakeCompany);
 
         ArrayList<Contributor> contList = new ArrayList<>();
-        contList.add(catalog.addContributor("Bob Jensen", new Date()));
-        contList.add(catalog.addContributor("Niels Sørensen", new Date()));
-        contList.add(catalog.addContributor("Bolette Kristiansen", new Date()));
+        Contributor bob = new Contributor("Bob Jensen", "09.04.1996");
+        Contributor niels = new Contributor("Niels Sørensen", "11.12.1990");
+        Contributor bolette = new Contributor("Bolette Kristiansen", "01.09.1967");
+        contList.add(bob);
+        contList.add(niels);
+        contList.add(bolette);
+        bob.store();
+        niels.store();
+        bolette.store();
 
         ArrayList<Credit> credList = new ArrayList<>();
         credList.add(new Credit("Kamera", contList));
 
-        Organization producer = catalog.addOrganization("Some company");
+        Production testProduction = new Production("Some Film", producer, "09.09.2009", "some genre", 120, orgList, credList);
 
-        for (int i = 0; i < 31; i++) {
-            catalog.addProduction(
-                    "Some Film " + i,
-                    producer,
-                    new Date(),
-                    "some genre",
-                    120,
-                    orgList,
-                    credList
-            );
-        }
-
-        System.out.println(catalog.addProduction(
-                "Some Film ",
-                producer,
-                new Date(),
-                "some genre",
-                120,
-                orgList,
-                credList
-        ).detailedString());
+        testProduction.store();
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {

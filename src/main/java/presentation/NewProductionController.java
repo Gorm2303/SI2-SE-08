@@ -328,15 +328,7 @@ public class NewProductionController {
 
         // Translating DatePicker's String to Date object
         if (!date.isEmpty()) {
-            String[] strings = date.split("\\.");
-
-            int[] ints = new int[strings.length];
-            int i = 0;
-            for (String s : strings) {
-                ints[i] = Integer.parseInt(s);
-                i++;
-            }
-            production.setReleaseDate(new Date(ints[2] - 1900, ints[1] - 1, ints[0]));
+            production.setReleaseDate(date);
         }
         // The producer
         Organization organization = new Organization();
