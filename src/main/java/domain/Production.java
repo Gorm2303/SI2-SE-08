@@ -1,13 +1,15 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.Date;
+import data.DataFacade;
+import data.IDataFacade;
+
+import java.util.*;
 
 public class Production implements Storable {
     private String name;
     private int id;
     private Organization producer;
-    private Date releaseDate;
+    private String releaseDate;
     private String programCategory;
     private int length;
     private ArrayList<Organization> orgContributors;
@@ -16,7 +18,7 @@ public class Production implements Storable {
     public Production() {
     }
 
-    public Production(String name, int id, Organization producer, Date releaseDate, String programCategory, int length,
+    public Production(String name, int id, Organization producer, String releaseDate, String programCategory, int length,
                       ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
         this.name = name;
         this.id = id;
@@ -26,7 +28,17 @@ public class Production implements Storable {
         this.length = length;
         this.orgContributors = orgContributors;
         this.credits = credits;
+    }
 
+    public Production(String name, Organization producer, String releaseDate, String programCategory, int length,
+                      ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
+        this.name = name;
+        this.producer = producer;
+        this.releaseDate = releaseDate;
+        this.programCategory = programCategory;
+        this.length = length;
+        this.orgContributors = orgContributors;
+        this.credits = credits;
     }
 
 
@@ -70,11 +82,11 @@ public class Production implements Storable {
         this.producer = producer;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -119,7 +131,25 @@ public class Production implements Storable {
 
     @Override
     public int store() {
-        return 0;
+        IDataFacade iDataFacade = new DataFacade();
+        this.setId(iDataFacade.storeProductionData(this.name, this.releaseDate, this.length, this.producer.getId()));
+
+        ArrayList<Integer> organizationIDs = new ArrayList<>();
+        for(Organization organization : orgContributors) {
+            organizationIDs.add(organization.getId());
+        }
+        Map<Integer, Set<Integer>> creditContributorIds = new HashMap<>();
+        for(Credit credit : credits) {
+            credit.store(this.getId());
+            Set<Integer> contributorIds = new HashSet<>();
+            for (Contributor contributor : credit.getContributors()) {
+                contributorIds.add(contributor.getId());
+            }
+            creditContributorIds.put(credit.getId(), contributorIds);
+        }
+
+        iDataFacade.storeProductionCreditsOrganizations(organizationIDs, creditContributorIds, this.getId());
+        return this.getId();
     }
 
 

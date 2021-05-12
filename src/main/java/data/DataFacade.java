@@ -1,5 +1,9 @@
 package data;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 public class DataFacade implements IDataFacade{
     private OrganizationData orgData;
     private ContributorData contributorData;
@@ -8,6 +12,9 @@ public class DataFacade implements IDataFacade{
 
     public DataFacade () {
         orgData = new OrganizationData();
+        contributorData = new ContributorData();
+        creditData = new CreditData();
+        productionData = new ProductionData();
     }
     @Override
     public int storeOrganization(String name) {
@@ -17,6 +24,16 @@ public class DataFacade implements IDataFacade{
     @Override
     public String materializeOrganizationName(int contributorID) {
         return orgData.materializeName(contributorID);
+    }
+
+    @Override
+    public String materializeContributorName(int contributorID) {
+        return contributorData.materializeName(contributorID);
+    }
+
+    @Override
+    public String materialiseContributorBirthDate(int contributorID) {
+        return contributorData.materializeBirthDate(contributorID);
     }
 
     @Override
@@ -32,6 +49,12 @@ public class DataFacade implements IDataFacade{
     @Override
     public int storeProductionData(String name, String releaseDate, int length, int producerID) {
         return productionData.store(name, releaseDate, length, producerID);
+    }
+
+    @Override
+    public void storeProductionCreditsOrganizations(ArrayList<Integer> organizationIDs, Map<Integer,
+            Set<Integer>> creditContributorIDs, int productionID) {
+        productionData.storeCreditOrganizations(organizationIDs, creditContributorIDs, productionID);
     }
 
     /*
