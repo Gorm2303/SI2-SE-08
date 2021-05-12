@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ public interface IDataFacade {
     String materializeOrganizationName(int contributorID);
     String materializeContributorName(int contributorID);
     String materialiseContributorBirthDate(int contributorID);
+    LinkedList<Integer> searchThroughOrganizations(String searchString);
+    LinkedList<Integer> searchThroughContributors(String searchString);
 
     //ArrayList<Integer> getNext10Productions(int pageNumber);
 }

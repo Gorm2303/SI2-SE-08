@@ -41,7 +41,6 @@ public class Production implements Storable {
         this.credits = credits;
     }
 
-
     public ArrayList<Organization> getOrgContributors() {
         return orgContributors;
     }
@@ -151,6 +150,5 @@ public class Production implements Storable {
         iDataFacade.storeProductionCreditsOrganizations(organizationIDs, creditContributorIds, this.getId());
         return this.getId();
     }
-
 
 }

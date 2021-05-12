@@ -10,54 +10,58 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fillHeight="false" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
+<HBox fx:id="outerHBox" fillHeight="false" onMouseClicked="#onMouseClicked" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
     <children>
         <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
             <content>
                 <VBox spacing="50.0">
                     <children>
-                        <Label text="Ny produktion">
+                        <Label focusTraversable="false" text="Ny produktion">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Label>
                         <VBox spacing="10.0">
                             <children>
-                                <Label text="Produktion information" />
-                                <TextField fx:id="productionName" promptText="Navn" />
-                        <DatePicker fx:id="productionDate" promptText="Dato" />
-                                <TextField fx:id="productionLength" promptText="Længde (i minutter)" />
-                                <TextField fx:id="productionCategory" promptText="Programkategori" />
-                                <TextField fx:id="productionProducer" promptText="Producent (organisation)" />
+                                <Label focusTraversable="false" text="Produktion information" />
+                                <TextField fx:id="productionName" focusTraversable="false" promptText="Navn" />
+                                <DatePicker fx:id="productionDate" focusTraversable="false" promptText="Dato" />
+                                <TextField fx:id="productionLength" focusTraversable="false" promptText="Længde (i minutter)" />
+                                <TextField fx:id="productionCategory" focusTraversable="false" promptText="Programkategori" />
+                                <TextField fx:id="productionProducer" focusTraversable="false" promptText="Producent (organisation)" />
                             </children>
                         </VBox>
                         <VBox fx:id="organizationVBox" spacing="10.0">
                             <children>
-                                <Label text="Medvirkende Organisationer" />
-                                <TextField fx:id="organizationName" promptText="Organisation" />
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <Label focusTraversable="false" text="Medvirkende Organisationer" />
+                                        <TextField fx:id="searchFieldOrganization" disable="true" focusTraversable="false" promptText="Søg efter organisation" />
+                                        <Button fx:id="searchButtonOrganization" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
+                                    </children>
+                                </HBox>
                             </children>
                         </VBox>
                         <VBox fx:id="roleVBox" spacing="10.0">
                             <children>
-                                <Label text="Medvirkende" />
                                 <HBox spacing="10.0">
                                     <children>
-                                        <TextField fx:id="roleName" promptText="Rolle" />
-                                        <VBox fx:id="contributorVBox" spacing="5.0">
-                                            <children>
-                                                <TextField fx:id="contributorToRole" promptText="Eksisterende medvirkende" />
-                                            </children>
-                                        </VBox>
-                              <Button fx:id="addContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en medvirkende" />
+                                        <Label focusTraversable="false" text="Medvirkende">
+                                            <padding>
+                                                <Insets right="80.0" />
+                                            </padding>
+                                        </Label>
+                                        <TextField fx:id="searchFieldContributor" disable="true" focusTraversable="false" promptText="Søg efter medvirkende" />
+                                        <Button fx:id="searchButtonContributor" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
                                     </children>
                                 </HBox>
                             </children>
                         </VBox>
                         <HBox spacing="110.0">
                             <children>
-                                <Button fx:id="saveProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem Produktion" />
-                                <Button fx:id="productionCancelChanges" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller ændringer" />
-                                <Button fx:id="deleteProduction" mnemonicParsing="false" onAction="#onButtonClicked" text="Slet Produktion" />
+                                <Button fx:id="saveProduction" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Gem Produktion" />
+                                <Button fx:id="productionCancelChanges" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Annuller ændringer" />
+                                <Button fx:id="deleteProduction" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Slet Produktion" />
                             </children>
                         </HBox>
                     </children>
@@ -69,15 +73,15 @@
         </ScrollPane>
         <VBox spacing="10.0">
             <children>
-                <Label text="Menu">
+                <Label focusTraversable="false" text="Menu">
                     <font>
                         <Font size="16.0" />
                     </font>
                 </Label>
-                <Button fx:id="addOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en organisation" />
-                <Button fx:id="newOrganization" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
-                <Button fx:id="addRole" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en rolle" />
-                <Button fx:id="newContributor" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
+                <Button fx:id="addOrganization" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en organisation" />
+                <Button fx:id="newOrganization" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
+                <Button fx:id="addRole" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en rolle" />
+                <Button fx:id="newContributor" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
             </children>
         </VBox>
     </children>
