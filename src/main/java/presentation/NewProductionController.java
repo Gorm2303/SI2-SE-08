@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class NewProductionController {
@@ -34,6 +33,7 @@ public class NewProductionController {
     @FXML
     private TextField productionName, productionLength, productionCategory, productionProducer,
             searchFieldOrganization, searchFieldContributor;
+    private ChoiceBox<Organization> currentOrganization;
 
     private ArrayList<TextField> contributingOrganizations;
     private HashMap<TextField, ArrayList<TextField>> roleContributors;
@@ -102,9 +102,12 @@ public class NewProductionController {
             searchButtonContributor.setDisable(true);
             searchFieldContributor.setDisable(true);
 
-        } else if (button == searchButtonOrganization || button == searchButtonContributor) {
+        } else if (button == searchButtonOrganization) {
+            String searchString = searchFieldOrganization.getText();
+            currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
 
-
+        } else if (button == searchButtonContributor) {
+            String searchString = searchFieldContributor.getText();
         }
     }
 
@@ -113,6 +116,7 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
+        currentOrganization = choiceBox;
         choiceBox.getItems().add(new Organization("This Organization", 69));
         choiceBox.getItems().add(new Organization("This Organization 222", 222));
         choiceBox.setPrefWidth(150);
@@ -156,8 +160,8 @@ public class NewProductionController {
         newContributorVBox.setSpacing(5);
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().add(new Contributor("This Contributor", 69, new Date()));
-        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, new Date()));
+        choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
+        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
@@ -244,8 +248,8 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList());
-        choiceBox.getItems().add(new Contributor("This Contributor", 69, new Date()));
-        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, new Date()));
+        choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
+        choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));

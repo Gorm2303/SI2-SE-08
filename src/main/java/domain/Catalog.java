@@ -5,6 +5,7 @@ import data.IDataFacade;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class Catalog implements ICatalog{
     private ArrayList<Production> next10productions;
@@ -70,6 +71,15 @@ public class Catalog implements ICatalog{
 
     public void removeOrganization(int organizationId){
 
+    }
+
+    @Override
+    public LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber) {
+        LinkedList<Organization> organizations = new LinkedList<>();
+        for (int i : dataFacade.searchThroughOrganizations(searchString)) {
+            organizations.add(Organization.get(i));
+        }
+        return organizations;
     }
 
     @Override

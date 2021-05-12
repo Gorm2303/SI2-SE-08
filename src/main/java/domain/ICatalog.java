@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 public interface ICatalog {
     static ICatalog getInstance() {
@@ -19,6 +20,7 @@ public interface ICatalog {
     Organization showOrganization(int organizationId);
     Organization addOrganization(String name);
     void removeOrganization(int organizationId);
+    LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
 
 
     ArrayList<Production> getNext10Productions(int pageNumber);
