@@ -24,6 +24,30 @@ public class Catalog implements ICatalog{
         return instance;
     }
 
+    public void setDBurl(String url) {
+        dataFacade.setDBurl(url);
+    }
+
+    public void setDBPort(int port) {
+        dataFacade.setDBPort(port);
+    }
+
+    public void setDBName(String name) {
+        dataFacade.setDBName(name);
+    }
+
+    public void setDBUsername(String username) {
+        dataFacade.setDBUsername(username);
+    }
+    public void setDBPassword(String password) {
+        dataFacade.setDBPassword(password);
+    }
+
+    public void initializeDatalayer() {
+        dataFacade.initializeDatabase();
+    }
+
+
     public Production showProduction(int productionId){
         return null;
     }

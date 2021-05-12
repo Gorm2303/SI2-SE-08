@@ -35,9 +35,12 @@ public class ShowCreditController {
     public void initialize() {
         pageNumber = 1;
         catalog = ICatalog.getInstance();
-        //dummyProductions();
+
         productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
         productionListview.setItems(productionObservableList);
+        //dummyProductions();
+        //displayArea.setText(new Production(7).detailedString());
+
     }
 
 
@@ -118,9 +121,12 @@ public class ShowCreditController {
         ArrayList<Credit> credList = new ArrayList<>();
         credList.add(new Credit("Kamera", contList));
 
-        Production testProduction = new Production("Some Film", producer, "09.09.2009", "some genre", 120, orgList, credList);
-
+        Production testProduction = new Production("Some Film", producer,
+                "09.09.2009",  120, orgList, credList);
         testProduction.store();
+        for (Credit credit : credList) {
+            credit.store(testProduction.getId());
+        }
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {

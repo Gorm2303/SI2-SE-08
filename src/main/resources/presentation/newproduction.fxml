@@ -27,7 +27,6 @@
                                 <TextField fx:id="productionName" focusTraversable="false" promptText="Navn" />
                                 <DatePicker fx:id="productionDate" focusTraversable="false" promptText="Dato" />
                                 <TextField fx:id="productionLength" focusTraversable="false" promptText="Længde (i minutter)" />
-                                <TextField fx:id="productionCategory" focusTraversable="false" promptText="Programkategori" />
                                 <TextField fx:id="productionProducer" focusTraversable="false" promptText="Producent (organisation)" />
                             </children>
                         </VBox>

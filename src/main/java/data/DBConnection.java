@@ -15,7 +15,7 @@ public class DBConnection {
     private Connection connection = null;
 
     private DBConnection() {
-        initializePostgresqlDatabase();
+        //initializePostgresqlDatabase();
     }
 
     public static DBConnection getInstance() {
@@ -25,7 +25,7 @@ public class DBConnection {
         return instance;
     }
 
-    private void initializePostgresqlDatabase() {
+    public void initializePostgresqlDatabase() {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
             connection = DriverManager.getConnection("jdbc:postgresql://" + url + ":" + port + "/" + databaseName, username, password);
@@ -38,6 +38,46 @@ public class DBConnection {
 
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
 }

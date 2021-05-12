@@ -54,6 +54,12 @@ public class Contributor implements Storable {
         return new Contributor(id);
     }
 
+    public Contributor(int id) {
+        IDataFacade iDataFacade = new DataFacade();
+        this.name = iDataFacade.materializeContributorName(id);
+        this.birthDate = iDataFacade.materializeContributorBirthDate(id);
+    }
+
     public ArrayList<Production> getIsIn(){
         return productionsIsIn;
     }

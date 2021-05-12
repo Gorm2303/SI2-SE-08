@@ -10,7 +10,6 @@ public class Production implements Storable {
     private int id;
     private Organization producer;
     private String releaseDate;
-    private String programCategory;
     private int length;
     private ArrayList<Organization> orgContributors;
     private ArrayList<Credit> credits;
@@ -18,27 +17,44 @@ public class Production implements Storable {
     public Production() {
     }
 
-    public Production(String name, int id, Organization producer, String releaseDate, String programCategory, int length,
+    public Production(String name, int id, Organization producer, String releaseDate, int length,
                       ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
         this.name = name;
         this.id = id;
         this.producer = producer;
         this.releaseDate = releaseDate;
-        this.programCategory = programCategory;
         this.length = length;
         this.orgContributors = orgContributors;
         this.credits = credits;
     }
 
-    public Production(String name, Organization producer, String releaseDate, String programCategory, int length,
+    public Production(String name, Organization producer, String releaseDate, int length,
                       ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
         this.name = name;
         this.producer = producer;
         this.releaseDate = releaseDate;
-        this.programCategory = programCategory;
         this.length = length;
         this.orgContributors = orgContributors;
         this.credits = credits;
+    }
+
+    public Production(int id) {
+        IDataFacade iDataFacade = new DataFacade();
+        this.name = iDataFacade.materializeProductionName(id);
+        this.producer = Organization.get(iDataFacade.materializeProductionProducerID(id));
+        this.releaseDate = iDataFacade.materializeProductionReleaseDate(id);
+        this.length = iDataFacade.materializeProductionLength(id);
+
+        ArrayList<Integer> contributingOrgIDs = iDataFacade.materializeProductionOrganizationIDs(id);
+        this.orgContributors = new ArrayList<>();
+        for (Integer orgID : contributingOrgIDs) {
+            this.orgContributors.add(Organization.get(orgID));
+        }
+        Set<Integer> creditIDs = iDataFacade.materializeProductionCreditIDs(id);
+        this.credits = new ArrayList<>();
+        for(Integer creditID : creditIDs) {
+            this.credits.add(new Credit(creditID));
+        }
     }
 
     public ArrayList<Organization> getOrgContributors() {
@@ -89,14 +105,6 @@ public class Production implements Storable {
         this.releaseDate = releaseDate;
     }
 
-    public String getProgramCategory() {
-        return programCategory;
-    }
-
-    public void setProgramCategory(String programCategory) {
-        this.programCategory = programCategory;
-    }
-
     public int getLength() {
         return length;
     }
@@ -137,17 +145,8 @@ public class Production implements Storable {
         for(Organization organization : orgContributors) {
             organizationIDs.add(organization.getId());
         }
-        Map<Integer, Set<Integer>> creditContributorIds = new HashMap<>();
-        for(Credit credit : credits) {
-            credit.store(this.getId());
-            Set<Integer> contributorIds = new HashSet<>();
-            for (Contributor contributor : credit.getContributors()) {
-                contributorIds.add(contributor.getId());
-            }
-            creditContributorIds.put(credit.getId(), contributorIds);
-        }
 
-        iDataFacade.storeProductionCreditsOrganizations(organizationIDs, creditContributorIds, this.getId());
+        iDataFacade.storeProductionCreditsOrganizations(organizationIDs, this.getId());
         return this.getId();
     }
 

@@ -13,6 +13,9 @@ public class Organization implements Storable {
 
     public Organization() {
         organizationsInMemory.add(this);
+        if (organizationsInMemory.size() > 10) {
+            organizationsInMemory.remove(0);
+        }
     }
 
     private Organization(int id) {
@@ -23,6 +26,9 @@ public class Organization implements Storable {
         this.name = iDataFacade.materializeOrganizationName(id);
         this.id = id;
         organizationsInMemory.add(this);
+        if (organizationsInMemory.size() > 10) {
+            organizationsInMemory.remove(0);
+        }
     }
 
 
@@ -30,6 +36,9 @@ public class Organization implements Storable {
         this.name = name;
         this.id = id;
         organizationsInMemory.add(this);
+        if (organizationsInMemory.size() > 10) {
+            organizationsInMemory.remove(0);
+        }
     }
 
     public static Organization get(int id) {

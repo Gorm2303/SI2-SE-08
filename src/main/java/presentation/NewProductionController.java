@@ -32,7 +32,7 @@ public class NewProductionController {
     private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction,
             addOrganization, addRole, searchButtonOrganization, searchButtonContributor;
     @FXML
-    private TextField productionName, productionLength, productionCategory, productionProducer,
+    private TextField productionName, productionLength, productionProducer,
             searchFieldOrganization, searchFieldContributor;
     private ChoiceBox<Organization> currentOrganization;
     private ChoiceBox<Contributor> currentContributor;
@@ -45,7 +45,6 @@ public class NewProductionController {
     public NewProductionController() {
         this.productionName = new TextField();
         this.productionLength = new TextField();
-        this.productionCategory = new TextField();
         this.productionProducer = new TextField();
         //this.contributingOrganization = new ChoiceBox(FXCollections.observableArrayList());
         //this.contributorToRole = new ChoiceBox(FXCollections.observableArrayList());
@@ -350,13 +349,12 @@ public class NewProductionController {
     }
 
     public void saveProduction() {
-        String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText(),
-                category = productionCategory.getText(), producer = productionProducer.getText();
+        String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText()
+                , producer = productionProducer.getText();
 
         Production production = new Production();
 
         production.setName(name);
-        production.setProgramCategory(category);
         if (!length.isEmpty()) {
             production.setLength(Integer.parseInt(length));
         }
@@ -408,9 +406,8 @@ public class NewProductionController {
     public void loadProduction(Production production) {
         // The production information
         productionName.setText(production.getName());
-        productionDate.getEditor().setText(production.getReleaseDate().toString());
+        productionDate.getEditor().setText(production.getReleaseDate());
         productionLength.setText(String.valueOf(production.getLength()));
-        productionCategory.setText(production.getProgramCategory());
         productionProducer.setText(production.getProducer().getName());
 
         // The contributing organizations

@@ -10,7 +10,7 @@ public interface ICatalog {
     }
 
     Production showProduction(int productionId);
-    public void addProduction(Production production);
+    void addProduction(Production production);
     Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
                        ArrayList<Organization> orgContributors, ArrayList<Credit> credits);
     void removeProduction(Production production);
@@ -23,6 +23,12 @@ public interface ICatalog {
     LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
     LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);
 
+    void setDBurl(String url);
+    void setDBPort(int port);
+    void setDBName(String name);
+    void setDBUsername(String username);
+    void setDBPassword(String password);
+    void initializeDatalayer();
 
     ArrayList<Production> getNext10Productions(int pageNumber);
 }
