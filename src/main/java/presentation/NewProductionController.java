@@ -32,7 +32,7 @@ public class NewProductionController {
     private HBox outerHBox;
     @FXML
     private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction,
-            addOrganization, addRole, searchButtonOrganization, searchButtonContributor,searchButtonProducer;
+            addOrganization, addRole, searchButtonOrganization, searchButtonContributor, searchButtonProducer;
     @FXML
     private TextField productionName, productionLength, searchFieldOrganization, searchFieldContributor, searchFieldProducer;
     @FXML
@@ -73,30 +73,35 @@ public class NewProductionController {
         } else if (button == newContributor) {
             makeNewOrganization(true);
 
-        } else if (button == productionCancelChanges || button == saveProduction) {
-            if (button == saveProduction) {
-                // For testing purpose
-                System.out.println(isRegularDate(productionDate.getEditor().getText()));
-                System.out.println(isRegularLength(productionLength.getText()));
+        } else if (button == saveProduction) {
+            // For testing purpose
+            //System.out.println(isRegularDate(productionDate.getEditor().getText()));
+            //System.out.println(isRegularLength(productionLength.getText()));
 
+            //Maybe check length for only number value
+            if (productionName.getText().isBlank() || (productionDate.getValue() == null && isRegularDate(productionDate.getEditor().getText()))
+                    || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
+                    || (productionProducer.getValue() == null)) {
+                fieldMissingWindow();
+            } else {
+                saveProduction();
+                try {
+                    Scene scene = new Scene(Main.loadFXML("showcredit"));
+                    Main.getPrimaryStage().setScene(scene);
 
-                //Maybe check length for only number value
-                if (productionName.getText().isBlank() || (productionDate.getValue() == null && isRegularDate(productionDate.getEditor().getText()))
-                        || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
-                        || (productionProducer.getValue() == null)) {
-                    fieldMissingWindow();
-                } else {
-                    saveProduction();
-                    try {
-                        Scene scene = new Scene(Main.loadFXML("showcredit"));
-                        Main.getPrimaryStage().setScene(scene);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 
+        } else if (button == productionCancelChanges) {
+            try {
+                Scene scene = new Scene(Main.loadFXML("showcredit"));
+                Main.getPrimaryStage().setScene(scene);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (button == deleteProduction) {
             productionDeletion();
         }
@@ -128,7 +133,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Organization organization = currentOrganization.getValue();
                 currentOrganization.setItems(FXCollections.observableArrayList());
-                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
+                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
                 System.out.println(currentOrganization.getItems());
                 currentOrganization.setValue(organization);
                 currentOrganization.show();
@@ -140,7 +145,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Contributor contributor = currentContributor.getValue();
                 currentContributor.setItems(FXCollections.observableArrayList());
-                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString,1));
+                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1));
                 System.out.println(currentContributor.getItems());
                 currentContributor.setValue(contributor);
                 currentContributor.show();
@@ -151,7 +156,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Organization organization = productionProducer.getValue();
                 productionProducer.setItems(FXCollections.observableArrayList());
-                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
+                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
                 System.out.println(productionProducer.getItems());
                 productionProducer.setValue(organization);
                 productionProducer.show();
@@ -427,7 +432,7 @@ public class NewProductionController {
 
         production.setCredits(credits);
         int productionID = production.store(); //stores production in DB and gets ID
-        for (Credit c: credits) {  //stores each credit in DB
+        for (Credit c : credits) {  //stores each credit in DB
             c.store(productionID);
         }
         // ICatalog.getInstance().addProduction(production);//Save Statement
@@ -498,6 +503,7 @@ public class NewProductionController {
             node.setStyle("-fx-border-width: 0");
         }
     }
+
     private void fieldMissingWindow() {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
