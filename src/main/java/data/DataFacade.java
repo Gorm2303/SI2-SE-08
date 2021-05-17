@@ -96,6 +96,10 @@ public class DataFacade implements IDataFacade{
         productionData.storeCreditOrganizations(organizationIDs, productionID);
     }
 
+    @Override
+    public boolean deleteProduction(int productionID) {
+        return productionData.delete(productionID);
+    }
 
 
     @Override

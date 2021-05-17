@@ -14,7 +14,7 @@
       <TextArea fx:id="displayArea" editable="false" layoutX="150.0" layoutY="50.0" prefHeight="296.0" prefWidth="300.0" wrapText="true" />
       <Button fx:id="editProductionButton" layoutX="466.0" layoutY="63.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Rediger produktion" />
       <Button fx:id="addProductionButton" layoutX="466.0" layoutY="104.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Tilføj produktion" />
-      <Button fx:id="searchButton" layoutX="383.0" layoutY="14.0" mnemonicParsing="false" text="Søg" />
+      <Button fx:id="searchButton" layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
       <TextField fx:id="searchField" layoutX="226.0" layoutY="14.0" promptText="Søg" />
    </children>
 </AnchorPane>

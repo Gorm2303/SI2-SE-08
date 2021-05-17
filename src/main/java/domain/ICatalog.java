@@ -10,7 +10,7 @@ public interface ICatalog {
         return Catalog.getInstance();
     }
 
-    void removeProduction(Production production);
+    boolean removeProduction(int productionID);
     void removeContributor(int contributorId);
     void removeOrganization(int organizationId);
 
