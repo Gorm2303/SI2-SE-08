@@ -40,7 +40,5 @@ public interface IDataFacade {
 
     LinkedList<Integer> searchThroughOrganizations(String searchString);
     LinkedList<Integer> searchThroughContributors(String searchString);
-
-
-    //ArrayList<Integer> getNext10Productions(int pageNumber);
+    Set<Integer> searchForProductions(String searchString, int pageNumber, int pageSize);
 }

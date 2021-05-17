@@ -5,7 +5,7 @@ import data.IDataFacade;
 
 import java.util.*;
 
-public class Production implements Storable {
+public class Production implements Storable, Comparable<Production> {
     private String name;
     private int id;
     private Organization producer;
@@ -149,18 +149,19 @@ public class Production implements Storable {
 
     public String detailedString() {
         StringBuilder returnString = new StringBuilder(name + "\n\n" +
-                "Produced by: " + producer.getName() + "\n\n" +
-                "In collaboration with:\n");
+                "Udgivet: " + releaseDate + "\n\n" +
+                "Produceret af: " + producer.getName() + "\n\n" +
+                "I samarbejde med:\n");
         for (Organization organization : orgContributors) {
-            returnString.append(organization.getName()).append("\n");
+            returnString.append("\t\t").append(organization.getName()).append("\n");
         }
         returnString.append("\n\n");
         for (Credit credit : credits) {
-            StringBuilder playedBy = new StringBuilder(credit.getContributors().get(0).getName());
-            for (int i = 1; i < credit.getContributors().size(); i++) {
-                playedBy.append(", ").append(credit.getContributors().get(i).getName());
+            StringBuilder playedBy = new StringBuilder();
+            for (int i = 0; i < credit.getContributors().size(); i++) {
+                playedBy.append("\n\t\t").append(credit.getContributors().get(i).getName());
             }
-            returnString.append(credit.getRole()).append("\t\t\t").append(playedBy);
+            returnString.append(credit.getRole()).append(":").append(playedBy).append("\n");
         }
         return returnString.toString();
     }
@@ -179,4 +180,8 @@ public class Production implements Storable {
         return this.getId();
     }
 
+    @Override
+    public int compareTo(Production o) {
+        return this.name.compareTo(o.getName());
+    }
 }

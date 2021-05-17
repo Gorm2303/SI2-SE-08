@@ -64,6 +64,11 @@ public class DataFacade implements IDataFacade{
         return contributorData.searchFor(searchString);
     }
 
+    @Override
+    public Set<Integer> searchForProductions(String searchString, int pageNumber, int pageSize) {
+        return productionData.searchFor(searchString, pageNumber, pageSize);
+    }
+
 
 
     @Override

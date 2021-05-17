@@ -28,6 +28,8 @@ public class ShowCreditController {
     private static Scene newProduction;
 
     private int pageNumber;
+    private String searchString = "";
+    private final int pageSize = 12;
     private static ICatalog catalog;
     private ObservableList<Production> productionObservableList;
 
@@ -36,7 +38,8 @@ public class ShowCreditController {
         pageNumber = 1;
         catalog = ICatalog.getInstance();
 
-        productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
+        productionObservableList = FXCollections.observableArrayList(
+                catalog.searchForProductions("", pageNumber, pageSize));
         productionListview.setItems(productionObservableList);
 
         //dummyProductions();
@@ -73,17 +76,31 @@ public class ShowCreditController {
         } else if (button == nextButton) {
             previousButton.setDisable(false);
             pageNumber++;
-            System.out.println(pageNumber);
-            productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
+            productionObservableList = FXCollections.observableArrayList(
+                    catalog.searchForProductions(searchString, pageNumber, pageSize));
             productionListview.setItems(productionObservableList);
+            if (productionObservableList.size() < pageSize) {
+                nextButton.setDisable(true);
+            }
         } else if (button == previousButton) {
+            nextButton.setDisable(false);
             if (pageNumber <= 2) {
                 previousButton.setDisable(true);
             }
             pageNumber--;
-            System.out.println(pageNumber);
-            productionObservableList = FXCollections.observableArrayList(catalog.getNext10Productions(pageNumber));
+            productionObservableList = FXCollections.observableArrayList(
+                    catalog.searchForProductions(searchString, pageNumber, pageSize));
             productionListview.setItems(productionObservableList);
+
+        } else if (button == searchButton) {
+            System.out.println(searchField.getText());
+            searchString = searchField.getText();
+            pageNumber = 1;
+            productionObservableList = FXCollections.observableArrayList(
+                    catalog.searchForProductions(searchString, pageNumber, pageSize));
+            productionListview.setItems(productionObservableList);
+            previousButton.setDisable(true);
+            nextButton.setDisable(productionObservableList.size() < pageSize);
         }
     }
 

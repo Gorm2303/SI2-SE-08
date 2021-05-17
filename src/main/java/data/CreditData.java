@@ -64,9 +64,6 @@ public class CreditData {
                     "SELECT contributorId FROM ContributorsInCredits WHERE creditId = ?");
             stmt.setInt(1, creditID);
             ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return null;
-            }
             Set<Integer> contributorIDs = new HashSet<>();
             while(sqlReturnValues.next()) {
                 contributorIDs.add(sqlReturnValues.getInt(1));

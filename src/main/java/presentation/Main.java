@@ -39,6 +39,14 @@ public class Main extends Application {
         catalog.setDBUsername(args[3]);
         catalog.setDBPassword(args[4]);
         catalog.initializeDatalayer();
+        /*
+        ProductionData testingDB = new ProductionData();
+        Set<Integer> testSet =  testingDB.searchFor("eksempel", 1, 11);
+        for(Integer i : testSet) {
+            System.out.println(i);
+        }
+
+         */
         launch(args);
     }
 }
