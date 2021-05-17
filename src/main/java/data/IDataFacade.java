@@ -13,6 +13,7 @@ public interface IDataFacade {
     int storeProductionData(String name, String releaseDate, int length, int producerID);
     void storeProductionCreditsOrganizations(ArrayList<Integer> organizationIDs, int productionID);
 
+    boolean deleteProduction(int productionID);
 
     String materializeOrganizationName(int contributorID);
 

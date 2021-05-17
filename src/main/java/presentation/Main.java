@@ -1,6 +1,8 @@
 package presentation;
 
 import data.DBConnection;
+import data.DataFacade;
+import data.IDataFacade;
 import domain.ICatalog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -39,14 +41,9 @@ public class Main extends Application {
         catalog.setDBUsername(args[3]);
         catalog.setDBPassword(args[4]);
         catalog.initializeDatalayer();
-        /*
-        ProductionData testingDB = new ProductionData();
-        Set<Integer> testSet =  testingDB.searchFor("eksempel", 1, 11);
-        for(Integer i : testSet) {
-            System.out.println(i);
-        }
 
-         */
+        IDataFacade dataFacade = new DataFacade();
+
         launch(args);
     }
 }

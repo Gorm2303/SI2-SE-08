@@ -160,4 +160,18 @@ public class ProductionData {
         }
         return resultSet;
     }
+
+    public boolean delete(int id) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("DELETE FROM productions WHERE id = (?)");
+            stmt.setInt(1, id);
+            int deleted = stmt.executeUpdate();
+            if (deleted == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
