@@ -400,7 +400,7 @@ public class NewProductionController {
 
         production.setCredits(credits);
 
-        ICatalog.getInstance().addProduction(production);
+        //ICatalog.getInstance().addProduction(production);
     }
 
     public void loadProduction(Production production) {

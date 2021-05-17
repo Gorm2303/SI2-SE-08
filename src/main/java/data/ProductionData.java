@@ -142,4 +142,22 @@ public class ProductionData {
         }
         return null;
     }
+
+    public Set<Integer> searchFor(String searchString, int pageNumber, int pageSize) {
+        Set<Integer> resultSet = new HashSet<>();
+        int offset = pageSize * (pageNumber - 1);
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM productions WHERE name ILIKE (?) LIMIT " + pageSize + " OFFSET " + offset);
+            stmt.setString(1, '%' + searchString + '%');
+            ResultSet sqlReturnValues = stmt.executeQuery();
+
+            while (sqlReturnValues.next()) {
+                int id = sqlReturnValues.getInt(1);
+                resultSet.add(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
 }
