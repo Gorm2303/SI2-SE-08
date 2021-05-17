@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewProductionController {
 
@@ -73,8 +75,15 @@ public class NewProductionController {
 
         } else if (button == productionCancelChanges || button == saveProduction) {
             if (button == saveProduction) {
+                // For testing purpose
+                System.out.println(isRegularDate(productionDate.getEditor().getText()));
+                System.out.println(isRegularLength(productionLength.getText()));
+
+
                 //Maybe check length for only number value
-                if (productionName.getText().isBlank() || (productionDate.getValue() == null) || productionLength.getText().isBlank() || (productionProducer.getValue() == null)) {
+                if (productionName.getText().isBlank() || (productionDate.getValue() == null && isRegularDate(productionDate.getEditor().getText()))
+                        || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
+                        || (productionProducer.getValue() == null)) {
                     fieldMissingWindow();
                 } else {
                     saveProduction();
@@ -243,13 +252,6 @@ public class NewProductionController {
         stage.initModality(Modality.APPLICATION_MODAL);
         VBox vBox = new VBox();
 
-        if (contributorInstead) {
-            makeNewContributor(vBox);
-        } else {
-            Label label = new Label("Organisationens navn");
-            vBox.getChildren().add(label);
-        }
-
         TextField textField = new TextField();
         Button cancel = new Button("Annuller");
         Button save = new Button("Gem");
@@ -257,15 +259,21 @@ public class NewProductionController {
         cancel.setOnAction(actionEvent1 -> {
             stage.close();
         });
-        save.setOnAction(actionEvent1 -> {
-            Organization org = new Organization();
-            org.setName(textField.getText());
-            System.out.println(org.store());
-            System.out.println(Organization.get(org.getId()));
-            System.out.println(Organization.get(org.getId()));
-            System.out.println(Organization.get(55));
-            stage.close();
-        });
+
+        if (contributorInstead) {
+            makeNewContributor(vBox, save, textField, stage);
+        } else {
+            Label label = new Label("Organisationens navn");
+            vBox.getChildren().add(label);
+            save.setOnAction(actionEvent1 -> {
+                Organization org = new Organization();
+                org.setName(textField.getText());
+                System.out.println(org.store());
+                System.out.println(Organization.get(org.getId()));
+                System.out.println(Organization.get(org.getId()));
+                stage.close();
+            });
+        }
 
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10));
@@ -280,10 +288,20 @@ public class NewProductionController {
         stage.show();
     }
 
-    private void makeNewContributor(VBox vBox) {
+    private void makeNewContributor(VBox vBox, Button save, TextField textField, Stage stage) {
         Label label = new Label("Medvirkendes navn");
         Label date = new Label("Fødselsdag");
         DatePicker datePicker = new DatePicker();
+
+        save.setOnAction(actionEvent1 -> {
+            Contributor contributor = new Contributor();
+            contributor.setName(textField.getText());
+            System.out.println(contributor.store());
+            System.out.println(Contributor.get(contributor.getId()));
+            System.out.println(Contributor.get(contributor.getId()));
+            stage.close();
+        });
+
         vBox.getChildren().addAll(label, date, datePicker);
     }
 
@@ -505,6 +523,25 @@ public class NewProductionController {
         stage.setScene(new Scene(vBox));
         stage.show();
     }
+
+    // Regular expression for production Date.
+    private boolean isRegularDate(String date) {
+        Pattern pattern = Pattern.compile("(\\d{2}\\.){2}\\d{4}");
+        Matcher matcher = pattern.matcher(date);
+        //System.out.println(pattern);
+        return !matcher.find();
+    }
+
+    private boolean isRegularLength(String length) {
+        try {
+            int i = Integer.parseInt(length);
+        } catch (NumberFormatException e) {
+            System.out.println("Produktionslængden er ikke et tal");
+            return true;
+        }
+        return false;
+    }
+
     // Old code for getting textFields
     private void combineRoleContributors(TextField key, ChoiceBox value) {
         roleContributors.get(key).add(value);
