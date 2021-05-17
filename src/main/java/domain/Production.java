@@ -169,15 +169,46 @@ public class Production implements Storable, Comparable<Production> {
     @Override
     public int store() {
         IDataFacade iDataFacade = new DataFacade();
-        this.setId(iDataFacade.storeProductionData(this.name, this.releaseDate, this.length, this.producer.getId()));
+        if (this.id == 0) {
+            this.setId(iDataFacade.storeProductionData(this.name, this.releaseDate, this.length, this.producer.getId()));
 
-        ArrayList<Integer> organizationIDs = new ArrayList<>();
-        for(Organization organization : orgContributors) {
-            organizationIDs.add(organization.getId());
+            ArrayList<Integer> organizationIDs = new ArrayList<>();
+            for(Organization organization : orgContributors) {
+                organizationIDs.add(organization.getId());
+            }
+
+            iDataFacade.storeProductionOrganizations(organizationIDs, this.id);
+
+            for (Credit credit : credits) {
+                credit.store(this.id);
+            }
+
+            return this.id;
         }
+        else {
+            //update production simple data
+            iDataFacade.updateProductionSimpleData(
+                    this.id, this.name, this.releaseDate, this.length, this.producer.getId());
 
-        iDataFacade.storeProductionCreditsOrganizations(organizationIDs, this.getId());
-        return this.getId();
+            //delete all old orgs
+            iDataFacade.deleteOrganizationInProduction(this.id);
+
+            //insert all new orgs
+            ArrayList<Integer> organizationIDs = new ArrayList<>();
+            for(Organization organization : orgContributors) {
+                organizationIDs.add(organization.getId());
+            }
+            iDataFacade.storeProductionOrganizations(organizationIDs, this.id);
+
+            //delete all old creds
+            iDataFacade.deleteCreditsInProduction(this.id);
+
+            //insert all new creds
+            for (Credit credit : credits) {
+                credit.store(this.id);
+            }
+            return this.id;
+        }
     }
 
     @Override

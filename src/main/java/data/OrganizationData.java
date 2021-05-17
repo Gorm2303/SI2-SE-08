@@ -63,4 +63,20 @@ public class OrganizationData {
         }
         return resultList;
     }
+
+    public boolean deleteOrganizationsInProduction(int productionID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement(
+                    "DELETE FROM organizationsinproductions WHERE productionId = (?)");
+            stmt.setInt(1, productionID);
+            int deleted = stmt.executeUpdate();
+            if (deleted == 0) {
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
