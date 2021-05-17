@@ -38,7 +38,7 @@
                                     <Insets left="2.0" right="8.0" />
                                  </padding>
                               </Label>
-                                      <ChoiceBox fx:id="productionProducer" focusTraversable="false">
+                                      <ChoiceBox fx:id="productionProducer" focusTraversable="false" onAction="#onContextMenuRequested">
                                  <HBox.margin>
                                     <Insets right="8.0" />
                                  </HBox.margin>

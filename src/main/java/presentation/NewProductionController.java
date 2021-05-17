@@ -58,6 +58,7 @@ public class NewProductionController {
     public void initialize() {
         roleContributors = new HashMap<>();
         contributingOrganizations = new ArrayList<>();
+        handleDisableOfAddButtons(outerHBox, true, false); //disable add buttons until producer is selected
     }
 
     public void onButtonClicked(ActionEvent actionEvent) {
@@ -155,6 +156,7 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
+        contributingOrganizations.add(choiceBox);
         currentOrganization = choiceBox;
         //choiceBox.getItems().add(new Organization("This Organization", 69));
         //choiceBox.getItems().add(new Organization("This Organization 222", 222));
@@ -199,6 +201,7 @@ public class NewProductionController {
         newContributorVBox.setSpacing(5);
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        roleContributors.get(textFieldRole).add(choiceBox);
         currentContributor = choiceBox;
         //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
         //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
@@ -272,7 +275,6 @@ public class NewProductionController {
         hBox.setSpacing(40);
         hBox.getChildren().addAll(save, cancel);
         vBox.getChildren().add(hBox);
-
         Scene scene = new Scene(vBox);
         stage.setScene(scene);
         stage.show();
@@ -289,6 +291,7 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        roleContributors.get(key).add(choiceBox);
         currentContributor = choiceBox;
         //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
         //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
