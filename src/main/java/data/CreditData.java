@@ -90,4 +90,20 @@ public class CreditData {
         }
         return 0;
     }
+
+    public boolean deleteCreditsInProduction(int productionID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement(
+                    "DELETE FROM credits WHERE productionId = (?)");
+            stmt.setInt(1, productionID);
+            int deleted = stmt.executeUpdate();
+            if (deleted == 0) {
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -42,8 +42,8 @@ public class ShowCreditController {
                 catalog.searchForProductions("", pageNumber, pageSize));
         productionListview.setItems(productionObservableList);
 
+        //updateDummies();
         //dummyProductions();
-        //displayArea.setText(Production.get(7).detailedString());
     }
 
 
@@ -108,11 +108,18 @@ public class ShowCreditController {
         return newProduction;
     }
 
+    public void handleMouseClick(MouseEvent mouseEvent) {
+        Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+        if (selectedProduction == null) {
+            return;
+        }
+        displayArea.setText(selectedProduction.detailedString());
+    }
+
     //TEMPORARY METHOD
     public void dummyProductions() {
         ArrayList<Organization> orgList = new ArrayList<>();
-        Organization tv2 = new Organization();
-        tv2.setName("TV2");
+        Organization tv2 = new Organization("TV2");
         tv2.store();
         Organization fakeCompany = new Organization("Fake Company");
         fakeCompany.store();
@@ -139,16 +146,34 @@ public class ShowCreditController {
         Production testProduction = new Production("Some Film", producer,
                 "09.09.2009",  120, orgList, credList);
         testProduction.store();
-        for (Credit credit : credList) {
-            credit.store(testProduction.getId());
-        }
     }
 
-    public void handleMouseClick(MouseEvent mouseEvent) {
-        Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
-        if (selectedProduction == null) {
-            return;
-        }
-        displayArea.setText(selectedProduction.detailedString());
+    public void updateDummies() {
+        ArrayList<Organization> orgList = new ArrayList<>();
+        Organization tv2 = new Organization("TV2");
+        tv2.store();
+        Organization producer = new Organization("Real Company");
+        producer.store();
+
+        orgList.add(tv2);
+
+        ArrayList<Contributor> contList = new ArrayList<>();
+        Contributor bob = new Contributor("Mette Jensen", "09.04.1996");
+        Contributor niels = new Contributor("Niels Sørensen", "11.12.1990");
+        Contributor bolette = new Contributor("Bolette Kristiansen", "01.09.1967");
+        contList.add(bob);
+        contList.add(niels);
+        contList.add(bolette);
+        bob.store();
+        niels.store();
+        bolette.store();
+
+        ArrayList<Credit> credList = new ArrayList<>();
+        credList.add(new Credit("Lyd", contList));
+
+        Production testProduction = new Production("Some Film1", producer,
+                "09.09.2007",  20, orgList, credList);
+        testProduction.setId(4);
+        testProduction.store();
     }
 }

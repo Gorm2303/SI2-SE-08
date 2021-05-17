@@ -11,9 +11,13 @@ public interface IDataFacade {
     int storeContributor(String name, String birthDate);
     int storeCredit(String role, int productionID, Set<Integer> contributorIDs);
     int storeProductionData(String name, String releaseDate, int length, int producerID);
-    void storeProductionCreditsOrganizations(ArrayList<Integer> organizationIDs, int productionID);
+    void storeProductionOrganizations(ArrayList<Integer> organizationIDs, int productionID);
+
+    boolean updateProductionSimpleData(int id, String name, String releaseDate, int length, int producerID);
 
     boolean deleteProduction(int productionID);
+    boolean deleteOrganizationInProduction(int productionID);
+    boolean deleteCreditsInProduction(int productionID);
 
     String materializeOrganizationName(int contributorID);
 

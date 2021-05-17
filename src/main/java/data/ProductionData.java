@@ -31,7 +31,7 @@ public class ProductionData {
         return 0;
     }
 
-    public void storeCreditOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
+    public void storeOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
         try {
             for (Integer id : organizationIDs) {
                 PreparedStatement organizationsStatement = dbConnection.prepareStatement(
@@ -47,7 +47,28 @@ public class ProductionData {
         }
     }
 
-    public boolean update() {
+    public boolean updateSimpleValues(int productionID, String name, String releaseDate, int length , int producerID) {
+        try {
+            PreparedStatement updateStatement = dbConnection.prepareStatement(
+                    "UPDATE productions SET name = ?, releaseDate = ?, length = ?, producerID = ? WHERE id = ?");
+            updateStatement.setString(1, name);
+            updateStatement.setString(2, releaseDate);
+            updateStatement.setInt(3, length);
+            updateStatement.setInt(4, producerID);
+            updateStatement.setInt(5, productionID);
+            updateStatement.execute();
+            int changed = updateStatement.executeUpdate();
+            if (changed == 0) {
+                return false;
+            }
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
         return false;
     }
 
@@ -169,9 +190,10 @@ public class ProductionData {
             if (deleted == 0) {
                 return false;
             }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 }

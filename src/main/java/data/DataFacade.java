@@ -92,13 +92,30 @@ public class DataFacade implements IDataFacade{
     }
 
     @Override
-    public void storeProductionCreditsOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
-        productionData.storeCreditOrganizations(organizationIDs, productionID);
+    public void storeProductionOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
+        productionData.storeOrganizations(organizationIDs, productionID);
     }
+
+
+    @Override
+    public boolean updateProductionSimpleData(int id, String name, String releaseDate, int length, int producerID) {
+        return productionData.updateSimpleValues(id, name, releaseDate, length, producerID);
+    }
+
 
     @Override
     public boolean deleteProduction(int productionID) {
         return productionData.delete(productionID);
+    }
+
+    @Override
+    public boolean deleteOrganizationInProduction(int productionID) {
+        return orgData.deleteOrganizationsInProduction(productionID);
+    }
+
+    @Override
+    public boolean deleteCreditsInProduction(int productionID) {
+        return creditData.deleteCreditsInProduction(productionID);
     }
 
 
