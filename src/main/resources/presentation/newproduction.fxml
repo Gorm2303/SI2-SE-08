@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="outerHBox" fillHeight="false" onMouseClicked="#onMouseClicked" spacing="20.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
+<HBox fx:id="outerHBox" fillHeight="false" onMouseClicked="#onMouseClicked" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.NewProductionController">
     <children>
         <ScrollPane fitToWidth="true" prefViewportWidth="600.0">
             <content>
@@ -58,8 +58,6 @@
                                 <HBox spacing="10.0">
                                     <children>
                                         <Label focusTraversable="false" text="Medvirkende Organisationer" />
-                                        <TextField fx:id="searchFieldOrganization" disable="true" focusTraversable="false" promptText="Søg efter organisation" />
-                                        <Button fx:id="searchButtonOrganization" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
                                     </children>
                                 </HBox>
                             </children>
@@ -73,8 +71,6 @@
                                                 <Insets right="80.0" />
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="searchFieldContributor" disable="true" focusTraversable="false" promptText="Søg efter medvirkende" />
-                                        <Button fx:id="searchButtonContributor" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
                                     </children>
                                 </HBox>
                             </children>
@@ -93,7 +89,7 @@
                 </VBox>
             </content>
         </ScrollPane>
-        <VBox spacing="10.0">
+        <VBox alignment="TOP_CENTER" spacing="10.0">
             <children>
                 <Label focusTraversable="false" text="Menu">
                     <font>
@@ -104,6 +100,12 @@
                 <Button fx:id="newOrganization" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny organisation" />
                 <Button fx:id="addRole" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Tilføj endnu en rolle" />
                 <Button fx:id="newContributor" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Opret ny medvirkende" />
+            <Label focusTraversable="false" text="Medvirkende Organisationer" />
+                      <TextField fx:id="searchFieldOrganization" disable="true" focusTraversable="false" promptText="Søg efter organisation" />
+                      <Button fx:id="searchButtonOrganization" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
+            <Label focusTraversable="false" text="Medvirkende" />
+                      <TextField fx:id="searchFieldContributor" disable="true" focusTraversable="false" promptText="Søg efter medvirkende" />
+                      <Button fx:id="searchButtonContributor" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
             </children>
         </VBox>
     </children>
