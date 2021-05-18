@@ -2,7 +2,6 @@ package data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
 public class DataFacade implements IDataFacade{
@@ -104,18 +103,18 @@ public class DataFacade implements IDataFacade{
 
 
     @Override
-    public boolean deleteProduction(int productionID) {
-        return productionData.delete(productionID);
+    public void deleteProduction(int productionID) {
+        productionData.delete(productionID);
     }
 
     @Override
-    public boolean deleteOrganizationInProduction(int productionID) {
-        return orgData.deleteOrganizationsInProduction(productionID);
+    public void deleteOrganizationInProduction(int productionID) {
+        orgData.deleteOrganizationsInProduction(productionID);
     }
 
     @Override
-    public boolean deleteCreditsInProduction(int productionID) {
-        return creditData.deleteCreditsInProduction(productionID);
+    public void deleteCreditsInProduction(int productionID) {
+        creditData.deleteCreditsInProduction(productionID);
     }
 
 

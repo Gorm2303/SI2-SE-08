@@ -39,10 +39,6 @@ public class CreditData {
         return 0;
     }
 
-    public boolean update() {
-        return false;
-    }
-
     public String materializeRole(int creditID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT role FROM credits WHERE id = ?");
@@ -97,10 +93,7 @@ public class CreditData {
                     "DELETE FROM credits WHERE productionId = (?)");
             stmt.setInt(1, productionID);
             int deleted = stmt.executeUpdate();
-            if (deleted == 0) {
-                return false;
-            }
-            return true;
+            return deleted != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

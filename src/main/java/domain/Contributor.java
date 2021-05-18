@@ -9,7 +9,6 @@ public class Contributor implements Storable {
     private String name;
     private int id;
     private String birthDate;
-    private ArrayList<Production> productionsIsIn;
     private static ArrayList<Contributor> contributorsInMemory = new ArrayList<>();
 
     public Contributor() {
@@ -59,10 +58,6 @@ public class Contributor implements Storable {
             }
         }
         return new Contributor(id);
-    }
-
-    public ArrayList<Production> getIsIn(){
-        return productionsIsIn;
     }
 
     public String getName() {

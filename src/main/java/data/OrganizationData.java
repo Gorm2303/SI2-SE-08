@@ -27,10 +27,6 @@ public class OrganizationData {
         return 0;
     }
 
-    public boolean update() {
-        return false;
-    }
-
     public String materializeName(int contributorID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT name FROM organizations WHERE id = ?");
@@ -70,10 +66,7 @@ public class OrganizationData {
                     "DELETE FROM organizationsinproductions WHERE productionId = (?)");
             stmt.setInt(1, productionID);
             int deleted = stmt.executeUpdate();
-            if (deleted == 0) {
-                return false;
-            }
-            return true;
+            return deleted != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

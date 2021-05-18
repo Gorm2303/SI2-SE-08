@@ -28,10 +28,6 @@ public class ContributorData {
         return 0;
     }
 
-    public boolean update() {
-        return false;
-    }
-
     public String materializeName(int contributorID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT name FROM contributors WHERE id = ?");

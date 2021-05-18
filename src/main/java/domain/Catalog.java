@@ -2,17 +2,17 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
 
-import java.util.*;
 
 public class Catalog implements ICatalog{
-    private ArrayList<Production> next10productions;
     private IDataFacade dataFacade;
     private static ICatalog instance;
 
     private Catalog() {
         dataFacade = new DataFacade();
-        next10productions = new ArrayList<>();
     }
 
     public static ICatalog getInstance(){
@@ -46,16 +46,8 @@ public class Catalog implements ICatalog{
     }
 
     @Override
-    public boolean removeProduction(int productionID){
-        return dataFacade.deleteProduction(productionID);
-    }
-
-    public void removeContributor(int contributorId){
-
-    }
-
-    public void removeOrganization(int organizationId){
-
+    public void removeProduction(int productionID){
+        dataFacade.deleteProduction(productionID);
     }
 
     @Override

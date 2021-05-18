@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -10,9 +8,7 @@ public interface ICatalog {
         return Catalog.getInstance();
     }
 
-    boolean removeProduction(int productionID);
-    void removeContributor(int contributorId);
-    void removeOrganization(int organizationId);
+    void removeProduction(int productionID);
 
     LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
     LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);

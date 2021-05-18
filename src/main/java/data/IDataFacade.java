@@ -2,7 +2,6 @@ package data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
 public interface IDataFacade {
@@ -15,9 +14,9 @@ public interface IDataFacade {
 
     boolean updateProductionSimpleData(int id, String name, String releaseDate, int length, int producerID);
 
-    boolean deleteProduction(int productionID);
-    boolean deleteOrganizationInProduction(int productionID);
-    boolean deleteCreditsInProduction(int productionID);
+    void deleteProduction(int productionID);
+    void deleteOrganizationInProduction(int productionID);
+    void deleteCreditsInProduction(int productionID);
 
     String materializeOrganizationName(int contributorID);
 
