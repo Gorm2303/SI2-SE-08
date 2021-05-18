@@ -14,9 +14,9 @@ public interface IDataFacade {
 
     boolean updateProductionSimpleData(int id, String name, String releaseDate, int length, int producerID);
 
-    void deleteProduction(int productionID);
-    void deleteOrganizationInProduction(int productionID);
-    void deleteCreditsInProduction(int productionID);
+    boolean deleteProduction(int productionID);
+    boolean deleteOrganizationInProduction(int productionID);
+    boolean deleteCreditsInProduction(int productionID);
 
     String materializeOrganizationName(int contributorID);
 

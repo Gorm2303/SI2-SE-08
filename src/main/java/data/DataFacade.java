@@ -103,18 +103,18 @@ public class DataFacade implements IDataFacade{
 
 
     @Override
-    public void deleteProduction(int productionID) {
-        productionData.delete(productionID);
+    public boolean deleteProduction(int productionID) {
+        return productionData.delete(productionID);
     }
 
     @Override
-    public void deleteOrganizationInProduction(int productionID) {
-        orgData.deleteOrganizationsInProduction(productionID);
+    public boolean deleteOrganizationInProduction(int productionID) {
+        return orgData.deleteOrganizationsInProduction(productionID);
     }
 
     @Override
-    public void deleteCreditsInProduction(int productionID) {
-        creditData.deleteCreditsInProduction(productionID);
+    public boolean deleteCreditsInProduction(int productionID) {
+        return creditData.deleteCreditsInProduction(productionID);
     }
 
 

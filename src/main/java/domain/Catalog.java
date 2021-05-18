@@ -46,8 +46,8 @@ public class Catalog implements ICatalog{
     }
 
     @Override
-    public void removeProduction(int productionID){
-        dataFacade.deleteProduction(productionID);
+    public boolean removeProduction(int productionID){
+        return dataFacade.deleteProduction(productionID);
     }
 
     @Override

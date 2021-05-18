@@ -8,7 +8,7 @@ public interface ICatalog {
         return Catalog.getInstance();
     }
 
-    void removeProduction(int productionID);
+    boolean removeProduction(int productionID);
 
     LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
     LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);
