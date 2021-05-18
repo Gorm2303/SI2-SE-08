@@ -28,7 +28,7 @@ public class ShowCreditController {
 
     private int pageNumber;
     private String searchString = "";
-    private final int pageSize = 13;
+    private final int pageSize = 12;
     private static ICatalog catalog;
     private ObservableList<Production> productionObservableList;
 
