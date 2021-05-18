@@ -3,7 +3,9 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProductionData {
     private DBConnection dbConnection;
@@ -58,17 +60,10 @@ public class ProductionData {
             updateStatement.setInt(5, productionID);
             updateStatement.execute();
             int changed = updateStatement.executeUpdate();
-            if (changed == 0) {
-                return false;
-            }
-            return true;
+            return changed != 0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return false;
-    }
-
-    public boolean updateOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
         return false;
     }
 
@@ -187,10 +182,7 @@ public class ProductionData {
             PreparedStatement stmt = dbConnection.prepareStatement("DELETE FROM productions WHERE id = (?)");
             stmt.setInt(1, id);
             int deleted = stmt.executeUpdate();
-            if (deleted == 0) {
-                return false;
-            }
-            return true;
+            return deleted != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

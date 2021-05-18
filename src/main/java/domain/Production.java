@@ -2,8 +2,8 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class Production implements Storable, Comparable<Production> {
     private String name;
@@ -149,7 +149,8 @@ public class Production implements Storable, Comparable<Production> {
     }
 
     public String detailedString() {
-        StringBuilder returnString = new StringBuilder(name + "\n\n" +
+        StringBuilder returnString = new StringBuilder(name + "\n" +
+                length + " minutters spilletid" + "\n\n" +
                 "Udgivet: " + releaseDate + "\n\n" +
                 "Produceret af: " + producer.getName() + "\n\n" +
                 "I samarbejde med:\n");

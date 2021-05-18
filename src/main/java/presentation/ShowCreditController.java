@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ShowCreditController {
     @FXML
@@ -29,7 +28,7 @@ public class ShowCreditController {
 
     private int pageNumber;
     private String searchString = "";
-    private final int pageSize = 12;
+    private final int pageSize = 13;
     private static ICatalog catalog;
     private ObservableList<Production> productionObservableList;
 
@@ -41,6 +40,7 @@ public class ShowCreditController {
         productionObservableList = FXCollections.observableArrayList(
                 catalog.searchForProductions("", pageNumber, pageSize));
         productionListview.setItems(productionObservableList);
+        nextButton.setDisable(productionObservableList.size() < pageSize);
 
         //updateDummies();
         //dummyProductions();
@@ -79,18 +79,16 @@ public class ShowCreditController {
             productionObservableList = FXCollections.observableArrayList(
                     catalog.searchForProductions(searchString, pageNumber, pageSize));
             productionListview.setItems(productionObservableList);
-            if (productionObservableList.size() < pageSize) {
-                nextButton.setDisable(true);
-            }
+            nextButton.setDisable(productionObservableList.size() < pageSize);
+
         } else if (button == previousButton) {
-            nextButton.setDisable(false);
-            if (pageNumber <= 2) {
-                previousButton.setDisable(true);
-            }
             pageNumber--;
             productionObservableList = FXCollections.observableArrayList(
                     catalog.searchForProductions(searchString, pageNumber, pageSize));
             productionListview.setItems(productionObservableList);
+
+            nextButton.setDisable(productionObservableList.size() < pageSize);
+            previousButton.setDisable(pageNumber <= 1);
 
         } else if (button == searchButton) {
             System.out.println(searchField.getText());
@@ -118,34 +116,66 @@ public class ShowCreditController {
 
     //TEMPORARY METHOD
     public void dummyProductions() {
-        ArrayList<Organization> orgList = new ArrayList<>();
-        Organization tv2 = new Organization("TV2");
-        tv2.store();
-        Organization fakeCompany = new Organization("Fake Company");
-        fakeCompany.store();
-        Organization producer = new Organization("Producing Company");
-        producer.store();
+        for (int i = 0; i < 50; i++) {
+            ArrayList<Organization> organizationList = new ArrayList<>();
+            ArrayList<Contributor> contributorList1 = new ArrayList<>();
+            ArrayList<Contributor> contributorList2 = new ArrayList<>();
+            ArrayList<Contributor> contributorList3 = new ArrayList<>();
+            ArrayList<Credit> creditList = new ArrayList<>();
 
-        orgList.add(tv2);
-        orgList.add(fakeCompany);
+            //Contributing organizations
+            Organization org1 = new Organization("Medvirkende organisation "+ i + ".1");
+            Organization org2 = new Organization("Medvirkende organisation "+ i + ".2");
+            Organization org3 = new Organization("Medvirkende organisation "+ i + ".3");
+            org1.store();
+            org2.store();
+            org3.store();
+            organizationList.add(org1);
+            organizationList.add(org2);
+            organizationList.add(org3);
 
-        ArrayList<Contributor> contList = new ArrayList<>();
-        Contributor bob = new Contributor("Bob Jensen", "09.04.1996");
-        Contributor niels = new Contributor("Niels Sørensen", "11.12.1990");
-        Contributor bolette = new Contributor("Bolette Kristiansen", "01.09.1967");
-        contList.add(bob);
-        contList.add(niels);
-        contList.add(bolette);
-        bob.store();
-        niels.store();
-        bolette.store();
+            //Producer
+            Organization producer = new Organization("Producer " + i);
+            producer.store();
 
-        ArrayList<Credit> credList = new ArrayList<>();
-        credList.add(new Credit("Kamera", contList));
+            //Contributors "09.04.1996"
+            Contributor con1;
+            Contributor con2;
+            Contributor con3;
+            Contributor con4;
+            Contributor con5;
 
-        Production testProduction = new Production("Some Film", producer,
-                "09.09.2009",  120, orgList, credList);
-        testProduction.store();
+            int birthYear = 1950 + i;
+
+            con1 = new Contributor("Medvirkende " + i + ".1", "01.01." + birthYear);
+            con2 = new Contributor("Medvirkende " + i + ".2", "01.01." + birthYear);
+            con3 = new Contributor("Medvirkende " + i + ".3", "01.01." + birthYear);
+            con4 = new Contributor("Medvirkende " + i + ".4", "01.01." + birthYear);
+            con5 = new Contributor("Medvirkende " + i + ".5", "01.01." + birthYear);
+
+            con1.store();
+            con2.store();
+            con3.store();
+            con4.store();
+            con5.store();
+
+            contributorList1.add(con1);
+            contributorList2.add(con2);
+            contributorList2.add(con3);
+            contributorList3.add(con4);
+            contributorList3.add(con5);
+
+            //Credits
+            creditList.add(new Credit("Rolle " + i + ".1", contributorList1));
+            creditList.add(new Credit("Rolle " + i + ".2", contributorList2));
+            creditList.add(new Credit("Rolle " + i + ".3", contributorList3));
+
+            int releaseDate = 1970 + i;
+
+            Production production = new Production("Film " + i, producer,
+                    "01.01." + releaseDate, i * 5, organizationList, creditList);
+            production.store();
+        }
     }
 
     public void updateDummies() {
