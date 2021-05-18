@@ -106,6 +106,7 @@
             <Label focusTraversable="false" text="Medvirkende" />
                       <TextField fx:id="searchFieldContributor" disable="true" focusTraversable="false" promptText="Søg efter medvirkende" />
                       <Button fx:id="searchButtonContributor" disable="true" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
+            <Button fx:id="fromFileButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Hent medvirkende fra fil" />
             </children>
         </VBox>
     </children>

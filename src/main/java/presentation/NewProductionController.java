@@ -13,12 +13,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +37,7 @@ public class NewProductionController {
     private HBox outerHBox;
     @FXML
     private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction,
-            addOrganization, addRole, searchButtonOrganization, searchButtonContributor, searchButtonProducer;
+            addOrganization, addRole, searchButtonOrganization, searchButtonContributor, searchButtonProducer, fromFileButton;
     @FXML
     private TextField productionName, productionLength, searchFieldOrganization, searchFieldContributor, searchFieldProducer;
     @FXML
@@ -74,6 +79,14 @@ public class NewProductionController {
 
         } else if (button == newContributor) {
             makeNewOrganization(true);
+
+        } else if (button == fromFileButton) {
+            try {
+                contributorsFromTextFile();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return;
+            }
 
         } else if (button == saveProduction) {
             // For testing purpose
@@ -179,6 +192,71 @@ public class NewProductionController {
             }
 
         }
+    }
+
+    private void contributorsFromTextFile() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File textFile = fileChooser.showOpenDialog(new Stage());
+
+        LinkedHashMap<TextField, ArrayList<ChoiceBox>> roleMap = new LinkedHashMap<>();
+        Scanner scanner = new Scanner(textFile);
+        LinkedList<String> roleText = new LinkedList<>();
+        LinkedList<String> contributorText = new LinkedList<>();
+        TextField textField = null;
+        HBox hBox = null;
+        VBox vBox = null;
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.isBlank()) {
+                continue;
+            }
+
+            if (line.contains(":")) {
+                textField = addRole();
+                roleMap.put(textField, new ArrayList<>());
+                //roleMap.get(textField).add(currentContributor);
+                roleText.add(line);
+
+                hBox = (HBox) textField.getParent();
+            } else {
+                for (Node node : hBox.getChildren()) {
+                    if (node instanceof VBox) {
+                        vBox = (VBox) node;
+                    }
+                }
+                if (roleMap.get(textField).isEmpty()) {
+                    roleMap.get(textField).add(currentContributor);
+
+                } else {
+                    ChoiceBox<Contributor> choiceBox = addContributor(vBox, textField);
+                    roleMap.get(textField).add(choiceBox);
+                }
+                contributorText.add(line);
+            }
+        }
+
+        int i = 0, n = 0;
+        for (TextField textF : roleMap.keySet()) {
+            textF.setText(roleText.get(i).replace(":", ""));
+            System.out.println(roleText.get(i));
+            i++;
+
+            for (ChoiceBox<Contributor> choiceBox : roleMap.get(textF)) {
+                LinkedList<Contributor> contributors = ICatalog.getInstance().searchForContributors(contributorText.get(n), 1);
+                Contributor contributor;
+                if (contributors.isEmpty()) {
+                    contributor = new Contributor(contributorText.get(n), "01.01.1990");
+                    contributor.store();
+                } else {
+                    contributor = contributors.remove(0);
+                }
+                choiceBox.getItems().add(contributor);
+                choiceBox.setValue(contributor);
+                n++;
+            }
+        }
+
     }
 
     public ChoiceBox<Organization> addOrganization() {
