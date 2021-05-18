@@ -431,10 +431,7 @@ public class NewProductionController {
         }
 
         production.setCredits(credits);
-        int productionID = production.store(); //stores production in DB and gets ID
-        for (Credit c : credits) {  //stores each credit in DB
-            c.store(productionID);
-        }
+        int productionID = production.store(); //stores production in DB and stores Credits
         // ICatalog.getInstance().addProduction(production);//Save Statement
 
     }
