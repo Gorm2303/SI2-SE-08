@@ -138,6 +138,10 @@ public class NewProductionController {
                 Organization organization = currentOrganization.getValue();
                 currentOrganization.setItems(FXCollections.observableArrayList());
                 currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                if (currentOrganization.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(currentOrganization.getItems());
                 currentOrganization.setValue(organization);
                 currentOrganization.show();
@@ -150,6 +154,10 @@ public class NewProductionController {
                 Contributor contributor = currentContributor.getValue();
                 currentContributor.setItems(FXCollections.observableArrayList());
                 currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1));
+                if (currentContributor.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(currentContributor.getItems());
                 currentContributor.setValue(contributor);
                 currentContributor.show();
@@ -161,6 +169,10 @@ public class NewProductionController {
                 Organization organization = productionProducer.getValue();
                 productionProducer.setItems(FXCollections.observableArrayList());
                 productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                if (productionProducer.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(productionProducer.getItems());
                 productionProducer.setValue(organization);
                 productionProducer.show();
@@ -491,6 +503,8 @@ public class NewProductionController {
                 choiceBox.setStyle("-fx-border-width: 0");
             }
         }
+        searchButtonContributor.setDisable(true);
+        searchFieldContributor.setDisable(true);
 
         //ShowCreditController.getCatalog().addProduction(production);
     }
