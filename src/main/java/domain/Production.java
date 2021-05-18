@@ -56,6 +56,7 @@ public class Production implements Storable, Comparable<Production> {
             return;
         }
         IDataFacade iDataFacade = new DataFacade();
+        this.id = id;
         this.name = iDataFacade.materializeProductionName(id);
         this.producer = Organization.get(iDataFacade.materializeProductionProducerID(id));
         this.releaseDate = iDataFacade.materializeProductionReleaseDate(id);
@@ -183,7 +184,6 @@ public class Production implements Storable, Comparable<Production> {
                 credit.store(this.id);
             }
 
-            return this.id;
         }
         else {
             //update production simple data
@@ -207,8 +207,8 @@ public class Production implements Storable, Comparable<Production> {
             for (Credit credit : credits) {
                 credit.store(this.id);
             }
-            return this.id;
         }
+        return this.id;
     }
 
     @Override
