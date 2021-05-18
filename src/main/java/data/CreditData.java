@@ -64,9 +64,6 @@ public class CreditData {
                     "SELECT contributorId FROM ContributorsInCredits WHERE creditId = ?");
             stmt.setInt(1, creditID);
             ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return null;
-            }
             Set<Integer> contributorIDs = new HashSet<>();
             while(sqlReturnValues.next()) {
                 contributorIDs.add(sqlReturnValues.getInt(1));
@@ -92,5 +89,21 @@ public class CreditData {
             throwables.printStackTrace();
         }
         return 0;
+    }
+
+    public boolean deleteCreditsInProduction(int productionID) {
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement(
+                    "DELETE FROM credits WHERE productionId = (?)");
+            stmt.setInt(1, productionID);
+            int deleted = stmt.executeUpdate();
+            if (deleted == 0) {
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

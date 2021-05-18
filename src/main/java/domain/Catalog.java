@@ -3,9 +3,7 @@ package domain;
 import data.DataFacade;
 import data.IDataFacade;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Catalog implements ICatalog{
     private ArrayList<Production> next10productions;
@@ -47,50 +45,13 @@ public class Catalog implements ICatalog{
         dataFacade.initializeDatabase();
     }
 
-
-    public Production showProduction(int productionId){
-        return null;
-    }
-
-    public void addProduction(Production production) {
-        //dataFacade.addProduction(production);
-    }
-
-    public Production addProduction(String name, Organization producer, Date releaseDate, String programCategory, int length,
-                              ArrayList<Organization> orgContributors, ArrayList<Credit> credits){
-        //Production productionToAdd = new Production(name, dataFacade.getProductionId(), producer, releaseDate,
-                //programCategory, length, orgContributors, credits);
-        //dataFacade.addProduction(productionToAdd);
-        return null; //productionToAdd;
-    }
-
     @Override
-    public void removeProduction(Production production){
-        //dataFacade.removeProduction(production);
-    }
-
-    public Contributor showContributor(int contributorId){
-        return null;
-    }
-
-    public Contributor addContributor(String name, Date birthDate){
-        //Contributor contributorToAdd = new Contributor(name, dataFacade.getContributorId(), birthDate);
-        //dataFacade.addContributor(contributorToAdd);
-        return null;//contributorToAdd;
+    public boolean removeProduction(int productionID){
+        return dataFacade.deleteProduction(productionID);
     }
 
     public void removeContributor(int contributorId){
 
-    }
-
-    public Organization showOrganization(int organizationId){
-        return null;
-    }
-
-    public Organization addOrganization(String name){
-        //Organization organizationToAdd = new Organization(name, dataFacade.getOrganizationId());
-        //dataFacade.addOrganization(organizationToAdd);
-        return null; //organizationToAdd;
     }
 
     public void removeOrganization(int organizationId){
@@ -116,15 +77,11 @@ public class Catalog implements ICatalog{
     }
 
     @Override
-    public ArrayList<Production> getNext10Productions(int pageNumber) {
-        /*
-        ArrayList<IProduction> temp10 = dataFacade.getNext10Productions(pageNumber);
-        ArrayList<Production> returnList = new ArrayList<>();
-        for (IProduction production : temp10) {
-            returnList.add((Production) production);
+    public Set<Production> searchForProductions(String searchString, int pageNumber, int pageSize) {
+        Set<Production> productionSet = new TreeSet<>();
+        for(Integer id : dataFacade.searchForProductions(searchString, pageNumber, pageSize)) {
+            productionSet.add(Production.get(id));
         }
-        return returnList;
-         */
-        return new ArrayList<>();
+        return productionSet;
     }
 }

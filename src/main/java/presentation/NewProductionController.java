@@ -388,7 +388,7 @@ public class NewProductionController {
     }
 
     public void deleteProduction(Production production) {
-        ICatalog.getInstance().removeProduction(production);
+        ICatalog.getInstance().removeProduction(production.getId());
     }
 
     public void saveProduction() {
@@ -436,6 +436,7 @@ public class NewProductionController {
             c.store(productionID);
         }
         // ICatalog.getInstance().addProduction(production);//Save Statement
+
     }
 
     public void loadProduction(Production production) {
