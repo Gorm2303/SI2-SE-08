@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NewProductionController {
 
@@ -30,22 +32,22 @@ public class NewProductionController {
     private HBox outerHBox;
     @FXML
     private Button newOrganization, newContributor, newOrganizationCancel, newOrganizationSave, saveProduction, productionCancelChanges, deleteProduction,
-            addOrganization, addRole, searchButtonOrganization, searchButtonContributor;
+            addOrganization, addRole, searchButtonOrganization, searchButtonContributor, searchButtonProducer;
     @FXML
-    private TextField productionName, productionLength, productionProducer,
-            searchFieldOrganization, searchFieldContributor;
-    private ChoiceBox<Organization> currentOrganization;
+    private TextField productionName, productionLength, searchFieldOrganization, searchFieldContributor, searchFieldProducer;
+    @FXML
+    private ChoiceBox<Organization> currentOrganization, productionProducer;
     private ChoiceBox<Contributor> currentContributor;
 
-    private ArrayList<TextField> contributingOrganizations;
-    private HashMap<TextField, ArrayList<TextField>> roleContributors;
+    private ArrayList<ChoiceBox> contributingOrganizations;
+    private HashMap<TextField, ArrayList<ChoiceBox>> roleContributors;
 
     private static NewProductionController latestProductionController;
 
     public NewProductionController() {
         this.productionName = new TextField();
         this.productionLength = new TextField();
-        this.productionProducer = new TextField();
+        this.productionProducer = new ChoiceBox<>();
         //this.contributingOrganization = new ChoiceBox(FXCollections.observableArrayList());
         //this.contributorToRole = new ChoiceBox(FXCollections.observableArrayList());
         this.productionDate = new DatePicker();
@@ -58,6 +60,7 @@ public class NewProductionController {
     public void initialize() {
         roleContributors = new HashMap<>();
         contributingOrganizations = new ArrayList<>();
+        handleDisableOfAddButtons(outerHBox, true, false); //disable add buttons until producer is selected
     }
 
     public void onButtonClicked(ActionEvent actionEvent) {
@@ -70,10 +73,28 @@ public class NewProductionController {
         } else if (button == newContributor) {
             makeNewOrganization(true);
 
-        } else if (button == productionCancelChanges || button == saveProduction) {
-            if (button == saveProduction) {
+        } else if (button == saveProduction) {
+            // For testing purpose
+            //System.out.println(isRegularDate(productionDate.getEditor().getText()));
+            //System.out.println(isRegularLength(productionLength.getText()));
+
+            //Maybe check length for only number value
+            if (productionName.getText().isBlank() || (productionDate.getValue() == null && isRegularDate(productionDate.getEditor().getText()))
+                    || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
+                    || (productionProducer.getValue() == null)) {
+                fieldMissingWindow();
+            } else {
                 saveProduction();
+                try {
+                    Scene scene = new Scene(Main.loadFXML("showcredit"));
+                    Main.getPrimaryStage().setScene(scene);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+        } else if (button == productionCancelChanges) {
             try {
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
@@ -81,7 +102,6 @@ public class NewProductionController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         } else if (button == deleteProduction) {
             productionDeletion();
         }
@@ -110,10 +130,10 @@ public class NewProductionController {
         } else if (button == searchButtonOrganization) {
             String searchString = searchFieldOrganization.getText();
 
-            if (!searchString.equals("")) {
+            if (!searchString.isBlank()) {
                 Organization organization = currentOrganization.getValue();
                 currentOrganization.setItems(FXCollections.observableArrayList());
-                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString,1));
+                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
                 System.out.println(currentOrganization.getItems());
                 currentOrganization.setValue(organization);
                 currentOrganization.show();
@@ -122,14 +142,26 @@ public class NewProductionController {
         } else if (button == searchButtonContributor) {
             String searchString = searchFieldContributor.getText();
 
-            if (!searchString.equals("")) {
+            if (!searchString.isBlank()) {
                 Contributor contributor = currentContributor.getValue();
                 currentContributor.setItems(FXCollections.observableArrayList());
-                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString,1));
+                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1));
                 System.out.println(currentContributor.getItems());
                 currentContributor.setValue(contributor);
                 currentContributor.show();
             }
+        } else if (button == searchButtonProducer) {
+            String searchString = searchFieldProducer.getText();
+
+            if (!searchString.isBlank()) {
+                Organization organization = productionProducer.getValue();
+                productionProducer.setItems(FXCollections.observableArrayList());
+                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                System.out.println(productionProducer.getItems());
+                productionProducer.setValue(organization);
+                productionProducer.show();
+            }
+
         }
     }
 
@@ -138,6 +170,7 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
+        contributingOrganizations.add(choiceBox);
         currentOrganization = choiceBox;
         //choiceBox.getItems().add(new Organization("This Organization", 69));
         //choiceBox.getItems().add(new Organization("This Organization 222", 222));
@@ -182,6 +215,7 @@ public class NewProductionController {
         newContributorVBox.setSpacing(5);
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        roleContributors.get(textFieldRole).add(choiceBox);
         currentContributor = choiceBox;
         //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
         //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
@@ -223,13 +257,6 @@ public class NewProductionController {
         stage.initModality(Modality.APPLICATION_MODAL);
         VBox vBox = new VBox();
 
-        if (contributorInstead) {
-            makeNewContributor(vBox);
-        } else {
-            Label label = new Label("Organisationens navn");
-            vBox.getChildren().add(label);
-        }
-
         TextField textField = new TextField();
         Button cancel = new Button("Annuller");
         Button save = new Button("Gem");
@@ -237,15 +264,21 @@ public class NewProductionController {
         cancel.setOnAction(actionEvent1 -> {
             stage.close();
         });
-        save.setOnAction(actionEvent1 -> {
-            Organization org = new Organization();
-            org.setName(textField.getText());
-            System.out.println(org.store());
-            System.out.println(Organization.get(org.getId()));
-            System.out.println(Organization.get(org.getId()));
-            System.out.println(Organization.get(55));
-            stage.close();
-        });
+
+        if (contributorInstead) {
+            makeNewContributor(vBox, save, textField, stage);
+        } else {
+            Label label = new Label("Organisationens navn");
+            vBox.getChildren().add(label);
+            save.setOnAction(actionEvent1 -> {
+                Organization org = new Organization();
+                org.setName(textField.getText());
+                System.out.println(org.store());
+                System.out.println(Organization.get(org.getId()));
+                System.out.println(Organization.get(org.getId()));
+                stage.close();
+            });
+        }
 
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10));
@@ -255,16 +288,25 @@ public class NewProductionController {
         hBox.setSpacing(40);
         hBox.getChildren().addAll(save, cancel);
         vBox.getChildren().add(hBox);
-
         Scene scene = new Scene(vBox);
         stage.setScene(scene);
         stage.show();
     }
 
-    private void makeNewContributor(VBox vBox) {
+    private void makeNewContributor(VBox vBox, Button save, TextField textField, Stage stage) {
         Label label = new Label("Medvirkendes navn");
         Label date = new Label("Fødselsdag");
         DatePicker datePicker = new DatePicker();
+
+        save.setOnAction(actionEvent1 -> {
+            Contributor contributor = new Contributor();
+            contributor.setName(textField.getText());
+            System.out.println(contributor.store());
+            System.out.println(Contributor.get(contributor.getId()));
+            System.out.println(Contributor.get(contributor.getId()));
+            stage.close();
+        });
+
         vBox.getChildren().addAll(label, date, datePicker);
     }
 
@@ -272,6 +314,7 @@ public class NewProductionController {
         HBox hBox = new HBox();
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
+        roleContributors.get(key).add(choiceBox);
         currentContributor = choiceBox;
         //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
         //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
@@ -349,32 +392,23 @@ public class NewProductionController {
     }
 
     public void saveProduction() {
-        String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText()
-                , producer = productionProducer.getText();
+        String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText();
+        Organization producer = productionProducer.getValue();
 
         Production production = new Production();
 
         production.setName(name);
-        if (!length.isEmpty()) {
-            production.setLength(Integer.parseInt(length));
-        }
+        production.setLength(Integer.parseInt(length));
+        production.setReleaseDate(date);
 
-        // Translating DatePicker's String to Date object
-        if (!date.isEmpty()) {
-            production.setReleaseDate(date);
-        }
         // The producer
-        Organization organization = new Organization();
-        organization.setName(producer);
-        production.setProducer(organization);
+        production.setProducer(producer);
 
         // The contributing organizations
         ArrayList<Organization> organizations = new ArrayList<>();
-        for (TextField textField : contributingOrganizations) {
-            String org = textField.getText();
-            Organization organiz = new Organization();
-            organiz.setName(org);
-            organizations.add(organiz);
+        for (ChoiceBox choiceBox : contributingOrganizations) {
+            Organization org = (Organization) choiceBox.getValue();
+            organizations.add(org);
         }
 
         production.setOrgContributors(organizations);
@@ -387,11 +421,9 @@ public class NewProductionController {
             credit.setRole(role);
 
             ArrayList<Contributor> contributors = new ArrayList<>();
-            for (TextField tf : roleContributors.get(textField)) {
-                String cont = tf.getText();
-                Contributor contributor = new Contributor();
-                contributor.setName(cont);
-                contributors.add(contributor);
+            for (ChoiceBox cb : roleContributors.get(textField)) {
+                Contributor cont = (Contributor) cb.getValue();
+                contributors.add(cont);
             }
 
             credit.setContributors(contributors);
@@ -399,8 +431,12 @@ public class NewProductionController {
         }
 
         production.setCredits(credits);
+        int productionID = production.store(); //stores production in DB and gets ID
+        for (Credit c : credits) {  //stores each credit in DB
+            c.store(productionID);
+        }
+        // ICatalog.getInstance().addProduction(production);//Save Statement
 
-        //ICatalog.getInstance().addProduction(production);
     }
 
     public void loadProduction(Production production) {
@@ -408,7 +444,7 @@ public class NewProductionController {
         productionName.setText(production.getName());
         productionDate.getEditor().setText(production.getReleaseDate());
         productionLength.setText(String.valueOf(production.getLength()));
-        productionProducer.setText(production.getProducer().getName());
+        productionProducer.setValue(production.getProducer());
 
         // The contributing organizations
         ArrayList<Organization> organizations = production.getOrgContributors();
@@ -422,11 +458,11 @@ public class NewProductionController {
 
         for (Credit credit : credits) {
             TextField role = addRole();
-            ArrayList<TextField> textFields = roleContributors.get(role);
+            ArrayList<ChoiceBox> choiceBoxes = roleContributors.get(role);
 
             role.setText(credit.getRole());
             for (Contributor contributor : credit.getContributors()) {
-                addContributor((VBox) textFields.get(0).getParent(), role);
+                addContributor((VBox) choiceBoxes.get(0).getParent(), role);
 
             }
         }
@@ -469,12 +505,56 @@ public class NewProductionController {
         }
     }
 
+    private void fieldMissingWindow() {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Tomt felt");
+
+        VBox vBox = new VBox();
+        Label label = new Label("Ikke alle nødvendige felter er udfyldt!");
+        HBox hBox = new HBox();
+        Button okButton = new Button("Okay");
+
+        okButton.setOnAction((actionEvent -> {
+            stage.close();
+        }));
+
+        vBox.setStyle("-fx-background-color: orange; " + "-fx-border-color: black; " + "-fx-padding: 5");
+        vBox.setSpacing(10);
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+
+        hBox.getChildren().addAll(okButton);
+        vBox.getChildren().addAll(label, hBox);
+
+        stage.setScene(new Scene(vBox));
+        stage.show();
+    }
+
+    // Regular expression for production Date.
+    private boolean isRegularDate(String date) {
+        Pattern pattern = Pattern.compile("(\\d{2}\\.){2}\\d{4}");
+        Matcher matcher = pattern.matcher(date);
+        //System.out.println(pattern);
+        return !matcher.find();
+    }
+
+    private boolean isRegularLength(String length) {
+        try {
+            int i = Integer.parseInt(length);
+        } catch (NumberFormatException e) {
+            System.out.println("Produktionslængden er ikke et tal");
+            return true;
+        }
+        return false;
+    }
+
     // Old code for getting textFields
-    private void combineRoleContributors(TextField key, TextField value) {
+    private void combineRoleContributors(TextField key, ChoiceBox value) {
         roleContributors.get(key).add(value);
     }
 
-    private void combineRoleContributors(TextField key, ArrayList<TextField> values) {
+    private void combineRoleContributors(TextField key, ArrayList<ChoiceBox> values) {
         roleContributors.get(key).addAll(values);
     }
 
