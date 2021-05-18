@@ -56,6 +56,7 @@ public class Production implements Storable, Comparable<Production> {
             return;
         }
         IDataFacade iDataFacade = new DataFacade();
+        this.id = id;
         this.name = iDataFacade.materializeProductionName(id);
         this.producer = Organization.get(iDataFacade.materializeProductionProducerID(id));
         this.releaseDate = iDataFacade.materializeProductionReleaseDate(id);

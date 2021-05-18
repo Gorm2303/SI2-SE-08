@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,9 +40,11 @@ public class NewProductionController {
     private ChoiceBox<Contributor> currentContributor;
 
     private ArrayList<ChoiceBox> contributingOrganizations;
-    private HashMap<TextField, ArrayList<ChoiceBox>> roleContributors;
+    private LinkedHashMap<TextField, ArrayList<ChoiceBox>> roleContributors;
 
     private static NewProductionController latestProductionController;
+
+    private Production currentProduction;
 
     public NewProductionController() {
         this.productionName = new TextField();
@@ -58,7 +60,7 @@ public class NewProductionController {
     }
 
     public void initialize() {
-        roleContributors = new HashMap<>();
+        roleContributors = new LinkedHashMap<>();
         contributingOrganizations = new ArrayList<>();
         handleDisableOfAddButtons(outerHBox, true, false); //disable add buttons until producer is selected
     }
@@ -84,13 +86,15 @@ public class NewProductionController {
                     || (productionProducer.getValue() == null)) {
                 fieldMissingWindow();
             } else {
-                saveProduction();
                 try {
+                    saveProduction();
                     Scene scene = new Scene(Main.loadFXML("showcredit"));
                     Main.getPrimaryStage().setScene(scene);
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    return;
                 }
             }
 
@@ -134,6 +138,10 @@ public class NewProductionController {
                 Organization organization = currentOrganization.getValue();
                 currentOrganization.setItems(FXCollections.observableArrayList());
                 currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                if (currentOrganization.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(currentOrganization.getItems());
                 currentOrganization.setValue(organization);
                 currentOrganization.show();
@@ -146,6 +154,10 @@ public class NewProductionController {
                 Contributor contributor = currentContributor.getValue();
                 currentContributor.setItems(FXCollections.observableArrayList());
                 currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1));
+                if (currentContributor.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(currentContributor.getItems());
                 currentContributor.setValue(contributor);
                 currentContributor.show();
@@ -157,6 +169,10 @@ public class NewProductionController {
                 Organization organization = productionProducer.getValue();
                 productionProducer.setItems(FXCollections.observableArrayList());
                 productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                if (productionProducer.getItems().isEmpty()) {
+                    handleDisableOfAddButtons(outerHBox, true, false);
+                    return;
+                }
                 System.out.println(productionProducer.getItems());
                 productionProducer.setValue(organization);
                 productionProducer.show();
@@ -310,7 +326,7 @@ public class NewProductionController {
         vBox.getChildren().addAll(label, date, datePicker);
     }
 
-    private void addContributor(VBox vBox, TextField key) {
+    private ChoiceBox<Contributor> addContributor(VBox vBox, TextField key) {
         HBox hBox = new HBox();
 
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
@@ -340,6 +356,7 @@ public class NewProductionController {
 
         hBox.getChildren().addAll(choiceBox, removeButton);
         vBox.getChildren().add(hBox);
+        return choiceBox;
     }
 
     public void onContextMenuRequested(ActionEvent actionEvent) {
@@ -360,6 +377,9 @@ public class NewProductionController {
         Button noButton = new Button("Nej");
 
         yesButton.setOnAction((actionEvent -> {
+            //deleteProduction()
+            System.out.println(ICatalog.getInstance().removeProduction(currentProduction.getId()));
+
             try {
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
@@ -367,7 +387,7 @@ public class NewProductionController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //deleteProduction()
+
             stage.close();
         }));
 
@@ -387,22 +407,19 @@ public class NewProductionController {
         stage.show();
     }
 
-    public void deleteProduction(Production production) {
-        ICatalog.getInstance().removeProduction(production.getId());
-    }
-
-    public void saveProduction() {
+    public void saveProduction() throws IllegalArgumentException {
         String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText();
         Organization producer = productionProducer.getValue();
 
-        Production production = new Production();
-
-        production.setName(name);
-        production.setLength(Integer.parseInt(length));
-        production.setReleaseDate(date);
+        if (currentProduction == null) {
+            currentProduction = new Production();
+        }
+        currentProduction.setName(name);
+        currentProduction.setLength(Integer.parseInt(length));
+        currentProduction.setReleaseDate(date);
 
         // The producer
-        production.setProducer(producer);
+        currentProduction.setProducer(producer);
 
         // The contributing organizations
         ArrayList<Organization> organizations = new ArrayList<>();
@@ -411,12 +428,16 @@ public class NewProductionController {
             organizations.add(org);
         }
 
-        production.setOrgContributors(organizations);
+        currentProduction.setOrgContributors(organizations);
 
         // The credits for all roles and contributors
         ArrayList<Credit> credits = new ArrayList<>();
         for (TextField textField : roleContributors.keySet()) {
             String role = textField.getText();
+            if (role.isBlank()) {
+                fieldMissingWindow();
+                throw new IllegalArgumentException();
+            }
             Credit credit = new Credit();
             credit.setRole(role);
 
@@ -430,24 +451,33 @@ public class NewProductionController {
             credits.add(credit);
         }
 
-        production.setCredits(credits);
-        production.store(); //stores production in DB and stores Credits
+        currentProduction.setCredits(credits);
+
+        int productionID = currentProduction.store(); //stores production in DB and stores Credits
+
         // ICatalog.getInstance().addProduction(production);//Save Statement
 
     }
 
     public void loadProduction(Production production) {
+        currentProduction = production;
+
         // The production information
         productionName.setText(production.getName());
         productionDate.getEditor().setText(production.getReleaseDate());
         productionLength.setText(String.valueOf(production.getLength()));
+        productionProducer.getItems().add(production.getProducer());
         productionProducer.setValue(production.getProducer());
+        productionProducer.setStyle("-fx-border-width: 0");
 
         // The contributing organizations
         ArrayList<Organization> organizations = production.getOrgContributors();
         for (Organization organization : organizations) {
             ChoiceBox<Organization> choiceBox = addOrganization();
+            choiceBox.getItems().add(organization);
             choiceBox.setValue(organization);
+            choiceBox.setDisable(true);
+            choiceBox.setStyle("-fx-border-width: 0");
         }
 
         // The credits for all roles and contributors
@@ -455,14 +485,27 @@ public class NewProductionController {
 
         for (Credit credit : credits) {
             TextField role = addRole();
+            role.setText(credit.getRole());
             ArrayList<ChoiceBox> choiceBoxes = roleContributors.get(role);
 
-            role.setText(credit.getRole());
-            for (Contributor contributor : credit.getContributors()) {
-                addContributor((VBox) choiceBoxes.get(0).getParent(), role);
+            ArrayList<Contributor> contributors = new ArrayList<>(credit.getContributors());
+            ChoiceBox<Contributor> firstChoiceBox = currentContributor;
+            Contributor firstContributor = contributors.remove(0);
+            firstChoiceBox.getItems().add(firstContributor);
+            firstChoiceBox.setValue(firstContributor);
+            firstChoiceBox.setDisable(true);
+            firstChoiceBox.setStyle("-fx-border-width: 0");
 
+            for (Contributor contributor : contributors) {
+                ChoiceBox<Contributor> choiceBox = addContributor((VBox) choiceBoxes.get(0).getParent(), role);
+                choiceBox.getItems().add(contributor);
+                choiceBox.setValue(contributor);
+                choiceBox.setDisable(true);
+                choiceBox.setStyle("-fx-border-width: 0");
             }
         }
+        searchButtonContributor.setDisable(true);
+        searchFieldContributor.setDisable(true);
 
         //ShowCreditController.getCatalog().addProduction(production);
     }
@@ -496,7 +539,7 @@ public class NewProductionController {
 
                 }
             }
-        } else if (disableChoiceBoxes && node instanceof ChoiceBox) {
+        } else if (disableChoiceBoxes && node instanceof ChoiceBox && node != productionProducer) {
             node.setDisable(true);
             node.setStyle("-fx-border-width: 0");
         }
@@ -544,15 +587,6 @@ public class NewProductionController {
             return true;
         }
         return false;
-    }
-
-    // Old code for getting textFields
-    private void combineRoleContributors(TextField key, ChoiceBox value) {
-        roleContributors.get(key).add(value);
-    }
-
-    private void combineRoleContributors(TextField key, ArrayList<ChoiceBox> values) {
-        roleContributors.get(key).addAll(values);
     }
 
     private void removeCombination(TextField key) {
