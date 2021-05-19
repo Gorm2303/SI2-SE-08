@@ -81,7 +81,7 @@ public class NewProductionController {
             //System.out.println(isRegularLength(productionLength.getText()));
 
             //Maybe check length for only number value
-            if (productionName.getText().isBlank() || (productionDate.getValue() == null && isRegularDate(productionDate.getEditor().getText()))
+            if (productionName.getText().isBlank() || (productionDate.getValue() == null && !isRegularDate(productionDate.getEditor().getText()))
                     || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
                     || (productionProducer.getValue() == null)) {
                 fieldMissingWindow();
@@ -315,15 +315,12 @@ public class NewProductionController {
         DatePicker datePicker = new DatePicker();
 
         save.setOnAction(actionEvent1 -> {
-            Contributor contributor = new Contributor();
-            contributor.setName(textField.getText());
             if (isRegularDate(datePicker.getEditor().getText())) {
+                Contributor contributor = new Contributor();
+                contributor.setName(textField.getText());
                 contributor.setBirthDate(datePicker.getEditor().getText());
+                stage.close();
             }
-            System.out.println(contributor.store());
-            System.out.println(Contributor.get(contributor.getId()));
-            System.out.println(Contributor.get(contributor.getId()));
-            stage.close();
         });
 
         vBox.getChildren().addAll(label, date, datePicker);
@@ -576,10 +573,10 @@ public class NewProductionController {
 
     // Regular expression for production Date.
     private boolean isRegularDate(String date) {
-        Pattern pattern = Pattern.compile("(\\d{2}\\.){2}\\d{4}");
+        Pattern pattern = Pattern.compile("^(\\d{2}\\.){2}\\d{4}$");
         Matcher matcher = pattern.matcher(date);
         //System.out.println(pattern);
-        return !matcher.find();
+        return matcher.find();
     }
 
     private boolean isRegularLength(String length) {
