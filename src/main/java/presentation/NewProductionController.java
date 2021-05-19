@@ -317,6 +317,9 @@ public class NewProductionController {
         save.setOnAction(actionEvent1 -> {
             Contributor contributor = new Contributor();
             contributor.setName(textField.getText());
+            if (isRegularDate(datePicker.getEditor().getText())) {
+                contributor.setBirthDate(datePicker.getEditor().getText());
+            }
             System.out.println(contributor.store());
             System.out.println(Contributor.get(contributor.getId()));
             System.out.println(Contributor.get(contributor.getId()));
