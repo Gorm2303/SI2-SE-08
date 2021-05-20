@@ -2,13 +2,15 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Organization implements Storable {
     private String name;
     private int id;
     private ArrayList<Production> productions;
-    private static ArrayList<Organization> organizationsInMemory = new ArrayList<>();
+    private static LinkedList<Organization> organizationsInMemory = new LinkedList<>();
 
     public Organization() {
         organizationsInMemory.add(this);

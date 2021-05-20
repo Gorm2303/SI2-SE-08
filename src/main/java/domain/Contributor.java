@@ -3,13 +3,13 @@ package domain;
 import data.DataFacade;
 import data.IDataFacade;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Contributor implements Storable {
     private String name;
     private int id;
     private String birthDate;
-    private static ArrayList<Contributor> contributorsInMemory = new ArrayList<>();
+    private static LinkedList<Contributor> contributorsInMemory = new LinkedList<>();
 
     public Contributor() {
         contributorsInMemory.add(this);

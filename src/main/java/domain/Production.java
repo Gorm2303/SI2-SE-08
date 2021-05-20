@@ -2,7 +2,9 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Production implements Storable, Comparable<Production> {
@@ -13,7 +15,7 @@ public class Production implements Storable, Comparable<Production> {
     private int length;
     private ArrayList<Organization> orgContributors;
     private ArrayList<Credit> credits;
-    private static ArrayList<Production> productionsInMemory = new ArrayList<>();
+    private static LinkedList<Production> productionsInMemory = new LinkedList<>();
 
     public Production() {
         productionsInMemory.add(this);
