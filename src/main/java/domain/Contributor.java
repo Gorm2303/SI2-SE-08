@@ -3,12 +3,14 @@ package domain;
 import data.DataFacade;
 import data.IDataFacade;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Contributor implements Storable {
     private String name;
     private int id;
     private String birthDate;
+    private ArrayList<String> productionNames;
     private static LinkedList<Contributor> contributorsInMemory = new LinkedList<>();
 
     public Contributor() {
@@ -44,6 +46,7 @@ public class Contributor implements Storable {
         this.name = iDataFacade.materializeContributorName(id);
         this.birthDate = iDataFacade.materializeContributorBirthDate(id);
         this.id = id;
+        productionNames = new ArrayList<>(iDataFacade.materializeContributorIn(id));
         contributorsInMemory.add(this);
         if (contributorsInMemory.size() > 10) {
             contributorsInMemory.remove(0);
@@ -97,6 +100,11 @@ public class Contributor implements Storable {
     }
 
     public String detailedString() {
-        return name + " " + birthDate;
+        StringBuilder detailedString;
+        detailedString = new StringBuilder(name + " " + birthDate + "\n" + "Produktioner personen er medvirkende i: \n");
+        for (String s : productionNames) {
+            detailedString.append(s).append("\n");
+        }
+        return detailedString.toString();
     }
 }

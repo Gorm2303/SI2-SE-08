@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ public interface IDataFacade {
 
     String materializeContributorName(int contributorID);
     String materializeContributorBirthDate(int contributorID);
+    HashSet<String> materializeContributorIn(int contributorID);
 
     String materializeCreditRole(int creditID);
     int materializeCreditProductionID(int creditID);
