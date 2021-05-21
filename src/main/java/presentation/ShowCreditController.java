@@ -22,7 +22,9 @@ public class ShowCreditController {
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
     @FXML
-    private Slider searchSlider;
+    private RadioButton radioButtonProduction, radioButtonContributor;
+    @FXML
+    private ToggleGroup searchRadio;
     private static Scene newProduction;
 
     private int pageNumber;
@@ -76,7 +78,6 @@ public class ShowCreditController {
             }
 
         } else if (button == nextButton) {
-            previousButton.setDisable(false);
             pageNumber++;
             // Get next objects
             getNextList();
@@ -95,7 +96,7 @@ public class ShowCreditController {
     }
 
     private void getNextList() {
-        if (isProduction) {
+        if (radioButtonProduction.isSelected()) {
             abstractList = FXCollections.observableArrayList(
                     catalog.searchInDB(true, searchString, pageNumber, pageSize));
         } else {
@@ -112,7 +113,7 @@ public class ShowCreditController {
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {
-        if (isProduction) {
+        if (radioButtonProduction.isSelected()) {
             Production selectedProduction = (Production) productionListview.getSelectionModel().getSelectedItem();
             if (selectedProduction == null) {
                 return;
@@ -126,6 +127,10 @@ public class ShowCreditController {
             displayArea.setText(selectedContributor.detailedString());
         }
 
+    }
+
+    public void onMouseClicked(MouseEvent mouseEvent) {
+        getNextList();
     }
 
     //TEMPORARY METHOD
@@ -221,11 +226,4 @@ public class ShowCreditController {
         testProduction.store();
     }
 
-
-    public void onInputMethod(MouseEvent mouseEvent) {
-        Slider slider = (Slider) mouseEvent.getSource();
-        this.isProduction = slider.getValue() < 0.5;
-
-        System.out.println(isProduction);
-    }
 }
