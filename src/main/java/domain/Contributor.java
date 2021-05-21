@@ -95,4 +95,8 @@ public class Contributor implements Storable {
     public String toString() {
         return name;
     }
+
+    public String detailedString() {
+        return name + " " + birthDate;
+    }
 }

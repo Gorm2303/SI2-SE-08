@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
@@ -17,20 +14,25 @@ import java.util.ArrayList;
 
 public class ShowCreditController {
     @FXML
-    private ListView<Production> productionListview;
+    private ListView<Object> productionListview;
     @FXML
     private TextArea displayArea;
     @FXML
     private TextField searchField;
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
+    @FXML
+    private Slider searchSlider;
     private static Scene newProduction;
 
     private int pageNumber;
     private String searchString = "";
     private final int pageSize = 12;
     private static ICatalog catalog;
+    private ObservableList<Object> abstractList;
     private ObservableList<Production> productionObservableList;
+    private ObservableList<Contributor> contributorObservableList;
+    private boolean isProduction = true;
 
     @FXML
     public void initialize() {
@@ -39,11 +41,11 @@ public class ShowCreditController {
 
         productionObservableList = FXCollections.observableArrayList(
                 catalog.searchForProductions("", pageNumber, pageSize));
-        productionListview.setItems(productionObservableList);
+        abstractList = FXCollections.observableArrayList(productionObservableList);
+        productionListview.setItems(abstractList);
         nextButton.setDisable(productionObservableList.size() < pageSize);
 
-        //updateDummies();
-        //dummyProductions();
+
     }
 
 
@@ -59,7 +61,7 @@ public class ShowCreditController {
                 e.printStackTrace();
             }
         } else if (button == editProductionButton) {
-            Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
+            Production selectedProduction = (Production) productionListview.getSelectionModel().getSelectedItem();
             if (selectedProduction == null) {
                 return;
             }
@@ -76,30 +78,33 @@ public class ShowCreditController {
         } else if (button == nextButton) {
             previousButton.setDisable(false);
             pageNumber++;
-            productionObservableList = FXCollections.observableArrayList(
-                    catalog.searchForProductions(searchString, pageNumber, pageSize));
-            productionListview.setItems(productionObservableList);
-            nextButton.setDisable(productionObservableList.size() < pageSize);
+            // Get next objects
+            getNextList();
 
         } else if (button == previousButton) {
             pageNumber--;
-            productionObservableList = FXCollections.observableArrayList(
-                    catalog.searchForProductions(searchString, pageNumber, pageSize));
-            productionListview.setItems(productionObservableList);
-
-            nextButton.setDisable(productionObservableList.size() < pageSize);
-            previousButton.setDisable(pageNumber <= 1);
+            getNextList();
 
         } else if (button == searchButton) {
             System.out.println(searchField.getText());
             searchString = searchField.getText();
             pageNumber = 1;
-            productionObservableList = FXCollections.observableArrayList(
-                    catalog.searchForProductions(searchString, pageNumber, pageSize));
-            productionListview.setItems(productionObservableList);
-            previousButton.setDisable(true);
-            nextButton.setDisable(productionObservableList.size() < pageSize);
+            getNextList();
+
         }
+    }
+
+    private void getNextList() {
+        if (isProduction) {
+            abstractList = FXCollections.observableArrayList(
+                    catalog.searchInDB(true, searchString, pageNumber, pageSize));
+        } else {
+            abstractList = FXCollections.observableArrayList(
+                    catalog.searchInDB(false, searchString, pageNumber, pageSize));
+        }
+        productionListview.setItems(abstractList);
+        previousButton.setDisable(pageNumber <= 1);
+        nextButton.setDisable(abstractList.size() < pageSize);
     }
 
     public static Scene getNewProduction() {
@@ -107,11 +112,20 @@ public class ShowCreditController {
     }
 
     public void handleMouseClick(MouseEvent mouseEvent) {
-        Production selectedProduction = productionListview.getSelectionModel().getSelectedItem();
-        if (selectedProduction == null) {
-            return;
+        if (isProduction) {
+            Production selectedProduction = (Production) productionListview.getSelectionModel().getSelectedItem();
+            if (selectedProduction == null) {
+                return;
+            }
+            displayArea.setText(selectedProduction.detailedString());
+        } else {
+            Contributor selectedContributor = (Contributor) productionListview.getSelectionModel().getSelectedItem();
+            if (selectedContributor == null) {
+                return;
+            }
+            displayArea.setText(selectedContributor.detailedString());
         }
-        displayArea.setText(selectedProduction.detailedString());
+
     }
 
     //TEMPORARY METHOD
@@ -205,5 +219,13 @@ public class ShowCreditController {
                 "09.09.2007",  20, orgList, credList);
         testProduction.setId(4);
         testProduction.store();
+    }
+
+
+    public void onInputMethod(MouseEvent mouseEvent) {
+        Slider slider = (Slider) mouseEvent.getSource();
+        this.isProduction = slider.getValue() < 0.5;
+
+        System.out.println(isProduction);
     }
 }

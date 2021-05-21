@@ -2,6 +2,9 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
+import javafx.collections.FXCollections;
+
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -66,6 +69,15 @@ public class Catalog implements ICatalog{
             contributors.add(Contributor.get(i));
         }
         return contributors;
+    }
+
+    @Override
+    public Collection<Object> searchInDB(boolean isProduction, String searchString, int pageNumber, int pageSize) {
+        if (isProduction) {
+            return FXCollections.observableArrayList(searchForProductions(searchString, pageNumber, pageSize));
+        } else {
+            return FXCollections.observableArrayList(searchForContributors(searchString, pageNumber));
+        }
     }
 
     @Override
