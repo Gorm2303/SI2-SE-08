@@ -14,15 +14,15 @@
       <Button fx:id="previousButton" disable="true" layoutX="10.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Forrige" />
       <Button fx:id="nextButton" layoutX="80.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Næste" />
       <TextArea fx:id="displayArea" editable="false" layoutX="150.0" layoutY="50.0" prefHeight="296.0" prefWidth="300.0" wrapText="true" />
-      <Button fx:id="editProductionButton" layoutX="466.0" layoutY="63.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Rediger produktion" />
+      <Button fx:id="editProductionButton" disable="true" layoutX="466.0" layoutY="63.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Rediger produktion" />
       <Button fx:id="addProductionButton" layoutX="466.0" layoutY="104.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Tilføj produktion" />
       <Button fx:id="searchButton" layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
       <TextField fx:id="searchField" layoutX="226.0" layoutY="14.0" promptText="Søg" />
-      <RadioButton fx:id="radioButtonProduction" onMouseClicked="#onMouseClicked" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" selected="true" text="Produktion">
+      <RadioButton fx:id="radioButtonProduction" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#onMouseClicked" selected="true" text="Produktion">
          <toggleGroup>
             <ToggleGroup fx:id="searchRadio" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="radioButtonContributor" onMouseClicked="#onMouseClicked" layoutX="119.0" layoutY="18.0" mnemonicParsing="false" text="Medvirkende" toggleGroup="$searchRadio" />
+      <RadioButton fx:id="radioButtonContributor" layoutX="119.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#onMouseClicked" text="Medvirkende" toggleGroup="$searchRadio" />
    </children>
 </AnchorPane>

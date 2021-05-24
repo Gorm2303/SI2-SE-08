@@ -31,25 +31,14 @@ public class ShowCreditController {
     private String searchString = "";
     private final int pageSize = 12;
     private static ICatalog catalog;
-    private ObservableList<Object> abstractList;
-    private ObservableList<Production> productionObservableList;
-    private ObservableList<Contributor> contributorObservableList;
-    private boolean isProduction = true;
 
     @FXML
     public void initialize() {
         pageNumber = 1;
         catalog = ICatalog.getInstance();
-
-        productionObservableList = FXCollections.observableArrayList(
-                catalog.searchForProductions("", pageNumber, pageSize));
-        abstractList = FXCollections.observableArrayList(productionObservableList);
-        productionListview.setItems(abstractList);
-        nextButton.setDisable(productionObservableList.size() < pageSize);
-
+        getNextList();
 
     }
-
 
     public void onButtonClicked(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
@@ -96,16 +85,17 @@ public class ShowCreditController {
     }
 
     private void getNextList() {
+        ObservableList<Object> searchResultList;
         if (radioButtonProduction.isSelected()) {
-            abstractList = FXCollections.observableArrayList(
+            searchResultList = FXCollections.observableArrayList(
                     catalog.searchInDB(true, searchString, pageNumber, pageSize));
         } else {
-            abstractList = FXCollections.observableArrayList(
+            searchResultList = FXCollections.observableArrayList(
                     catalog.searchInDB(false, searchString, pageNumber, pageSize));
         }
-        productionListview.setItems(abstractList);
+        productionListview.setItems(searchResultList);
         previousButton.setDisable(pageNumber <= 1);
-        nextButton.setDisable(abstractList.size() < pageSize);
+        nextButton.setDisable(searchResultList.size() < pageSize);
     }
 
     public static Scene getNewProduction() {
@@ -119,18 +109,21 @@ public class ShowCreditController {
                 return;
             }
             displayArea.setText(selectedProduction.detailedString());
+            editProductionButton.setDisable(false);
         } else {
             Contributor selectedContributor = (Contributor) productionListview.getSelectionModel().getSelectedItem();
             if (selectedContributor == null) {
                 return;
             }
             displayArea.setText(selectedContributor.detailedString());
+            editProductionButton.setDisable(true);
         }
 
     }
 
     public void onMouseClicked(MouseEvent mouseEvent) {
         getNextList();
+        editProductionButton.setDisable(true);
     }
 
     //TEMPORARY METHOD
