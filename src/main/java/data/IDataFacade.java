@@ -44,7 +44,8 @@ public interface IDataFacade {
     void setDBPassword(String password);
     void initializeDatabase();
 
-    LinkedList<Integer> searchThroughOrganizations(String searchString);
-    LinkedList<Integer> searchThroughContributors(String searchString);
     Set<Integer> searchForProductions(String searchString, int pageNumber, int pageSize);
+    Set<Integer> searchForOrganizations(String searchString, int pageNumber, int pageSize);
+    Set<Integer> searchForContributors(String searchString, int pageNumber, int pageSize);
+
 }

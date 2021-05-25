@@ -6,7 +6,7 @@ import data.IDataFacade;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Organization implements Storable {
+public class Organization implements Storable, Comparable<Organization> {
     private String name;
     private int id;
     private ArrayList<String> productions;
@@ -109,4 +109,8 @@ public class Organization implements Storable {
         return (this.id == org.getId());
     }
 
+    @Override
+    public int compareTo(Organization o) {
+        return this.name.compareTo(o.getName());
+    }
 }

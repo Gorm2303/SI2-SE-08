@@ -51,23 +51,24 @@ public class DataFacade implements IDataFacade{
     public void initializeDatabase() {
         dbConnection.initializePostgresqlDatabase();
     }
-  
-  
-  
-    @Override
-    public LinkedList<Integer> searchThroughOrganizations(String searchString) {
-        return orgData.searchFor(searchString);
-    }
 
-    @Override
-    public LinkedList<Integer> searchThroughContributors(String searchString) {
-        return contributorData.searchFor(searchString);
-    }
+
 
     @Override
     public Set<Integer> searchForProductions(String searchString, int pageNumber, int pageSize) {
         return productionData.searchFor(searchString, pageNumber, pageSize);
     }
+
+    @Override
+    public Set<Integer> searchForOrganizations(String searchString, int pageNumber, int pageSize) {
+        return orgData.searchFor(searchString, pageNumber, pageSize);
+    }
+
+    @Override
+    public Set<Integer> searchForContributors(String searchString, int pageNumber, int pageSize) {
+        return contributorData.searchFor(searchString, pageNumber, pageSize);
+    }
+
 
     @Override
     public int storeOrganization(String name) {

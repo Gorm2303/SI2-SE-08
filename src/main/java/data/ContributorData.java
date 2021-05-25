@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class ContributorData {
     private DBConnection dbConnection;
@@ -89,21 +90,22 @@ public class ContributorData {
         return contributesTo;
     }
 
-    public LinkedList<Integer> searchFor(String searchString) {
-        LinkedList<Integer> resultList = new LinkedList<>();
+    public Set<Integer> searchFor(String searchString, int pageNumber, int pageSize) {
+        Set<Integer> resultSet = new HashSet<>();
+        int offset = pageSize * (pageNumber - 1);
 
         try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM contributors WHERE name ILIKE (?)");
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT id FROM contributors WHERE name ILIKE (?) LIMIT " + pageSize + " OFFSET " + offset);
             stmt.setString(1, '%' + searchString + '%');
             ResultSet sqlReturnValues = stmt.executeQuery();
 
             while (sqlReturnValues.next()) {
                 int id = sqlReturnValues.getInt(1);
-                resultList.add(id);
+                resultSet.add(id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return resultList;
+        return resultSet;
     }
 }

@@ -89,10 +89,13 @@ public class ShowCreditController {
         ObservableList<Storable> searchResultList;
         if (radioButtonProduction.isSelected()) {
             searchResultList = FXCollections.observableArrayList(
-                    catalog.searchInDB(true, searchString, pageNumber, pageSize));
-        } else {
+                    catalog.searchForProductions( searchString, pageNumber, pageSize));
+        } else if (radioButtonContributor.isSelected()){
             searchResultList = FXCollections.observableArrayList(
-                    catalog.searchInDB(false, searchString, pageNumber, pageSize));
+                    catalog.searchForContributors(searchString, pageNumber, pageSize));
+        } else {
+            //Here goes organization stuff
+            searchResultList = FXCollections.observableArrayList();
         }
         objectListview.setItems(searchResultList);
         previousButton.setDisable(pageNumber <= 1);

@@ -6,7 +6,7 @@ import data.IDataFacade;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Contributor implements Storable {
+public class Contributor implements Storable, Comparable<Contributor>  {
     private String name;
     private int id;
     private String birthDate;
@@ -106,5 +106,10 @@ public class Contributor implements Storable {
             detailedString.append(s).append("\n");
         }
         return detailedString.toString();
+    }
+
+    @Override
+    public int compareTo(Contributor o) {
+        return this.name.compareTo(o.getName());
     }
 }
