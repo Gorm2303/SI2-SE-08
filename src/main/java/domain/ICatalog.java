@@ -11,10 +11,9 @@ public interface ICatalog {
 
     boolean removeProduction(int productionID);
 
-    LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
-    LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);
-    Collection<Storable> searchInDB(boolean isProduction, String searchString, int pageNumber, int pageSize);
     Set<Production> searchForProductions(String searchString, int pageNumber, int pageSize);
+    Set<Organization> searchForOrganizations(String searchStringer, int pageNumber, int pageSize);
+    Set<Contributor> searchForContributors(String searchString, int pageNumber, int pageSize);
 
     void setDBurl(String url);
     void setDBPort(int port);

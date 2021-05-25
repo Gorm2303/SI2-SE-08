@@ -54,38 +54,29 @@ public class Catalog implements ICatalog{
     }
 
     @Override
-    public LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber) {
-        LinkedList<Organization> organizations = new LinkedList<>();
-        for (int i : dataFacade.searchThroughOrganizations(searchString)) {
-            organizations.add(Organization.get(i));
-        }
-        return organizations;
-    }
-
-    @Override
-    public LinkedList<Contributor> searchForContributors(String searchString, int pageNumber) {
-        LinkedList<Contributor> contributors = new LinkedList<>();
-        for (int i : dataFacade.searchThroughContributors(searchString)) {
-            contributors.add(Contributor.get(i));
-        }
-        return contributors;
-    }
-
-    @Override
-    public Collection<Storable> searchInDB(boolean isProduction, String searchString, int pageNumber, int pageSize) {
-        if (isProduction) {
-            return FXCollections.observableArrayList(searchForProductions(searchString, pageNumber, pageSize));
-        } else {
-            return FXCollections.observableArrayList(searchForContributors(searchString, pageNumber));
-        }
-    }
-
-    @Override
     public Set<Production> searchForProductions(String searchString, int pageNumber, int pageSize) {
         Set<Production> productionSet = new TreeSet<>();
         for(Integer id : dataFacade.searchForProductions(searchString, pageNumber, pageSize)) {
             productionSet.add(Production.get(id));
         }
         return productionSet;
+    }
+
+    @Override
+    public Set<Organization> searchForOrganizations(String searchString, int pageNumber, int pageSize) {
+        Set<Organization> organizations = new TreeSet<>();
+        for (int id : dataFacade.searchForOrganizations(searchString, pageNumber, pageSize)) {
+            organizations.add(Organization.get(id));
+        }
+        return organizations;
+    }
+
+    @Override
+    public Set<Contributor> searchForContributors(String searchString, int pageNumber, int pageSize) {
+        Set<Contributor> contributors = new TreeSet<>();
+        for (int id : dataFacade.searchForContributors(searchString, pageNumber, pageSize)) {
+            contributors.add(Contributor.get(id));
+        }
+        return contributors;
     }
 }

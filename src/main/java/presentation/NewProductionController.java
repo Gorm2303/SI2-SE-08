@@ -137,7 +137,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Organization organization = currentOrganization.getValue();
                 currentOrganization.setItems(FXCollections.observableArrayList());
-                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
                 if (currentOrganization.getItems().isEmpty()) {
                     handleDisableOfAddButtons(outerHBox, true, false);
                     return;
@@ -153,7 +153,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Contributor contributor = currentContributor.getValue();
                 currentContributor.setItems(FXCollections.observableArrayList());
-                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1));
+                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1, 10));
                 if (currentContributor.getItems().isEmpty()) {
                     handleDisableOfAddButtons(outerHBox, true, false);
                     return;
@@ -168,7 +168,7 @@ public class NewProductionController {
             if (!searchString.isBlank()) {
                 Organization organization = productionProducer.getValue();
                 productionProducer.setItems(FXCollections.observableArrayList());
-                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1));
+                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
                 if (productionProducer.getItems().isEmpty()) {
                     handleDisableOfAddButtons(outerHBox, true, false);
                     return;

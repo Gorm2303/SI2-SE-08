@@ -6,7 +6,7 @@ import data.IDataFacade;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Organization implements Storable {
+public class Organization implements Storable, Comparable<Organization> {
     private String name;
     private int id;
     private ArrayList<String> productions;
@@ -43,6 +43,7 @@ public class Organization implements Storable {
         IDataFacade iDataFacade = new DataFacade();
         this.name = iDataFacade.materializeOrganizationName(id);
         this.id = id;
+        this.productions = new ArrayList<>(iDataFacade.materializeOrganizationIn(id));
         organizationsInMemory.add(this);
         if (organizationsInMemory.size() > 10) {
             organizationsInMemory.remove(0);
@@ -93,7 +94,7 @@ public class Organization implements Storable {
     @Override
     public String detailedString() {
         StringBuilder detailedString;
-        detailedString = new StringBuilder(name + "\n" + "Produktioner personen er medvirkende i: \n");
+        detailedString = new StringBuilder(name + "\n" + "Medvirkede i produktionen af: \n");
         for (String s : productions) {
             detailedString.append(s).append("\n");
         }
@@ -109,4 +110,8 @@ public class Organization implements Storable {
         return (this.id == org.getId());
     }
 
+    @Override
+    public int compareTo(Organization o) {
+        return this.name.compareTo(o.getName());
+    }
 }
