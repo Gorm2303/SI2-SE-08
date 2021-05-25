@@ -66,19 +66,19 @@ public class ContributorData {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT creditid FROM contributorsincredits WHERE contributorid = ?");
             stmt.setInt(1, contributorID);
             ResultSet sqlReturnValues = stmt.executeQuery();
-            LinkedList<Integer> temp = new LinkedList<>();
+            LinkedList<Integer> creditIDs = new LinkedList<>();
             while (sqlReturnValues.next()) {
-                temp.add(sqlReturnValues.getInt(1));
+                creditIDs.add(sqlReturnValues.getInt(1));
             }
 
-            for (Integer i : temp) {
-                PreparedStatement statement = dbConnection.prepareStatement("SELECT productionid FROM credits WHERE id = ?");
-                statement.setInt(1, i);
-                ResultSet sqlReturns = statement.executeQuery();
-                PreparedStatement state = dbConnection.prepareStatement("SELECT name FROM productions WHERE id = ?");
-                sqlReturns.next();
-                state.setInt(1, sqlReturns.getInt(1));
-                ResultSet sqlNames = state.executeQuery();
+            for (Integer id : creditIDs) {
+                stmt = dbConnection.prepareStatement("SELECT productionid FROM credits WHERE id = ?");
+                stmt.setInt(1, id);
+                sqlReturnValues = stmt.executeQuery();
+                PreparedStatement stmt2 = dbConnection.prepareStatement("SELECT name FROM productions WHERE id = ?");
+                sqlReturnValues.next();
+                stmt2.setInt(1, sqlReturnValues.getInt(1));
+                ResultSet sqlNames = stmt2.executeQuery();
                 sqlNames.next();
                 contributesTo.add(sqlNames.getString(1));
             }

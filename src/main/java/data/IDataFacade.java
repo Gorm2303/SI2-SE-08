@@ -19,11 +19,12 @@ public interface IDataFacade {
     boolean deleteOrganizationInProduction(int productionID);
     boolean deleteCreditsInProduction(int productionID);
 
-    String materializeOrganizationName(int contributorID);
+    String materializeOrganizationName(int organizationID);
+    Set<String> materializeOrganizationIn(int organizationID);
 
     String materializeContributorName(int contributorID);
     String materializeContributorBirthDate(int contributorID);
-    HashSet<String> materializeContributorIn(int contributorID);
+    Set<String> materializeContributorIn(int contributorID);
 
     String materializeCreditRole(int creditID);
     int materializeCreditProductionID(int creditID);

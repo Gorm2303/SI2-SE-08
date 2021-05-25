@@ -63,6 +63,39 @@ public class OrganizationData {
         return resultSet;
     }
 
+    public Set<String> materializeOrganizationIn(int id) {
+        HashSet<String> contributesTo = new HashSet<>();
+        try {
+            PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionid FROM organizationsinproductions WHERE organizationid = ?");
+            stmt.setInt(1, id);
+            ResultSet sqlReturnValues = stmt.executeQuery();
+            LinkedList<Integer> productionIDs = new LinkedList<>();
+            while (sqlReturnValues.next()) {
+                productionIDs.add(sqlReturnValues.getInt(1));
+            }
+
+            for (Integer pID : productionIDs) {
+                stmt = dbConnection.prepareStatement("SELECT name FROM productions WHERE id = ?");
+                stmt.setInt(1, pID);
+                sqlReturnValues = stmt.executeQuery();
+                sqlReturnValues.next();
+                contributesTo.add(sqlReturnValues.getString(1));
+            }
+
+            stmt = dbConnection.prepareStatement("SELECT name FROM productions WHERE producerid = ?");
+            stmt.setInt(1, id);
+            sqlReturnValues = stmt.executeQuery();
+            while (sqlReturnValues.next()) {
+                contributesTo.add(sqlReturnValues.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contributesTo;
+    }
+
     public boolean deleteOrganizationsInProduction(int productionID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(

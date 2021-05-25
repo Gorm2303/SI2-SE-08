@@ -23,7 +23,7 @@ public class ShowCreditController {
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
     @FXML
-    private RadioButton radioButtonProduction, radioButtonContributor;
+    private RadioButton radioButtonProduction, radioButtonContributor, radioButtonOrganization;
     @FXML
     private ToggleGroup searchRadio;
     private static Scene newProduction;
@@ -93,8 +93,10 @@ public class ShowCreditController {
         } else if (radioButtonContributor.isSelected()){
             searchResultList = FXCollections.observableArrayList(
                     catalog.searchForContributors(searchString, pageNumber, pageSize));
+        } else if (radioButtonOrganization.isSelected()) {
+            searchResultList = FXCollections.observableArrayList(
+                    catalog.searchForOrganizations(searchString, pageNumber, pageSize));
         } else {
-            //Here goes organization stuff
             searchResultList = FXCollections.observableArrayList();
         }
         objectListview.setItems(searchResultList);
@@ -120,6 +122,13 @@ public class ShowCreditController {
                 return;
             }
             displayArea.setText(selectedContributor.detailedString());
+            editProductionButton.setDisable(true);
+        } else if (radioButtonOrganization.isSelected()) {
+            Storable selectedOrganization = objectListview.getSelectionModel().getSelectedItem();
+            if (selectedOrganization == null) {
+                return;
+            }
+            displayArea.setText(selectedOrganization.detailedString());
             editProductionButton.setDisable(true);
         }
     }

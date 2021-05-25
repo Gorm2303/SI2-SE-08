@@ -46,7 +46,7 @@ public class Contributor implements Storable, Comparable<Contributor>  {
         this.name = iDataFacade.materializeContributorName(id);
         this.birthDate = iDataFacade.materializeContributorBirthDate(id);
         this.id = id;
-        productionNames = new ArrayList<>(iDataFacade.materializeContributorIn(id));
+        this.productionNames = new ArrayList<>(iDataFacade.materializeContributorIn(id));
         contributorsInMemory.add(this);
         if (contributorsInMemory.size() > 10) {
             contributorsInMemory.remove(0);

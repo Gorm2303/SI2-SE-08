@@ -43,6 +43,7 @@ public class Organization implements Storable, Comparable<Organization> {
         IDataFacade iDataFacade = new DataFacade();
         this.name = iDataFacade.materializeOrganizationName(id);
         this.id = id;
+        this.productions = new ArrayList<>(iDataFacade.materializeOrganizationIn(id));
         organizationsInMemory.add(this);
         if (organizationsInMemory.size() > 10) {
             organizationsInMemory.remove(0);
@@ -93,7 +94,7 @@ public class Organization implements Storable, Comparable<Organization> {
     @Override
     public String detailedString() {
         StringBuilder detailedString;
-        detailedString = new StringBuilder(name + "\n" + "Produktioner personen er medvirkende i: \n");
+        detailedString = new StringBuilder(name + "\n" + "Medvirkede i produktionen af: \n");
         for (String s : productions) {
             detailedString.append(s).append("\n");
         }

@@ -124,6 +124,11 @@ public class DataFacade implements IDataFacade{
     }
 
     @Override
+    public Set<String> materializeOrganizationIn(int organizationID) {
+        return orgData.materializeOrganizationIn(organizationID);
+    }
+
+    @Override
     public String materializeContributorName(int contributorID) {
         return contributorData.materializeName(contributorID);
     }
@@ -134,7 +139,7 @@ public class DataFacade implements IDataFacade{
     }
 
     @Override
-    public HashSet<String> materializeContributorIn(int contributorID) {
+    public Set<String> materializeContributorIn(int contributorID) {
         return contributorData.materializeContributorIn(contributorID);
     }
 
