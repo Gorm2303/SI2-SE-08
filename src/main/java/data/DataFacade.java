@@ -1,8 +1,8 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
 public class DataFacade implements IDataFacade{
@@ -130,6 +130,11 @@ public class DataFacade implements IDataFacade{
     @Override
     public String materializeContributorBirthDate(int contributorID) {
         return contributorData.materializeBirthDate(contributorID);
+    }
+
+    @Override
+    public HashSet<String> materializeContributorIn(int contributorID) {
+        return contributorData.materializeContributorIn(contributorID);
     }
 
     @Override

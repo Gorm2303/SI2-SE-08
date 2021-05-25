@@ -5,13 +5,14 @@ import data.IDataFacade;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Credit implements Storable {
     private String role;
     private ArrayList<Contributor> contributors;
     private int id;
-    private static ArrayList<Credit> creditsInMemory = new ArrayList<>();
+    private static LinkedList<Credit> creditsInMemory = new LinkedList<>();
 
     public Credit() {
         creditsInMemory.add(this);

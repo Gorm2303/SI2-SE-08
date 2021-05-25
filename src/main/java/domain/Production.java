@@ -3,7 +3,9 @@ package domain;
 import data.DataFacade;
 import data.IDataFacade;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class Production implements Storable, Comparable<Production> {
     private String name;
@@ -13,7 +15,7 @@ public class Production implements Storable, Comparable<Production> {
     private int length;
     private ArrayList<Organization> orgContributors;
     private ArrayList<Credit> credits;
-    private static ArrayList<Production> productionsInMemory = new ArrayList<>();
+    private static LinkedList<Production> productionsInMemory = new LinkedList<>();
 
     public Production() {
         productionsInMemory.add(this);
@@ -149,7 +151,8 @@ public class Production implements Storable, Comparable<Production> {
     }
 
     public String detailedString() {
-        StringBuilder returnString = new StringBuilder(name + "\n\n" +
+        StringBuilder returnString = new StringBuilder(name + "\n" +
+                length + " minutters spilletid" + "\n\n" +
                 "Udgivet: " + releaseDate + "\n\n" +
                 "Produceret af: " + producer.getName() + "\n\n" +
                 "I samarbejde med:\n");

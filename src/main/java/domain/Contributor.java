@@ -4,13 +4,14 @@ import data.DataFacade;
 import data.IDataFacade;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Contributor implements Storable {
     private String name;
     private int id;
     private String birthDate;
-    private ArrayList<Production> productionsIsIn;
-    private static ArrayList<Contributor> contributorsInMemory = new ArrayList<>();
+    private ArrayList<String> productionNames;
+    private static LinkedList<Contributor> contributorsInMemory = new LinkedList<>();
 
     public Contributor() {
         contributorsInMemory.add(this);
@@ -45,6 +46,7 @@ public class Contributor implements Storable {
         this.name = iDataFacade.materializeContributorName(id);
         this.birthDate = iDataFacade.materializeContributorBirthDate(id);
         this.id = id;
+        productionNames = new ArrayList<>(iDataFacade.materializeContributorIn(id));
         contributorsInMemory.add(this);
         if (contributorsInMemory.size() > 10) {
             contributorsInMemory.remove(0);
@@ -59,10 +61,6 @@ public class Contributor implements Storable {
             }
         }
         return new Contributor(id);
-    }
-
-    public ArrayList<Production> getIsIn(){
-        return productionsIsIn;
     }
 
     public String getName() {
@@ -99,5 +97,14 @@ public class Contributor implements Storable {
     @Override
     public String toString() {
         return name;
+    }
+
+    public String detailedString() {
+        StringBuilder detailedString;
+        detailedString = new StringBuilder(name + " " + birthDate + "\n" + "Produktioner personen er medvirkende i: \n");
+        for (String s : productionNames) {
+            detailedString.append(s).append("\n");
+        }
+        return detailedString.toString();
     }
 }

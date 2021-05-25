@@ -4,6 +4,7 @@ import data.DataFacade;
 import data.IDataFacade;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Organization implements Storable {
     private String name;

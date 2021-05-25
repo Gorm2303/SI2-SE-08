@@ -9,15 +9,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ShowCreditController {
     @FXML
@@ -28,27 +24,24 @@ public class ShowCreditController {
     private TextField searchField;
     @FXML
     private Button editProductionButton, addProductionButton, searchButton, nextButton, previousButton;
+    @FXML
+    private RadioButton radioButtonProduction, radioButtonContributor;
+    @FXML
+    private ToggleGroup searchRadio;
     private static Scene newProduction;
 
     private int pageNumber;
     private String searchString = "";
     private final int pageSize = 12;
     private static ICatalog catalog;
-    private ObservableList<Production> productionObservableList;
 
     @FXML
     public void initialize() {
         pageNumber = 1;
         catalog = ICatalog.getInstance();
+        getNextList();
 
-        productionObservableList = FXCollections.observableArrayList(
-                catalog.searchForProductions("", pageNumber, pageSize));
-        productionListview.setItems(productionObservableList);
-
-        //updateDummies();
-        //dummyProductions();
     }
-
 
     public void onButtonClicked(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
@@ -77,23 +70,13 @@ public class ShowCreditController {
             }
 
         } else if (button == nextButton) {
-            previousButton.setDisable(false);
             pageNumber++;
-            productionObservableList = FXCollections.observableArrayList(
-                    catalog.searchForProductions(searchString, pageNumber, pageSize));
-            productionListview.setItems(productionObservableList);
-            if (productionObservableList.size() < pageSize) {
-                nextButton.setDisable(true);
-            }
+            // Get next objects
+            getNextList();
+
         } else if (button == previousButton) {
-            nextButton.setDisable(false);
-            if (pageNumber <= 2) {
-                previousButton.setDisable(true);
-            }
             pageNumber--;
-            productionObservableList = FXCollections.observableArrayList(
-                    catalog.searchForProductions(searchString, pageNumber, pageSize));
-            productionListview.setItems(productionObservableList);
+            getNextList();
 
         } else if (button == searchButton) {
             System.out.println(searchField.getText());
@@ -102,6 +85,9 @@ public class ShowCreditController {
             getNextList();
 
         }
+        productionListview.setItems(searchResultList);
+        previousButton.setDisable(pageNumber <= 1);
+        nextButton.setDisable(searchResultList.size() < pageSize);
     }
 
     private void getNextList() {
@@ -237,4 +223,5 @@ public class ShowCreditController {
         testProduction.setId(4);
         testProduction.store();
     }
+
 }

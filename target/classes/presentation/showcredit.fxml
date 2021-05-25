@@ -2,8 +2,10 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.ShowCreditController">
@@ -12,7 +14,7 @@
       <Button fx:id="previousButton" disable="true" layoutX="10.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Forrige" />
       <Button fx:id="nextButton" layoutX="80.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Næste" />
       <TextArea fx:id="displayArea" editable="false" layoutX="150.0" layoutY="50.0" prefHeight="296.0" prefWidth="300.0" wrapText="true" />
-      <Button fx:id="editProductionButton" layoutX="466.0" layoutY="63.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Rediger produktion" />
+      <Button fx:id="editProductionButton" disable="true" layoutX="466.0" layoutY="63.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Rediger produktion" />
       <Button fx:id="addProductionButton" layoutX="466.0" layoutY="104.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Tilføj produktion" />
       <Button fx:id="searchButton" layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
       <TextField fx:id="searchField" layoutX="226.0" layoutY="14.0" promptText="Søg" />
