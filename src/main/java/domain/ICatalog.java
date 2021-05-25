@@ -16,6 +16,7 @@ public interface ICatalog {
 
     LinkedList<Organization> searchForOrganizations(String searchString, int pageNumber);
     LinkedList<Contributor> searchForContributors(String searchString, int pageNumber);
+    Collection<Storable> searchInDB(boolean isProduction, String searchString, int pageNumber, int pageSize);
     Set<Production> searchForProductions(String searchString, int pageNumber, int pageSize);
 
     void setDBurl(String url);

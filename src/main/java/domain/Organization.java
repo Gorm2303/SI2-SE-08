@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Organization implements Storable {
     private String name;
     private int id;
-    private ArrayList<Production> productions;
-    private static ArrayList<Organization> organizationsInMemory = new ArrayList<>();
+    private ArrayList<String> productions;
+    private static LinkedList<Organization> organizationsInMemory = new LinkedList<>();
 
     public Organization() {
         organizationsInMemory.add(this);
@@ -58,11 +58,11 @@ public class Organization implements Storable {
         return new Organization(id);
     }
 
-    public ArrayList<Production> getProductions() {
+    public ArrayList<String> getProductions() {
         return productions;
     }
 
-    public void setProductions(ArrayList<Production> productions) {
+    public void setProductions(ArrayList<String> productions) {
         this.productions = productions;
     }
 
@@ -87,6 +87,16 @@ public class Organization implements Storable {
         IDataFacade iDataFacade = new DataFacade();
         this.setId(iDataFacade.storeOrganization(name));
         return this.getId();
+    }
+
+    @Override
+    public String detailedString() {
+        StringBuilder detailedString;
+        detailedString = new StringBuilder(name + "\n" + "Produktioner personen er medvirkende i: \n");
+        for (String s : productions) {
+            detailedString.append(s).append("\n");
+        }
+        return detailedString.toString();
     }
 
     @Override

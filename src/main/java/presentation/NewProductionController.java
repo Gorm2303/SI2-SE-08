@@ -268,7 +268,7 @@ public class NewProductionController {
         return textFieldRole;
     }
 
-    public void makeNewOrganization(boolean contributorInstead) {
+    private void makeNewOrganization(boolean contributorInstead) {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         VBox vBox = new VBox();
@@ -458,19 +458,19 @@ public class NewProductionController {
 
     }
 
-    public void loadProduction(Production production) {
-        currentProduction = production;
+    public void loadProduction(Storable production) {
+        currentProduction = (Production) production;
 
         // The production information
-        productionName.setText(production.getName());
-        productionDate.getEditor().setText(production.getReleaseDate());
-        productionLength.setText(String.valueOf(production.getLength()));
-        productionProducer.getItems().add(production.getProducer());
-        productionProducer.setValue(production.getProducer());
+        productionName.setText(currentProduction.getName());
+        productionDate.getEditor().setText(currentProduction.getReleaseDate());
+        productionLength.setText(String.valueOf(currentProduction.getLength()));
+        productionProducer.getItems().add(currentProduction.getProducer());
+        productionProducer.setValue(currentProduction.getProducer());
         productionProducer.setStyle("-fx-border-width: 0");
 
         // The contributing organizations
-        ArrayList<Organization> organizations = production.getOrgContributors();
+        ArrayList<Organization> organizations = currentProduction.getOrgContributors();
         for (Organization organization : organizations) {
             ChoiceBox<Organization> choiceBox = addOrganization();
             choiceBox.getItems().add(organization);

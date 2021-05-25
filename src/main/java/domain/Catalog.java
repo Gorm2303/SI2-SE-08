@@ -77,6 +77,15 @@ public class Catalog implements ICatalog{
     }
 
     @Override
+    public Collection<Storable> searchInDB(boolean isProduction, String searchString, int pageNumber, int pageSize) {
+        if (isProduction) {
+            return FXCollections.observableArrayList(searchForProductions(searchString, pageNumber, pageSize));
+        } else {
+            return FXCollections.observableArrayList(searchForContributors(searchString, pageNumber));
+        }
+    }
+
+    @Override
     public Set<Production> searchForProductions(String searchString, int pageNumber, int pageSize) {
         Set<Production> productionSet = new TreeSet<>();
         for(Integer id : dataFacade.searchForProductions(searchString, pageNumber, pageSize)) {

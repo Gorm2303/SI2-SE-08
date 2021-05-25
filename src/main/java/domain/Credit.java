@@ -91,6 +91,16 @@ public class Credit implements Storable {
         return 0;
     }
 
+    @Override
+    public String detailedString() {
+        StringBuilder detailedString;
+        detailedString = new StringBuilder("Rolle: " + role + "\n" + "Produktioner personen er medvirkende i: \n");
+        for (Contributor contributor : contributors) {
+            detailedString.append(contributor.getName()).append("\n");
+        }
+        return detailedString.toString();
+    }
+
     public int store(int productionID) {
         Set<Integer> contributorIDs = new HashSet<>();
         for (Contributor contributor : contributors) {

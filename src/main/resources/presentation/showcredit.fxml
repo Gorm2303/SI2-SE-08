@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.ShowCreditController">
    <children>
-      <ListView fx:id="productionListview" layoutX="10.0" layoutY="50.0" onMouseClicked="#handleMouseClick" prefHeight="296.0" prefWidth="130.0" />
+      <ListView fx:id="objectListview" layoutX="10.0" layoutY="50.0" onMouseClicked="#handleListViewMouseClick" prefHeight="296.0" prefWidth="130.0" />
       <Button fx:id="previousButton" disable="true" layoutX="10.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Forrige" />
       <Button fx:id="nextButton" layoutX="80.0" layoutY="353.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="26.0" prefWidth="60.0" text="Næste" />
       <TextArea fx:id="displayArea" editable="false" layoutX="150.0" layoutY="50.0" prefHeight="296.0" prefWidth="300.0" wrapText="true" />
@@ -16,5 +16,11 @@
       <Button fx:id="addProductionButton" layoutX="466.0" layoutY="104.0" mnemonicParsing="false" onAction="#onButtonClicked" prefWidth="120.0" text="Tilføj produktion" />
       <Button fx:id="searchButton" layoutX="383.0" layoutY="14.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Søg" />
       <TextField fx:id="searchField" layoutX="226.0" layoutY="14.0" promptText="Søg" />
+      <RadioButton fx:id="radioButtonProduction" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#handleRadioButtonMouseClick" selected="true" text="Produktion">
+         <toggleGroup>
+            <ToggleGroup fx:id="searchRadio" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radioButtonContributor" layoutX="119.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#handleRadioButtonMouseClick" text="Medvirkende" toggleGroup="$searchRadio" />
    </children>
 </AnchorPane>

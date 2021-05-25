@@ -69,8 +69,6 @@ public class DataFacade implements IDataFacade{
         return productionData.searchFor(searchString, pageNumber, pageSize);
     }
 
-
-
     @Override
     public int storeOrganization(String name) {
         return orgData.store(name);
