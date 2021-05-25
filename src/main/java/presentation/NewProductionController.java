@@ -481,7 +481,7 @@ public class NewProductionController {
         }
 
         // The credits for all roles and contributors
-        ArrayList<Credit> credits = production.getCredits();
+        ArrayList<Credit> credits = currentProduction.getCredits();
 
         for (Credit credit : credits) {
             TextField role = addRole();
