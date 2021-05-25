@@ -61,6 +61,7 @@ public class ShowCreditController {
             try {
                 newProduction = new Scene(Main.loadFXML("newproduction"), 800, 600);
                 Main.getPrimaryStage().setScene(newProduction);
+                // Getting the controller just made and loading the selected production
                 NewProductionController.getLatestProductionController().loadProduction(selectedProduction);
 
             } catch (IOException e) {
@@ -89,8 +90,8 @@ public class ShowCreditController {
         ObservableList<Storable> searchResultList;
         if (radioButtonProduction.isSelected()) {
             searchResultList = FXCollections.observableArrayList(
-                    catalog.searchForProductions( searchString, pageNumber, pageSize));
-        } else if (radioButtonContributor.isSelected()){
+                    catalog.searchForProductions(searchString, pageNumber, pageSize));
+        } else if (radioButtonContributor.isSelected()) {
             searchResultList = FXCollections.observableArrayList(
                     catalog.searchForContributors(searchString, pageNumber, pageSize));
         } else if (radioButtonOrganization.isSelected()) {
@@ -109,31 +110,16 @@ public class ShowCreditController {
     }
 
     public void handleListViewMouseClick(MouseEvent mouseEvent) {
-        if (radioButtonProduction.isSelected()) {
-            Storable selectedProduction = objectListview.getSelectionModel().getSelectedItem();
-            if (selectedProduction == null) {
-                return;
-            }
-            displayArea.setText(selectedProduction.detailedString());
-            editProductionButton.setDisable(false);
-        } else if (radioButtonContributor.isSelected()) {
-            Storable selectedContributor = objectListview.getSelectionModel().getSelectedItem();
-            if (selectedContributor == null) {
-                return;
-            }
-            displayArea.setText(selectedContributor.detailedString());
-            editProductionButton.setDisable(true);
-        } else if (radioButtonOrganization.isSelected()) {
-            Storable selectedOrganization = objectListview.getSelectionModel().getSelectedItem();
-            if (selectedOrganization == null) {
-                return;
-            }
-            displayArea.setText(selectedOrganization.detailedString());
-            editProductionButton.setDisable(true);
+        Storable selectedStorable = objectListview.getSelectionModel().getSelectedItem();
+        if (selectedStorable == null) {
+            return;
         }
+        editProductionButton.setDisable(!radioButtonProduction.isSelected());
+        displayArea.setText(selectedStorable.detailedString());
     }
 
     public void handleRadioButtonMouseClick(MouseEvent mouseEvent) {
+        pageNumber = 1;
         getNextList();
         editProductionButton.setDisable(true);
     }
