@@ -319,6 +319,7 @@ public class NewProductionController {
                 Contributor contributor = new Contributor();
                 contributor.setName(textField.getText());
                 contributor.setBirthDate(datePicker.getEditor().getText());
+                contributor.store();
                 stage.close();
             }
         });
