@@ -108,21 +108,21 @@ public class NewProductionController {
         if (searchString.isBlank()) {
             return;
         }
-
+        // List with search results
         ObservableList<Storable> observableList = FXCollections.observableArrayList();
         if (searchField == searchFieldContributor) {
             observableList.addAll(Catalog.getInstance().searchForContributors(searchString, 1, 10));
         } else {
             observableList.addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
         }
-
         currentStorable.setItems(observableList);
+
+        // If no search results were found
         if (currentStorable.getItems().isEmpty()) {
             handleDisableOfAddButtons(outerHBox, true, false);
             return;
         }
         System.out.println(currentStorable.getItems());
-        currentStorable.setValue(currentStorable.getValue());
         currentStorable.show();
 
     }
@@ -135,6 +135,7 @@ public class NewProductionController {
             fieldMissingWindow();
         } else {
             try {
+                // Save production and set another scene
                 saveProduction();
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
@@ -147,6 +148,7 @@ public class NewProductionController {
         }
     }
 
+    // Add javafx for another organization
     public ChoiceBox<Organization> addOrganization() {
         HBox hBox = new HBox();
 
@@ -181,6 +183,7 @@ public class NewProductionController {
         return returnNode;
     }
 
+    // Add javafx for another role and contributor
     public TextField addRole() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
@@ -228,6 +231,7 @@ public class NewProductionController {
         return textFieldRole;
     }
 
+    // Javafx for saving an organization in the database
     private void makeNewOrganization(boolean contributorInstead) {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -241,17 +245,18 @@ public class NewProductionController {
             stage.close();
         });
 
+        // If this boolean is true it is a contributor which is gonna be saved in the database
         if (contributorInstead) {
             makeNewContributor(vBox, save, textField, stage);
         } else {
+            // It is a organization which is saved in the database
             Label label = new Label("Organisationens navn");
             vBox.getChildren().add(label);
             save.setOnAction(actionEvent1 -> {
+                // Store organization in database
                 Organization org = new Organization();
                 org.setName(textField.getText());
-                System.out.println(org.store());
-                System.out.println(Organization.get(org.getId()));
-                System.out.println(Organization.get(org.getId()));
+                org.store();
                 stage.close();
             });
         }
@@ -269,6 +274,7 @@ public class NewProductionController {
         stage.show();
     }
 
+    // Javafx for saving an contributor in the database
     private void makeNewContributor(VBox vBox, Button save, TextField textField, Stage stage) {
         Label label = new Label("Medvirkendes navn");
         Label date = new Label("Fødselsdag");
@@ -276,6 +282,7 @@ public class NewProductionController {
 
         save.setOnAction(actionEvent1 -> {
             if (isRegularDate(datePicker.getEditor().getText())) {
+                // Store contributor in database
                 Contributor contributor = new Contributor();
                 contributor.setName(textField.getText());
                 contributor.setBirthDate(datePicker.getEditor().getText());
@@ -287,6 +294,7 @@ public class NewProductionController {
         vBox.getChildren().addAll(label, date, datePicker);
     }
 
+    // Add javafx for another contributor to a specific role
     private ChoiceBox<Contributor> addContributor(VBox vBox, TextField key) {
         HBox hBox = new HBox();
 
@@ -317,6 +325,7 @@ public class NewProductionController {
         handleDisableOfAddButtons(outerHBox, false, false);
     }
 
+    // Ask the user if he is sure to delete a production
     private void productionDeletion() {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -330,7 +339,6 @@ public class NewProductionController {
 
         yesButton.setOnAction((actionEvent -> {
             ICatalog.getInstance().removeProduction(currentProduction.getId());
-
             try {
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
@@ -356,6 +364,7 @@ public class NewProductionController {
         stage.show();
     }
 
+    // Saving the production and all the fields in the database
     public void saveProduction() throws IllegalArgumentException {
         String name = productionName.getText(), date = productionDate.getEditor().getText(), length = productionLength.getText();
         Organization producer = productionProducer.getValue();
@@ -383,13 +392,14 @@ public class NewProductionController {
         ArrayList<Credit> credits = new ArrayList<>();
         for (TextField textField : roleContributors.keySet()) {
             String role = textField.getText();
+            // if role is blank stop the process and try again later
             if (role.isBlank()) {
                 fieldMissingWindow();
                 throw new IllegalArgumentException();
             }
             Credit credit = new Credit();
             credit.setRole(role);
-
+            // Contributors for each role
             ArrayList<Contributor> contributors = new ArrayList<>();
             for (ChoiceBox cb : roleContributors.get(textField)) {
                 Contributor cont = (Contributor) cb.getValue();
@@ -406,6 +416,7 @@ public class NewProductionController {
 
     }
 
+    // Load a production which already exists in the database
     public void loadProduction(Storable production) {
         currentProduction = (Production) production;
 
@@ -417,7 +428,7 @@ public class NewProductionController {
         productionProducer.setValue(currentProduction.getProducer());
         productionProducer.setStyle("-fx-border-width: 0");
 
-        // The contributing organizations
+        // Filling the choiceBoxes with the contributing organizations
         ArrayList<Organization> organizations = currentProduction.getOrgContributors();
         for (Organization organization : organizations) {
             ChoiceBox<Organization> choiceBox = addOrganization();
@@ -427,7 +438,7 @@ public class NewProductionController {
             choiceBox.setStyle("-fx-border-width: 0");
         }
 
-        // The credits for all roles and contributors
+        // Filling the choiceBoxes with the credits for all roles and contributors
         ArrayList<Credit> credits = currentProduction.getCredits();
 
         for (Credit credit : credits) {
@@ -443,6 +454,7 @@ public class NewProductionController {
             firstChoiceBox.setDisable(true);
             firstChoiceBox.setStyle("-fx-border-width: 0");
 
+            // Filling each roles choiceBoxes with its contributors
             for (Contributor contributor : contributors) {
                 ChoiceBox<Contributor> choiceBox = addContributor((VBox) choiceBoxes.get(0).getParent(), role);
                 choiceBox.getItems().add(contributor);
@@ -456,7 +468,8 @@ public class NewProductionController {
 
     }
 
-    // Recursive method for getting all children of the nodes, and doing something if the leafNodes are Buttons
+    // Recursive method for getting all children of the nodes, and doing something
+    // if the leafNodes are Buttons, Panes, ScrollPanes or ChoiceBoxes
     private void handleDisableOfAddButtons(Node node, boolean disableButtons, boolean disableChoiceBoxes) {
         if (node instanceof Pane) {
             for (Node n : ((Pane) node).getChildren()) {
@@ -480,6 +493,7 @@ public class NewProductionController {
         }
     }
 
+    // If a field in the production is missing give a warning
     private void fieldMissingWindow() {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -506,13 +520,14 @@ public class NewProductionController {
         stage.show();
     }
 
-    // Regular expression for production Date.
+    // Regular expression for checking the format of the production Date.
     private boolean isRegularDate(String date) {
         Pattern pattern = Pattern.compile("^(\\d{2}\\.){2}\\d{4}$");
         Matcher matcher = pattern.matcher(date);
         return matcher.find();
     }
 
+    // Checking the format of the production length.
     private boolean isRegularLength(String length) {
         try {
             int i = Integer.parseInt(length);
@@ -523,6 +538,7 @@ public class NewProductionController {
         return false;
     }
 
+
     private void removeCombination(TextField key) {
         roleContributors.remove(key);
     }
@@ -531,11 +547,12 @@ public class NewProductionController {
         return latestProductionController;
     }
 
-
+    // Hide the choiceBox menu if it is deselected
     public void onMouseClicked(MouseEvent mouseEvent) {
         hideChoiceBoxMenu();
     }
 
+    // Hide all choiceBox menus
     private void hideChoiceBoxMenu() {
         if (currentContributor != null) {
             currentContributor.hide();
@@ -548,6 +565,7 @@ public class NewProductionController {
         }
     }
 
+    // Delete old searches and disables some of the search buttons and fields
     private void resetSearchArea(boolean searchForContributor) {
         handleDisableOfAddButtons(outerHBox, true, true);
         searchFieldContributor.setText("");

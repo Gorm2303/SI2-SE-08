@@ -1,7 +1,5 @@
 package presentation;
 
-import data.DataFacade;
-import data.IDataFacade;
 import domain.ICatalog;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +21,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    // FXMLLoader for getting resources
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
@@ -33,6 +32,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        // Database connection setup
         ICatalog catalog = ICatalog.getInstance();
         catalog.setDBurl(args[0]);
         catalog.setDBPort(Integer.parseInt(args[1]));
@@ -40,6 +40,7 @@ public class Main extends Application {
         catalog.setDBUsername(args[3]);
         catalog.setDBPassword(args[4]);
         catalog.initializeDatalayer();
+        // Start application
         launch(args);
     }
 }
