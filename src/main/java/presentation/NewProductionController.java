@@ -100,7 +100,6 @@ public class NewProductionController {
 
         } else if (button == searchButtonProducer) {
             searchInDB(searchFieldProducer, productionProducer);
-
         }
     }
 
@@ -149,14 +148,11 @@ public class NewProductionController {
     }
 
     public ChoiceBox<Organization> addOrganization() {
-        // Make this a beautiful method
         HBox hBox = new HBox();
 
         ChoiceBox<Organization> choiceBox = new ChoiceBox<>();
         contributingOrganizations.add(choiceBox);
         currentOrganization = choiceBox;
-        //choiceBox.getItems().add(new Organization("This Organization", 69));
-        //choiceBox.getItems().add(new Organization("This Organization 222", 222));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
@@ -200,8 +196,6 @@ public class NewProductionController {
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
         roleContributors.get(textFieldRole).add(choiceBox);
         currentContributor = choiceBox;
-        //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
-        //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
@@ -299,17 +293,10 @@ public class NewProductionController {
         ChoiceBox<Contributor> choiceBox = new ChoiceBox<>();
         roleContributors.get(key).add(choiceBox);
         currentContributor = choiceBox;
-        //choiceBox.getItems().add(new Contributor("This Contributor", 69, "0.0.0"));
-        //choiceBox.getItems().add(new Contributor("This Contributor 222", 222, "0.0.0"));
         choiceBox.setPrefWidth(150);
         choiceBox.setFocusTraversable(false);
         choiceBox.setOnAction((this::onContextMenuRequested));
         choiceBox.setStyle("-fx-border-color: red");
-
-        searchButtonContributor.setDisable(false);
-        searchFieldContributor.setDisable(false);
-        searchButtonOrganization.setDisable(true);
-        searchFieldOrganization.setDisable(true);
 
         Button removeButton = new Button();
         removeButton.setFocusTraversable(false);
@@ -327,9 +314,7 @@ public class NewProductionController {
     }
 
     public void onContextMenuRequested(ActionEvent actionEvent) {
-        ChoiceBox<Object> choiceBox = (ChoiceBox<Object>) actionEvent.getSource();
         handleDisableOfAddButtons(outerHBox, false, false);
-
     }
 
     private void productionDeletion() {
@@ -344,17 +329,14 @@ public class NewProductionController {
         Button noButton = new Button("Nej");
 
         yesButton.setOnAction((actionEvent -> {
-            //deleteProduction()
-            System.out.println(ICatalog.getInstance().removeProduction(currentProduction.getId()));
+            ICatalog.getInstance().removeProduction(currentProduction.getId());
 
             try {
                 Scene scene = new Scene(Main.loadFXML("showcredit"));
                 Main.getPrimaryStage().setScene(scene);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             stage.close();
         }));
 
@@ -421,8 +403,6 @@ public class NewProductionController {
         currentProduction.setCredits(credits);
 
         int productionID = currentProduction.store(); //stores production in DB and stores Credits
-
-        // ICatalog.getInstance().addProduction(production);//Save Statement
 
     }
 
