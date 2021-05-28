@@ -71,22 +71,6 @@ public class CreditData {
         return null;
     }
 
-    //Not actually necessary, should only be used in the database, but it is here for now.
-    public int materializeProductionID(int creditID) {
-        try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionId FROM credits WHERE id = ?");
-            stmt.setInt(1, creditID);
-            ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return 0;
-            }
-            return sqlReturnValues.getInt(1);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return 0;
-    }
-
     public boolean deleteCreditsInProduction(int productionID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(

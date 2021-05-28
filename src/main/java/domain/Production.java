@@ -64,7 +64,7 @@ public class Production implements Storable, Comparable<Production> {
         this.releaseDate = iDataFacade.materializeProductionReleaseDate(id);
         this.length = iDataFacade.materializeProductionLength(id);
 
-        ArrayList<Integer> contributingOrgIDs = iDataFacade.materializeProductionOrganizationIDs(id);
+        ArrayList<Integer> contributingOrgIDs = new ArrayList<>(iDataFacade.materializeProductionOrganizationIDs(id));
         this.orgContributors = new ArrayList<>();
         for (Integer orgID : contributingOrgIDs) {
             this.orgContributors.add(Organization.get(orgID));

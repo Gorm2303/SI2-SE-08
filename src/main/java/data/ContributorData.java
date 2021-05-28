@@ -60,8 +60,8 @@ public class ContributorData {
         return null;
     }
 
-    public HashSet<String> materializeContributorIn(int contributorID) {
-        HashSet<String> contributesTo = new HashSet<>();
+    public Set<String> materializeContributorIn(int contributorID) {
+        Set<String> contributesTo = new HashSet<>();
         try {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT creditid FROM contributorsincredits WHERE contributorid = ?");
             stmt.setInt(1, contributorID);

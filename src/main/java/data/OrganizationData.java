@@ -64,7 +64,7 @@ public class OrganizationData {
     }
 
     public Set<String> materializeOrganizationIn(int id) {
-        HashSet<String> contributesTo = new HashSet<>();
+        Set<String> contributesTo = new HashSet<>();
         try {
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionid FROM organizationsinproductions WHERE organizationid = ?");
             stmt.setInt(1, id);
