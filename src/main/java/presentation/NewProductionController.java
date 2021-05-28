@@ -213,7 +213,7 @@ public class NewProductionController {
                 handleDisableOfAddButtons(outerHBox, false, true);
             }
             roleVBox.getChildren().remove(hBox);
-            removeCombination(textFieldRole);
+            roleContributors.remove(textFieldRole);
         });
 
         Button addContributorButton = new Button();
@@ -314,6 +314,7 @@ public class NewProductionController {
                 handleDisableOfAddButtons(outerHBox, false, true);
             }
             vBox.getChildren().remove(hBox);
+            roleContributors.get(key).remove(choiceBox);
         });
 
         hBox.getChildren().addAll(choiceBox, removeButton);
@@ -536,11 +537,6 @@ public class NewProductionController {
             return true;
         }
         return false;
-    }
-
-
-    private void removeCombination(TextField key) {
-        roleContributors.remove(key);
     }
 
     public static NewProductionController getLatestProductionController() {

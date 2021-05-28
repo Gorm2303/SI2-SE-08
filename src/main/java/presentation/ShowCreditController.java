@@ -86,6 +86,7 @@ public class ShowCreditController {
         }
     }
 
+    // An observable list, with search results form the database, for the listview
     private void getNextList() {
         ObservableList<Storable> searchResultList;
         if (radioButtonProduction.isSelected()) {
