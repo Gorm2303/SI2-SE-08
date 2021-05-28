@@ -2,6 +2,7 @@ package presentation;
 
 import domain.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -47,14 +48,6 @@ public class NewProductionController {
     private Production currentProduction;
 
     public NewProductionController() {
-        this.productionName = new TextField();
-        this.productionLength = new TextField();
-        this.productionProducer = new ChoiceBox<>();
-        //this.contributingOrganization = new ChoiceBox(FXCollections.observableArrayList());
-        //this.contributorToRole = new ChoiceBox(FXCollections.observableArrayList());
-        this.productionDate = new DatePicker();
-        this.organizationVBox = new VBox();
-        this.roleVBox = new VBox();
         initialize();
         latestProductionController = this;
     }
@@ -67,8 +60,10 @@ public class NewProductionController {
 
     public void onButtonClicked(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
+        // Fixing when you click the choicebox menu it will show no results and be buggy when you search for something.
+        hideChoiceBoxMenu();
 
-        // Buttons for browsing the program
+        // Checking which one of all the buttons in new production was clicked
         if (button == newOrganization) {
             makeNewOrganization(false);
 
@@ -76,27 +71,7 @@ public class NewProductionController {
             makeNewOrganization(true);
 
         } else if (button == saveProduction) {
-            // For testing purpose
-            //System.out.println(isRegularDate(productionDate.getEditor().getText()));
-            //System.out.println(isRegularLength(productionLength.getText()));
-
-            //Maybe check length for only number value
-            if (productionName.getText().isBlank() || (productionDate.getValue() == null && !isRegularDate(productionDate.getEditor().getText()))
-                    || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
-                    || (productionProducer.getValue() == null)) {
-                fieldMissingWindow();
-            } else {
-                try {
-                    saveProduction();
-                    Scene scene = new Scene(Main.loadFXML("showcredit"));
-                    Main.getPrimaryStage().setScene(scene);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    return;
-                }
-            }
+            checkFieldsAndSave();
 
         } else if (button == productionCancelChanges) {
             try {
@@ -108,76 +83,68 @@ public class NewProductionController {
             }
         } else if (button == deleteProduction) {
             productionDeletion();
-        }
-        // Fixing when you click the menu it will show no results and be buggy when you search for something.
-        hideChoiceBoxMenu();
 
-        // new production buttons
-        if (button == addRole) {
-            searchingSetup();
+        } else if (button == addRole) {
+            resetSearchArea(true);
             addRole();
-            searchButtonContributor.setDisable(false);
-            searchFieldContributor.setDisable(false);
-            searchButtonOrganization.setDisable(true);
-            searchFieldOrganization.setDisable(true);
-            resetSearchArea();
 
         } else if (button == addOrganization) {
-            searchingSetup();
+            resetSearchArea(false);
             addOrganization();
-            searchButtonOrganization.setDisable(false);
-            searchFieldOrganization.setDisable(false);
-            searchButtonContributor.setDisable(true);
-            searchFieldContributor.setDisable(true);
-            resetSearchArea();
 
         } else if (button == searchButtonOrganization) {
-            String searchString = searchFieldOrganization.getText();
-
-            if (!searchString.isBlank()) {
-                Organization organization = currentOrganization.getValue();
-                currentOrganization.setItems(FXCollections.observableArrayList());
-                currentOrganization.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
-                if (currentOrganization.getItems().isEmpty()) {
-                    handleDisableOfAddButtons(outerHBox, true, false);
-                    return;
-                }
-                System.out.println(currentOrganization.getItems());
-                currentOrganization.setValue(organization);
-                currentOrganization.show();
-            }
+            searchInDB(searchFieldOrganization, currentOrganization);
 
         } else if (button == searchButtonContributor) {
-            String searchString = searchFieldContributor.getText();
+            searchInDB(searchFieldContributor, currentContributor);
 
-            if (!searchString.isBlank()) {
-                Contributor contributor = currentContributor.getValue();
-                currentContributor.setItems(FXCollections.observableArrayList());
-                currentContributor.getItems().addAll(Catalog.getInstance().searchForContributors(searchString, 1, 10));
-                if (currentContributor.getItems().isEmpty()) {
-                    handleDisableOfAddButtons(outerHBox, true, false);
-                    return;
-                }
-                System.out.println(currentContributor.getItems());
-                currentContributor.setValue(contributor);
-                currentContributor.show();
-            }
         } else if (button == searchButtonProducer) {
-            String searchString = searchFieldProducer.getText();
+            searchInDB(searchFieldProducer, productionProducer);
 
-            if (!searchString.isBlank()) {
-                Organization organization = productionProducer.getValue();
-                productionProducer.setItems(FXCollections.observableArrayList());
-                productionProducer.getItems().addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
-                if (productionProducer.getItems().isEmpty()) {
-                    handleDisableOfAddButtons(outerHBox, true, false);
-                    return;
-                }
-                System.out.println(productionProducer.getItems());
-                productionProducer.setValue(organization);
-                productionProducer.show();
+        }
+    }
+
+    private void searchInDB(TextField searchField, ChoiceBox currentStorable) {
+        String searchString = searchField.getText();
+        if (searchString.isBlank()) {
+            return;
+        }
+
+        ObservableList<Storable> observableList = FXCollections.observableArrayList();
+        if (searchField == searchFieldContributor) {
+            observableList.addAll(Catalog.getInstance().searchForContributors(searchString, 1, 10));
+        } else {
+            observableList.addAll(Catalog.getInstance().searchForOrganizations(searchString, 1, 10));
+        }
+
+        currentStorable.setItems(observableList);
+        if (currentStorable.getItems().isEmpty()) {
+            handleDisableOfAddButtons(outerHBox, true, false);
+            return;
+        }
+        System.out.println(currentStorable.getItems());
+        currentStorable.setValue(currentStorable.getValue());
+        currentStorable.show();
+
+    }
+
+    private void checkFieldsAndSave() {
+        // Checks the production attributes if they are the right format
+        if (productionName.getText().isBlank() || (productionDate.getValue() == null && !isRegularDate(productionDate.getEditor().getText()))
+                || (productionLength.getText().isBlank() && isRegularLength(productionLength.getText()))
+                || (productionProducer.getValue() == null)) {
+            fieldMissingWindow();
+        } else {
+            try {
+                saveProduction();
+                Scene scene = new Scene(Main.loadFXML("showcredit"));
+                Main.getPrimaryStage().setScene(scene);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                return;
             }
-
         }
     }
 
@@ -257,9 +224,8 @@ public class NewProductionController {
         addContributorButton.setFocusTraversable(false);
         addContributorButton.setText("Tilføj endnu en medvirkende");
         addContributorButton.setOnAction((event -> {
-            handleDisableOfAddButtons(outerHBox, true, true);
+            resetSearchArea(true);
             addContributor(newContributorVBox, textFieldRole);
-            resetSearchArea();
         }));
 
         newContributorVBox.getChildren().add(choiceBox);
@@ -508,18 +474,6 @@ public class NewProductionController {
         searchButtonContributor.setDisable(true);
         searchFieldContributor.setDisable(true);
 
-        //ShowCreditController.getCatalog().addProduction(production);
-    }
-
-    private void searchInDB() {
-
-    }
-
-    private void searchingSetup() {
-        //addOrganization.setDisable(!addOrganization.isDisabled());
-        //addRole.setDisable(!addRole.isDisabled());
-        handleDisableOfAddButtons(outerHBox, true, true);
-
     }
 
     // Recursive method for getting all children of the nodes, and doing something if the leafNodes are Buttons
@@ -576,7 +530,6 @@ public class NewProductionController {
     private boolean isRegularDate(String date) {
         Pattern pattern = Pattern.compile("^(\\d{2}\\.){2}\\d{4}$");
         Matcher matcher = pattern.matcher(date);
-        //System.out.println(pattern);
         return matcher.find();
     }
 
@@ -610,10 +563,18 @@ public class NewProductionController {
         if (currentOrganization != null) {
             currentOrganization.hide();
         }
+        if (productionProducer != null) {
+            productionProducer.hide();
+        }
     }
 
-    private void resetSearchArea() {
+    private void resetSearchArea(boolean searchForContributor) {
+        handleDisableOfAddButtons(outerHBox, true, true);
         searchFieldContributor.setText("");
         searchFieldOrganization.setText("");
+        searchButtonContributor.setDisable(!searchForContributor);
+        searchFieldContributor.setDisable(!searchForContributor);
+        searchButtonOrganization.setDisable(searchForContributor);
+        searchFieldOrganization.setDisable(searchForContributor);
     }
 }
