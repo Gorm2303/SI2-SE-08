@@ -124,13 +124,13 @@ public class ProductionData {
         return 0;
     }
 
-    public ArrayList<Integer> materializeOrganizationIDs(int productionID) {
+    public Set<Integer> materializeOrganizationIDs(int productionID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(
                     "SELECT organizationId FROM OrganizationsInProductions WHERE productionId = ?");
             stmt.setInt(1, productionID);
             ResultSet sqlReturnValues = stmt.executeQuery();
-            ArrayList<Integer> organizationIDs = new ArrayList<>();
+            Set<Integer> organizationIDs = new HashSet<>();
             while(sqlReturnValues.next()) {
                 organizationIDs.add(sqlReturnValues.getInt(1));
             }

@@ -27,14 +27,13 @@ public interface IDataFacade {
     Set<String> materializeContributorIn(int contributorID);
 
     String materializeCreditRole(int creditID);
-    int materializeCreditProductionID(int creditID);
     Set<Integer> materializeContributorIDs(int creditID);
 
     String materializeProductionName(int productionID);
     String materializeProductionReleaseDate(int productionID);
     int materializeProductionLength(int productionID);
     int materializeProductionProducerID(int productionID);
-    ArrayList<Integer> materializeProductionOrganizationIDs(int productionID);
+    Set<Integer> materializeProductionOrganizationIDs(int productionID);
     Set<Integer> materializeProductionCreditIDs(int productionID);
 
 

@@ -148,11 +148,6 @@ public class DataFacade implements IDataFacade{
         return creditData.materializeRole(creditID);
     }
 
-    @Override
-    public int materializeCreditProductionID(int creditID) {
-        return creditData.materializeProductionID(creditID);
-    }
-
     public Set<Integer> materializeContributorIDs(int creditID) {
         return creditData.materializeContributorIDs(creditID);
     }
@@ -178,7 +173,7 @@ public class DataFacade implements IDataFacade{
     }
 
     @Override
-    public ArrayList<Integer> materializeProductionOrganizationIDs(int productionID) {
+    public Set<Integer> materializeProductionOrganizationIDs(int productionID) {
         return productionData.materializeOrganizationIDs(productionID);
     }
 

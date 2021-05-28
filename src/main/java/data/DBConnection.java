@@ -15,7 +15,7 @@ public class DBConnection {
     private Connection connection = null;
 
     private DBConnection() {
-        //initializePostgresqlDatabase();
+
     }
 
     public static DBConnection getInstance() {
