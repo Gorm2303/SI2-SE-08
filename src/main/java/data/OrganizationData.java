@@ -44,6 +44,9 @@ public class OrganizationData {
         return null;
     }
 
+    // Searches for organization IDs where the search string matches the name of the contributor (not case sensitive)
+    // Only returns a certain amount of id's depending on page size
+    // Only returns part of the list of matches, depending on the page number
     public Set<Integer> searchFor(String searchString, int pageNumber, int pageSize) {
         Set<Integer> resultSet = new HashSet<>();
         int offset = pageSize * (pageNumber - 1);
@@ -63,9 +66,11 @@ public class OrganizationData {
         return resultSet;
     }
 
+    // Gets a list of production names that the organization contributed to or produced
     public Set<String> materializeOrganizationIn(int id) {
-        HashSet<String> contributesTo = new HashSet<>();
+        Set<String> contributesTo = new HashSet<>();
         try {
+            // returns production IDs where the organization contributed to
             PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionid FROM organizationsinproductions WHERE organizationid = ?");
             stmt.setInt(1, id);
             ResultSet sqlReturnValues = stmt.executeQuery();
@@ -74,6 +79,7 @@ public class OrganizationData {
                 productionIDs.add(sqlReturnValues.getInt(1));
             }
 
+            // adds names of the found productions to the return list
             for (Integer pID : productionIDs) {
                 stmt = dbConnection.prepareStatement("SELECT name FROM productions WHERE id = ?");
                 stmt.setInt(1, pID);
@@ -82,6 +88,7 @@ public class OrganizationData {
                 contributesTo.add(sqlReturnValues.getString(1));
             }
 
+            // adds names of productions the organization produced, to the return list
             stmt = dbConnection.prepareStatement("SELECT name FROM productions WHERE producerid = ?");
             stmt.setInt(1, id);
             sqlReturnValues = stmt.executeQuery();
@@ -96,6 +103,7 @@ public class OrganizationData {
         return contributesTo;
     }
 
+    // Deletes the organization - production (one to many) relationship, depending on the production ID
     public boolean deleteOrganizationsInProduction(int productionID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(

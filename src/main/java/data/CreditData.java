@@ -15,6 +15,7 @@ public class CreditData {
 
     public int store(String role, int productionID, Set<Integer> contributorIDs) {
         try {
+            // Store the credit object itself
             PreparedStatement insertStatement = dbConnection.prepareStatement(
                     "INSERT INTO credits(role, productionID) VALUES (?,?) RETURNING id");
             insertStatement.setString(1, role);
@@ -23,6 +24,7 @@ public class CreditData {
             insertStatement.getResultSet().next();
             int creditID = insertStatement.getResultSet().getInt(1);
 
+            //Store the contributor - credit relationship
             for (Integer contributorID : contributorIDs) {
                 PreparedStatement organizationsStatement = dbConnection.prepareStatement(
                         "INSERT INTO ContributorsInCredits(creditId, contributorId) VALUES (?,?)"
@@ -54,6 +56,7 @@ public class CreditData {
         return null;
     }
 
+    // Get ID of the contributors that contributed/played to this credit/role
     public Set<Integer> materializeContributorIDs(int creditID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(
@@ -71,22 +74,8 @@ public class CreditData {
         return null;
     }
 
-    //Not actually necessary, should only be used in the database, but it is here for now.
-    public int materializeProductionID(int creditID) {
-        try {
-            PreparedStatement stmt = dbConnection.prepareStatement("SELECT productionId FROM credits WHERE id = ?");
-            stmt.setInt(1, creditID);
-            ResultSet sqlReturnValues = stmt.executeQuery();
-            if (!sqlReturnValues.next()) {
-                return 0;
-            }
-            return sqlReturnValues.getInt(1);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return 0;
-    }
-
+    // Delete the credits which are in the specified production. Due to CASCADE constraints in the database,
+    // the relevant contributor - credit relationship is also deleted.
     public boolean deleteCreditsInProduction(int productionID) {
         try {
             PreparedStatement stmt = dbConnection.prepareStatement(
