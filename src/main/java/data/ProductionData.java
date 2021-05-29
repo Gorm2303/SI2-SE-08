@@ -33,6 +33,7 @@ public class ProductionData {
         return 0;
     }
 
+    // Stores the production - organization (one to many) relationship
     public void storeOrganizations(ArrayList<Integer> organizationIDs, int productionID) {
         try {
             for (Integer id : organizationIDs) {
@@ -49,6 +50,7 @@ public class ProductionData {
         }
     }
 
+    // Updates the simple values of the production (producer, name, release date, length)
     public boolean updateSimpleValues(int productionID, String name, String releaseDate, int length , int producerID) {
         try {
             PreparedStatement updateStatement = dbConnection.prepareStatement(
@@ -159,6 +161,9 @@ public class ProductionData {
         return null;
     }
 
+    // Searches for production IDs where the search string matches the name of the contributor (not case sensitive)
+    // Only returns a certain amount of id's depending on page size
+    // Only returns part of the list of matches, depending on the page number
     public Set<Integer> searchFor(String searchString, int pageNumber, int pageSize) {
         Set<Integer> resultSet = new HashSet<>();
         int offset = pageSize * (pageNumber - 1);

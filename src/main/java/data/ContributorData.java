@@ -60,6 +60,7 @@ public class ContributorData {
         return null;
     }
 
+    // Get the names of productions the contributor contributed to
     public Set<String> materializeContributorIn(int contributorID) {
         Set<String> contributesTo = new HashSet<>();
         try {
@@ -90,6 +91,9 @@ public class ContributorData {
         return contributesTo;
     }
 
+    // Searches for contributor IDs where the search string matches the name of the contributor (not case sensitive)
+    // Only returns a certain amount of id's depending on page size
+    // Only returns part of the list of matches, depending on the page number
     public Set<Integer> searchFor(String searchString, int pageNumber, int pageSize) {
         Set<Integer> resultSet = new HashSet<>();
         int offset = pageSize * (pageNumber - 1);

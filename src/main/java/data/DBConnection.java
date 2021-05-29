@@ -36,6 +36,7 @@ public class DBConnection {
         }
     }
 
+    // For some reason it was necessary to go through this class to make the prepared statements
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
     }
