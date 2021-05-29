@@ -15,28 +15,14 @@ public class Credit implements Storable {
     private static LinkedList<Credit> creditsInMemory = new LinkedList<>();
 
     public Credit() {
-        creditsInMemory.add(this);
-    }
-
-    public Credit(String role, int id, ArrayList<Contributor> contributors) {
-        this.role = role;
-        this.contributors = contributors;
-        this.id = id;
+        // Memory management of Credits
         creditsInMemory.add(this);
         if (creditsInMemory.size() > 30) {
             creditsInMemory.remove(0);
         }
     }
 
-    public Credit(String role, ArrayList<Contributor> contributors) {
-        this.role = role;
-        this.contributors = contributors;
-        creditsInMemory.add(this);
-        if (creditsInMemory.size() > 30) {
-            creditsInMemory.remove(0);
-        }
-    }
-
+    // For creating a Credit from an id from the database
     private Credit(int id) {
         if (id <= 0) {
             return;
@@ -54,6 +40,7 @@ public class Credit implements Storable {
         }
     }
 
+    // For getting a Credit in memory or if it's not there then in the database
     public static Credit get(int id) {
         for (Credit credit : creditsInMemory) {
             if (credit.getId() == id) {
@@ -92,14 +79,15 @@ public class Credit implements Storable {
         return 0;
     }
 
+    // A detailed string to present information about the credit
     @Override
     public String detailedString() {
-        StringBuilder detailedString;
-        detailedString = new StringBuilder("Rolle: " + role + "\n" + "Produktioner personen er medvirkende i: \n");
+        StringBuilder stringBuilder;
+        stringBuilder = new StringBuilder("Rolle: " + role + "\n" + "Produktioner personen er medvirkende i: \n");
         for (Contributor contributor : contributors) {
-            detailedString.append(contributor.getName()).append("\n");
+            stringBuilder.append(contributor.getName()).append("\n");
         }
-        return detailedString.toString();
+        return stringBuilder.toString();
     }
 
     public int store(int productionID) {

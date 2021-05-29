@@ -2,10 +2,7 @@ package domain;
 
 import data.DataFacade;
 import data.IDataFacade;
-import javafx.collections.FXCollections;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -18,6 +15,7 @@ public class Catalog implements ICatalog{
         dataFacade = new DataFacade();
     }
 
+    // Singleton design pattern
     public static ICatalog getInstance(){
         if (instance == null) {
             instance = new Catalog();

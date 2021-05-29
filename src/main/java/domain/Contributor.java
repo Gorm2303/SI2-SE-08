@@ -14,30 +14,14 @@ public class Contributor implements Storable, Comparable<Contributor>  {
     private static LinkedList<Contributor> contributorsInMemory = new LinkedList<>();
 
     public Contributor() {
+        // Memory management of Contributors
         contributorsInMemory.add(this);
         if (contributorsInMemory.size() > 10) {
             contributorsInMemory.remove(0);
         }
     }
 
-    public Contributor(String name, int id, String birthDate) {
-        this.name = name;
-        this.id = id;
-        this.birthDate = birthDate;
-        contributorsInMemory.add(this);
-        if (contributorsInMemory.size() > 10) {
-            contributorsInMemory.remove(0);
-        }
-    }
-
-    public Contributor(String name, String birthDate) {
-        this.name = name;
-        this.birthDate = birthDate;
-        contributorsInMemory.add(this);
-        if (contributorsInMemory.size() > 10) {
-            contributorsInMemory.remove(0);
-        }
-    }
+    // For creating a Contributor from an id from the database
     private Contributor(int id) {
         if (id <= 0) {
             return;
@@ -53,8 +37,8 @@ public class Contributor implements Storable, Comparable<Contributor>  {
         }
     }
 
+    // For getting a Contributor in memory or if it's not there then in the database
     public static Contributor get(int id) {
-        // Maybe find a better way to shuffle through memory, maybe another collection than ArrayList.
         for (Contributor contributor : contributorsInMemory) {
             if (contributor.getId() == id) {
                 return contributor;
@@ -99,13 +83,15 @@ public class Contributor implements Storable, Comparable<Contributor>  {
         return name;
     }
 
+    // A detailed string to present information about the organization
+    @Override
     public String detailedString() {
-        StringBuilder detailedString;
-        detailedString = new StringBuilder(name + " " + birthDate + "\n" + "Produktioner personen er medvirkende i: \n");
+        StringBuilder stringBuilder;
+        stringBuilder = new StringBuilder(name + " " + birthDate + "\n" + "Produktioner personen er medvirkende i: \n");
         for (String s : productionNames) {
-            detailedString.append(s).append("\n");
+            stringBuilder.append(s).append("\n");
         }
-        return detailedString.toString();
+        return stringBuilder.toString();
     }
 
     @Override

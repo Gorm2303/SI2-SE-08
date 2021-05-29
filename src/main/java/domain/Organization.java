@@ -13,29 +13,14 @@ public class Organization implements Storable, Comparable<Organization> {
     private static LinkedList<Organization> organizationsInMemory = new LinkedList<>();
 
     public Organization() {
+        // Memory management of Organizations
         organizationsInMemory.add(this);
         if (organizationsInMemory.size() > 10) {
             organizationsInMemory.remove(0);
         }
     }
 
-    public Organization(String name, int id) {
-        this.name = name;
-        this.id = id;
-        organizationsInMemory.add(this);
-        if (organizationsInMemory.size() > 10) {
-            organizationsInMemory.remove(0);
-        }
-    }
-
-    public Organization(String name) {
-        this.name = name;
-        organizationsInMemory.add(this);
-        if (organizationsInMemory.size() > 10) {
-            organizationsInMemory.remove(0);
-        }
-    }
-
+    // For creating an Organization from an id from the database
     private Organization(int id) {
         if (id <= 0) {
             return;
@@ -50,8 +35,8 @@ public class Organization implements Storable, Comparable<Organization> {
         }
     }
 
+    // For getting an Organization in memory or if it's not there then in the database
     public static Organization get(int id) {
-        // Maybe find a better way to shuffle through memory, maybe another collection than ArrayList.
         for (Organization org : organizationsInMemory) {
             if (org.getId() == id) {
                 return org;
@@ -91,14 +76,15 @@ public class Organization implements Storable, Comparable<Organization> {
         return this.getId();
     }
 
+    // A detailed string to present information about the Organization
     @Override
     public String detailedString() {
-        StringBuilder detailedString;
-        detailedString = new StringBuilder(name + "\n" + "Medvirkede i produktionen af: \n");
+        StringBuilder stringBuilder;
+        stringBuilder = new StringBuilder(name + "\n" + "Medvirkede i produktionen af: \n");
         for (String s : productions) {
-            detailedString.append(s).append("\n");
+            stringBuilder.append(s).append("\n");
         }
-        return detailedString.toString();
+        return stringBuilder.toString();
     }
 
     @Override

@@ -18,41 +18,14 @@ public class Production implements Storable, Comparable<Production> {
     private static LinkedList<Production> productionsInMemory = new LinkedList<>();
 
     public Production() {
+        // Memory management of Productions
         productionsInMemory.add(this);
         if (productionsInMemory.size() > 5) {
             productionsInMemory.remove(0);
         }
     }
 
-    public Production(String name, int id, Organization producer, String releaseDate, int length,
-                      ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
-        this.name = name;
-        this.id = id;
-        this.producer = producer;
-        this.releaseDate = releaseDate;
-        this.length = length;
-        this.orgContributors = orgContributors;
-        this.credits = credits;
-        productionsInMemory.add(this);
-        if (productionsInMemory.size() > 5) {
-            productionsInMemory.remove(0);
-        }
-    }
-
-    public Production(String name, Organization producer, String releaseDate, int length,
-                      ArrayList<Organization> orgContributors, ArrayList<Credit> credits) {
-        this.name = name;
-        this.producer = producer;
-        this.releaseDate = releaseDate;
-        this.length = length;
-        this.orgContributors = orgContributors;
-        this.credits = credits;
-        productionsInMemory.add(this);
-        if (productionsInMemory.size() > 5) {
-            productionsInMemory.remove(0);
-        }
-    }
-
+    // For creating a Production from an id from the database
     private Production(int id) {
         if (id <= 0) {
             return;
@@ -80,6 +53,7 @@ public class Production implements Storable, Comparable<Production> {
         }
     }
 
+    // For getting a Production in memory or if it's not there then in the database
     public static Production get(int id) {
         for (Production production : productionsInMemory) {
             if (production.getId() == id) {
@@ -150,29 +124,32 @@ public class Production implements Storable, Comparable<Production> {
         return name;
     }
 
+    // A detailed string to present information about the Production
+    @Override
     public String detailedString() {
-        StringBuilder returnString = new StringBuilder(name + "\n" +
+        StringBuilder stringBuilder = new StringBuilder(name + "\n" +
                 length + " minutters spilletid" + "\n\n" +
                 "Udgivet: " + releaseDate + "\n\n" +
                 "Produceret af: " + producer.getName() + "\n\n" +
                 "I samarbejde med:\n");
         for (Organization organization : orgContributors) {
-            returnString.append("\t\t").append(organization.getName()).append("\n");
+            stringBuilder.append("\t\t").append(organization.getName()).append("\n");
         }
-        returnString.append("\n\n");
+        stringBuilder.append("\n\n");
         for (Credit credit : credits) {
             StringBuilder playedBy = new StringBuilder();
             for (int i = 0; i < credit.getContributors().size(); i++) {
                 playedBy.append("\n\t\t").append(credit.getContributors().get(i).getName());
             }
-            returnString.append(credit.getRole()).append(":").append(playedBy).append("\n");
+            stringBuilder.append(credit.getRole()).append(":").append(playedBy).append("\n");
         }
-        return returnString.toString();
+        return stringBuilder.toString();
     }
 
     @Override
     public int store() {
         IDataFacade iDataFacade = new DataFacade();
+        // If the Production is new and therefore not in the database, store it
         if (this.id == 0) {
             this.setId(iDataFacade.storeProductionData(this.name, this.releaseDate, this.length, this.producer.getId()));
 
@@ -187,7 +164,7 @@ public class Production implements Storable, Comparable<Production> {
                 credit.store(this.id);
             }
 
-        }
+        } // Else update existing Production in the database
         else {
             //update production simple data
             iDataFacade.updateProductionSimpleData(
