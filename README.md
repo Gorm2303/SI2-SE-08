@@ -1,5 +1,7 @@
 # SI2-SE-08 project
+Dette Java-projekt er udgivet af fem software ingeniørstuderende på Syddansk Universitet, hvor gruppen har fået stillet en opgave af TV2 og SDU. Hensigten med projektet er at finde en softwareløsning til TV2's krediteringsproblem. Projektets målgruppe er TV2 og deres seere. TV2 kan anvende systemet for at kreditere danske produktioner, og deres seere kan anvende det for at se disse krediteringer. 
 
+Tak til projektvejleder Henrik Larsen for hans støtte gennem projektet.
 
 ## Framework, software og bibliotek versioner
 Følgende versioner af software er brugt til udviklingen af dette program:  
